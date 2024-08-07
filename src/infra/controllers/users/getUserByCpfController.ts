@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, Param } from "@nestjs/common";
-import { GetUserByCpfUseCase } from "../useCases/users/getUserByCpfUseCase";
+import { GetUserByCpfUseCase } from "../../useCases/users/getUserByCpfUseCase";
 
 @Controller("/users/get-by-cpf")
 export class GetUserByCpfController {

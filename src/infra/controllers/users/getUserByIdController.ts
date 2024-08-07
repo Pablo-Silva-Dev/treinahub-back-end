@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, Param } from "@nestjs/common";
-import { GetUserByIdUseCase } from "../useCases/users/getUserByIdUseCase";
+import { GetUserByIdUseCase } from "../../useCases/users/getUserByIdUseCase";
 
 @Controller("/users/get-by-id")
 export class GetUserByIdController {

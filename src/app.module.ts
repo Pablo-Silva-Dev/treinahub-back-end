@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { envSchema } from "./env";
-import { CreateUserController } from "./infra/controllers/createUserController";
-import { GetUserByCpfController } from "./infra/controllers/getUserByCpfController";
-import { GetUserByEmailController } from "./infra/controllers/getUserByEmailController";
-import { GetUserByIdController } from "./infra/controllers/getUserByIdController";
-import { ListUsersController } from "./infra/controllers/listUsersController";
+import { CreateUserController } from "./infra/controllers/users/createUserController";
+import { GetUserByCpfController } from "./infra/controllers/users/getUserByCpfController";
+import { GetUserByEmailController } from "./infra/controllers/users/getUserByEmailController";
+import { GetUserByIdController } from "./infra/controllers/users/getUserByIdController";
+import { ListUsersController } from "./infra/controllers/users/listUsersController";
 import { UsersImplementation } from "./infra/repositories/implementations/usersImplementation";
 import { PrismaService } from "./infra/services/prisma";
 import { CreateUserUseCase } from "./infra/useCases/users/createUserUseCase";

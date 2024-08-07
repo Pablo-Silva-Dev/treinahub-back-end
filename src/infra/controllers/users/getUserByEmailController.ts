@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, Param } from "@nestjs/common";
-import { GetUserByEmailUseCase } from "./../useCases/users/getUserByIEmailUseCase";
+import { GetUserByEmailUseCase } from "../../useCases/users/getUserByIEmailUseCase";
 
 @Controller("/users/get-by-email")
 export class GetUserByEmailController {

@@ -1,3 +1,5 @@
+import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
+import { cpfValidationRegex, phoneValidationRegex } from "@/utils/regex";
 import {
   Body,
   ConflictException,
@@ -6,9 +8,7 @@ import {
   Post,
 } from "@nestjs/common";
 import { z } from "zod";
-import { ICreateUserDTO } from "../dtos/UserDTO";
-import { cpfValidationRegex, phoneValidationRegex } from "@/utils/regex";
-import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
+import { ICreateUserDTO } from "../../dtos/UserDTO";
 
 const createUserBodySchema = z.object({
   name: z.string(),
