@@ -2,7 +2,7 @@ import {
     ICreateUserDTO,
     IUpdateUserDTO,
     IUserDTO,
-} from "src/infra/dtos/UserDTO";
+} from "@/infra/dtos/UserDTO";
 
 export interface IUsersRepository {
   createUser(data: ICreateUserDTO): Promise<IUserDTO>;

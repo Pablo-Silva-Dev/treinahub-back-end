@@ -1,10 +1,10 @@
-import { Injectable } from "@nestjs/common";
 import {
   ICreateUserDTO,
   IUpdateUserDTO,
   IUserDTO,
-} from "src/infra/dtos/UserDTO";
-import { PrismaService } from "src/infra/services/prisma";
+} from "@/infra/dtos/UserDTO";
+import { PrismaService } from "@/infra/services/prisma";
+import { Injectable } from "@nestjs/common";
 import { IUsersRepository } from "../interfaces/usersRepository";
 
 @Injectable()

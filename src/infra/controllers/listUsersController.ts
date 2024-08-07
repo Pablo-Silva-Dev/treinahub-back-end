@@ -1,5 +1,5 @@
+import { ListUsersUseCase } from "@/infra/useCases/users/listUsersUseCase";
 import { Controller, Get, HttpCode } from "@nestjs/common";
-import { ListUsersUseCase } from "../useCases/users/listUsersUseCase";
 
 @Controller("/users/list")
 export class ListUsersController {

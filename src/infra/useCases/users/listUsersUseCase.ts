@@ -1,5 +1,5 @@
+import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { Injectable } from "@nestjs/common";
-import { UsersImplementation } from "src/infra/repositories/implementations/usersImplementation";
 
 @Injectable()
 export class ListUsersUseCase {

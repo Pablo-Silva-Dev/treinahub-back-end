@@ -5,10 +5,10 @@ import {
   HttpCode,
   Post,
 } from "@nestjs/common";
-import { cpfValidationRegex, phoneValidationRegex } from "src/utils/regex";
 import { z } from "zod";
 import { ICreateUserDTO } from "../dtos/UserDTO";
-import { CreateUserUseCase } from "../useCases/users/createUserUseCase";
+import { cpfValidationRegex, phoneValidationRegex } from "@/utils/regex";
+import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
 
 const createUserBodySchema = z.object({
   name: z.string(),

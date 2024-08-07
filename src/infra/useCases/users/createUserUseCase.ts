@@ -1,7 +1,7 @@
+import { ICreateUserDTO } from "@/infra/dtos/UserDTO";
+import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { ConflictException, Injectable } from "@nestjs/common";
 import { hash } from "bcryptjs";
-import { ICreateUserDTO } from "src/infra/dtos/UserDTO";
-import { UsersImplementation } from "src/infra/repositories/implementations/usersImplementation";
 
 @Injectable()
 export class CreateUserUseCase {
