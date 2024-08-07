@@ -4,5 +4,5 @@ export interface IWatchedClassesDTO {
   user_id: string;
   videoclass_id: string;
   watchedAt: Date;
-  user: IUserDTO;
+  user?: IUserDTO;
 }

@@ -9,6 +9,8 @@ export interface IUserDTO {
   cpf: string;
   email: string;
   phone: string;
+  birth_date: Date;
+  password: string;
   cep?: string;
   street?: string;
   district?: string;
@@ -16,8 +18,31 @@ export interface IUserDTO {
   uf?: string;
   residence_number?: string;
   is_admin: boolean;
-  trainings: ITrainingDTO[];
-  certificates: ICertificateDTO[];
-  watched_classes: IWatchedClassesDTO[];
-  training_metrics: ITrainingMetricsDTO[];
+  trainings?: ITrainingDTO[];
+  certificates?: ICertificateDTO[];
+  watched_classes?: IWatchedClassesDTO[];
+  training_metrics?: ITrainingMetricsDTO[];
+}
+
+export interface ICreateUserDTO {
+  name: string;
+  cpf: string;
+  email: string;
+  phone: string;
+  birth_date: Date;
+  password: string;
+  is_admin?: boolean;
+}
+
+export interface IUpdateUserDTO {
+  id: string;
+  phone?: string;
+  birth_date: Date;
+  password?: string;
+  cep?: string;
+  street?: string;
+  district?: string;
+  city?: string;
+  uf?: string;
+  residence_number?: string;
 }

@@ -9,8 +9,8 @@ export interface ITrainingDTO {
   description: string;
   duration: number;
   cover_url?: string;
-  users: IUserDTO[];
-  video_classes: IVideoClassDTO[];
-  certificates: ICertificateDTO[];
-  training_metrics: ITrainingMetricsDTO[];
+  users?: IUserDTO[];
+  video_classes?: IVideoClassDTO[];
+  certificates?: ICertificateDTO[];
+  training_metrics?: ITrainingMetricsDTO[];
 }

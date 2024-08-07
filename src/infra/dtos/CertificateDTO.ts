@@ -7,6 +7,6 @@ export interface ICertificateDTO {
   training_id: string;
   url: string;
   created_at: Date;
-  user: IUserDTO;
-  training: ITrainingDTO;
+  user?: IUserDTO;
+  training?: ITrainingDTO;
 }
