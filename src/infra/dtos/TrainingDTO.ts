@@ -14,3 +14,17 @@ export interface ITrainingDTO {
   certificates?: ICertificateDTO[];
   training_metrics?: ITrainingMetricsDTO[];
 }
+
+export interface ICreateTrainingDTO {
+  name: string;
+  description: string;
+  duration: number;
+  cover_url?: string;
+}
+
+export interface IUpdateTrainingDTO {
+  id: string;
+  name?: string;
+  description?: string;
+  cover_url?: string;
+}

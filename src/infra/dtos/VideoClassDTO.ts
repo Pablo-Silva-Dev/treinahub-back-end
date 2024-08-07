@@ -8,5 +8,5 @@ export interface IVideoClassDTO {
   url: string;
   thumbnail_url?: string;
   training_id: string;
-  training: ITrainingDTO;
+  training?: ITrainingDTO;
 }
