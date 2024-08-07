@@ -37,7 +37,6 @@ export interface ICreateUserDTO {
 export interface IUpdateUserDTO {
   id: string;
   phone?: string;
-  birth_date: Date;
   password?: string;
   cep?: string;
   street?: string;

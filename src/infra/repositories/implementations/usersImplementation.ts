@@ -1,8 +1,4 @@
-import {
-  ICreateUserDTO,
-  IUpdateUserDTO,
-  IUserDTO,
-} from "@/infra/dtos/UserDTO";
+import { ICreateUserDTO, IUpdateUserDTO, IUserDTO } from "@/infra/dtos/UserDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
 import { IUsersRepository } from "../interfaces/usersRepository";
@@ -98,10 +94,17 @@ export class UsersImplementation implements IUsersRepository {
     }
   }
   async deleteUser(id: string): Promise<void> {
-    await this.prisma.user.delete({
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
       },
     });
+    if (user) {
+      await this.prisma.user.delete({
+        where: {
+          id,
+        },
+      });
+    }
   }
 }
