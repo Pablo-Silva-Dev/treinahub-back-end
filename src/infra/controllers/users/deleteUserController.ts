@@ -11,7 +11,7 @@ import { DeleteUserUseCase } from "./../../useCases/users/deleteUserUseCase";
 export class DeleteUserController {
   constructor(private deleteUserUseCase: DeleteUserUseCase) {}
   @Delete(":userId")
-  @HttpCode(204)
+  @HttpCode(200)
   async handle(@Param("userId") userId: string) {
     if (!userId) {
       throw new ConflictException("userId is required");

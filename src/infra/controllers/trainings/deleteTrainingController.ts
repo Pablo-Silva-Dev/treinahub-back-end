@@ -11,7 +11,7 @@ import {
 export class DeleteTrainingController {
   constructor(private deleteTrainingUseCase: DeleteTrainingUseCase) {}
   @Delete(":trainingId")
-  @HttpCode(204)
+  @HttpCode(200)
   async handle(@Param("trainingId") trainingId: string) {
     if (!trainingId) {
       throw new ConflictException("trainingId is required");
