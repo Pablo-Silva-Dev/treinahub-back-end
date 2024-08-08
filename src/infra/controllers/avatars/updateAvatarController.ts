@@ -3,9 +3,9 @@ import { UpdateAvatarUseCase } from "@/infra/useCases/avatars/updateAvatarUseCas
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   HttpCode,
-  InternalServerErrorException,
   Put,
 } from "@nestjs/common";
 import { z } from "zod";
@@ -35,7 +35,7 @@ export class UpdateAvatarController {
       return updatedAvatar;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
-      throw new InternalServerErrorException({
+      throw new ConflictException({
         message:
           "An error occurred. Check all request body fields for possible mismatching.",
         error: error.message,

@@ -4,9 +4,9 @@ import { cepValidationRegex, phoneValidationRegex } from "@/utils/regex";
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   HttpCode,
-  InternalServerErrorException,
   Put,
 } from "@nestjs/common";
 
@@ -42,7 +42,7 @@ export class UpdateUserController {
       return updatedUser;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
-      throw new InternalServerErrorException({
+      throw new ConflictException({
         message:
           "An error occurred. Check all request body fields for possible mismatching.",
         error: error.message,

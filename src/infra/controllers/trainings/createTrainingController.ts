@@ -32,7 +32,16 @@ export class CreateTrainingController {
       });
     }
 
-    const training = await this.createTrainingUseCase.execute(body);
-    return training;
+    try {
+      const training = await this.createTrainingUseCase.execute(body);
+      return training;
+    } catch (error) {
+      console.log("[INTERNAL ERROR]", error.message);
+      throw new ConflictException({
+        message:
+          "An error occurred. Check all request body fields for possible mismatching.",
+        error: error.message,
+      });
+    }
   }
 }

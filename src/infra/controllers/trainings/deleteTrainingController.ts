@@ -16,6 +16,15 @@ export class DeleteTrainingController {
     if (!trainingId) {
       throw new ConflictException("trainingId is required");
     }
-    await this.deleteTrainingUseCase.execute(trainingId);
+    try {
+      await this.deleteTrainingUseCase.execute(trainingId);
+    } catch (error) {
+      console.log("[INTERNAL ERROR]", error.message);
+      throw new ConflictException({
+        message:
+          "An error occurred. Check all request body fields for possible mismatching.",
+        error: error.message,
+      });
+    }
   }
 }

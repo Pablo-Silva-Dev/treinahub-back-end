@@ -16,6 +16,15 @@ export class DeleteUserController {
     if (!userId) {
       throw new ConflictException("userId is required");
     }
-    await this.deleteUserUseCase.execute(userId);
+    try {
+      await this.deleteUserUseCase.execute(userId);
+    } catch (error) {
+      console.log("[INTERNAL ERROR]", error.message);
+      throw new ConflictException({
+        message:
+          "An error occurred. Check all request body fields for possible mismatching.",
+        error: error.message,
+      });
+    }
   }
 }

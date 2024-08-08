@@ -34,7 +34,16 @@ export class CreateUserController {
       });
     }
 
-    const user = await this.createUserUseCase.execute(body);
-    return user;
+    try {
+      const createdUser = await this.createUserUseCase.execute(body);
+      return createdUser;
+    } catch (error) {
+      console.log("[INTERNAL ERROR]", error.message);
+      throw new ConflictException({
+        message:
+          "An error occurred. Check all request body fields for possible mismatching.",
+        error: error.message,
+      });
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { ICreateAvatarDTO } from "@/infra/dtos/AvatarDTO";
 import { CreateAvatarUseCase } from "@/infra/useCases/avatars/createsAvatarUseCase";
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -23,13 +24,22 @@ export class CreateAvatarController {
     const isBodyValidated = createAvatarValidationSchema.safeParse(body);
 
     if (!isBodyValidated.success) {
-      throw new ConflictException({
+      throw new BadRequestException({
         message: "Invalid request body. Please check the input fields.",
         errors: isBodyValidated.error.issues,
       });
     }
 
-    const createdAvatar = await this.createAvatarUseCase.execute(body);
-    return createdAvatar;
+    try {
+      const createdAvatar = await this.createAvatarUseCase.execute(body);
+      return createdAvatar;
+    } catch (error) {
+      console.log("[INTERNAL ERROR]", error.message);
+      throw new ConflictException({
+        message:
+          "An error occurred. Check all request body fields for possible mismatching.",
+        error: error.message,
+      });
+    }
   }
 }
