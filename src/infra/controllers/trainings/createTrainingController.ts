@@ -16,7 +16,7 @@ const createTrainingBodySchema = z.object({
   cover_url: z.string().url().optional(),
 });
 
-@Controller("trainings/create")
+@Controller("/trainings/create")
 export class CreateTrainingController {
   constructor(private createTrainingUseCase: CreateTrainingUseCase) {}
 

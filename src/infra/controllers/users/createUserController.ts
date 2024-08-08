@@ -19,7 +19,7 @@ const createUserBodySchema = z.object({
   password: z.string().min(8),
 });
 
-@Controller("users/create")
+@Controller("/users/create")
 export class CreateUserController {
   constructor(private createUserUseCase: CreateUserUseCase) {}
   @Post()

@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import { DeleteUserUseCase } from "./../../useCases/users/deleteUserUseCase";
 
-@Controller("users/delete")
+@Controller("/users/delete")
 export class DeleteUserController {
   constructor(private deleteUserUseCase: DeleteUserUseCase) {}
   @Delete(":userId")
