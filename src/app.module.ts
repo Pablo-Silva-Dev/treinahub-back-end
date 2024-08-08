@@ -4,6 +4,7 @@ import { envSchema } from "./env";
 import { AvatarsModule } from "./modules/avatars.module";
 import { TrainingsModule } from "./modules/trainings.module";
 import { UsersModule } from "./modules/users.module";
+import { VideoClassesModule } from "./modules/videoClasses.module";
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UsersModule } from "./modules/users.module";
     TrainingsModule,
     UsersModule,
     AvatarsModule,
+    VideoClassesModule,
   ],
 })
 export class AppModule {}
