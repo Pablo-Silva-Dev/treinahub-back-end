@@ -26,4 +26,5 @@ export interface IUpdateVideoClassDTO {
   description?: string;
   url?: string;
   thumbnail_url?: string;
+  training_id?: string;
 }
