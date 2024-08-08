@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { envSchema } from "./env";
+import { AvatarsModule } from "./modules/avatars.module";
 import { TrainingsModule } from "./modules/trainings.module";
 import { UsersModule } from "./modules/users.module";
 
@@ -12,6 +13,7 @@ import { UsersModule } from "./modules/users.module";
     }),
     TrainingsModule,
     UsersModule,
+    AvatarsModule,
   ],
 })
 export class AppModule {}
