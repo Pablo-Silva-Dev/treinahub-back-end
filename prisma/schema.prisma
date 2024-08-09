@@ -47,14 +47,15 @@ model Training {
 }
 
 model VideoClass {
-  id            String   @id @default(uuid())
-  name          String   @unique
-  description   String
-  duration      Int
-  url           String
-  thumbnail_url String?
-  training_id   String
-  training      Training @relation(fields: [training_id], references: [id])
+  id              String   @id @default(uuid())
+  name            String   @unique
+  description     String
+  duration        Int
+  url             String
+  thumbnail_url   String?
+  training_id     String
+  training        Training @relation(fields: [training_id], references: [id], onDelete: Cascade)
+  watched_classes  WatchedClasses[]
 }
 
 model Avatar {
@@ -69,7 +70,7 @@ model Certificate {
   training_id String
   url         String
   created_at  DateTime @default(now())
-  user        User     @relation(fields: [user_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   training    Training @relation(fields: [training_id], references: [id])
 }
 
@@ -100,8 +101,10 @@ model TrainingMetrics {
 model WatchedClasses {
   user_id       String
   videoclass_id String
+  training_id   String
   watchedAt     DateTime @default(now())
-  user          User     @relation(fields: [user_id], references: [id])
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  videoclass    VideoClass @relation(fields: [videoclass_id], references: [id], onDelete: Cascade)
 
-  @@id([user_id, videoclass_id])
+  @@id([user_id, videoclass_id, training_id])
 }
