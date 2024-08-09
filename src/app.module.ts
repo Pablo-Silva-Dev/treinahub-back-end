@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { envSchema } from "./env";
 import { AvatarsModule } from "./modules/avatars.module";
 import { CertificatesModule } from "./modules/certificates.module";
+import { FaqQuestionsModule } from "./modules/faqQuestions.module";
 import { TrainingsModule } from "./modules/trainings.module";
 import { UsersModule } from "./modules/users.module";
 import { VideoClassesModule } from "./modules/videoClasses.module";
@@ -18,6 +19,7 @@ import { VideoClassesModule } from "./modules/videoClasses.module";
     AvatarsModule,
     VideoClassesModule,
     CertificatesModule,
+    FaqQuestionsModule,
   ],
 })
 export class AppModule {}
