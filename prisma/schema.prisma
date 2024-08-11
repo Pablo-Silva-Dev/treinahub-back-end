@@ -108,3 +108,8 @@ model WatchedClasses {
 
   @@id([user_id, videoclass_id, training_id])
 }
+
+model ContactSupport {
+  id             String @id @default(uuid())
+  contact_number String
+}
