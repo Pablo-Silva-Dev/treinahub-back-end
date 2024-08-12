@@ -50,7 +50,9 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
     return newWatchedClass;
   }
   async listWatchedClasses(): Promise<IWatchedClassesDTO[]> {
-    const watchedClasses = await this.prisma.watchedClasses.findMany();
+    const watchedClasses = await this.prisma.watchedClasses.findMany({
+      include: { user: true, videoclass: true },
+    });
     return watchedClasses;
   }
 
@@ -79,6 +81,7 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
         user_id,
         training_id,
       },
+      include: { videoclass: true },
     });
     return watchedClasses;
   }

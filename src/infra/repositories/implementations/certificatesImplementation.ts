@@ -43,7 +43,9 @@ export class CertificatesImplementation implements ICertificatesRepository {
     return newCertificate;
   }
   async listCertificates(): Promise<ICertificateDTO[]> {
-    const certificates = await this.prisma.certificate.findMany();
+    const certificates = await this.prisma.certificate.findMany({
+      include: { user: true, training: true },
+    });
     return certificates;
   }
   async listCertificatesByUser(userId: string): Promise<ICertificateDTO[]> {
@@ -61,6 +63,7 @@ export class CertificatesImplementation implements ICertificatesRepository {
       where: {
         user_id: userId,
       },
+      include: { user: true, training: true },
     });
     return certificates;
   }

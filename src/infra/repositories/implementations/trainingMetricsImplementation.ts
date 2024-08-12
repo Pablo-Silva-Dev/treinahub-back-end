@@ -48,7 +48,9 @@ export class TrainingMetricsImplementation
     return newTrainingMetrics;
   }
   async listTrainingMetrics(): Promise<ITrainingMetricsDTO[]> {
-    const trainingMetrics = await this.prisma.trainingMetrics.findMany();
+    const trainingMetrics = await this.prisma.trainingMetrics.findMany({
+      include: { user: true, training: true },
+    });
     return trainingMetrics;
   }
   async listTrainingMetricsByUser(
@@ -64,7 +66,9 @@ export class TrainingMetricsImplementation
       return;
     }
 
-    const trainingMetrics = await this.prisma.trainingMetrics.findMany();
+    const trainingMetrics = await this.prisma.trainingMetrics.findMany({
+      include: { user: true, training: true },
+    });
     return trainingMetrics;
   }
   async getTrainingMetricsByTrainingAndUser(
@@ -89,6 +93,7 @@ export class TrainingMetricsImplementation
         user_id,
         training_id,
       },
+      include: { user: true, training: true },
     });
     return trainingMetrics;
   }
@@ -100,6 +105,7 @@ export class TrainingMetricsImplementation
       where: {
         id,
       },
+      include: { user: true, training: true },
     });
 
     if (!trainingMetrics) {
