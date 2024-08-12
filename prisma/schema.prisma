@@ -14,24 +14,25 @@ datasource db {
 }
 
 model User {
-  id               String             @id @default(uuid())
+  id               String            @id @default(uuid())
   name             String
-  cpf              String             @unique
-  email            String             @unique
-  phone            String             @unique
+  cpf              String            @unique
+  email            String            @unique
+  phone            String            @unique
   birth_date       DateTime
-  password         String 
+  password         String
   cep              String?
   street           String?
   district         String?
   city             String?
   uf               String?
   residence_number String?
-  is_admin         Boolean            @default(false)
+  is_admin         Boolean           @default(false)
   trainings        Training[]
   certificates     Certificate[]
   watched_classes  WatchedClasses[]
   training_metrics TrainingMetrics[]
+  logs             Log[]
 }
 
 model Training {
@@ -47,15 +48,15 @@ model Training {
 }
 
 model VideoClass {
-  id              String   @id @default(uuid())
-  name            String   @unique
+  id              String           @id @default(uuid())
+  name            String           @unique
   description     String
   duration        Int
   url             String
   thumbnail_url   String?
   training_id     String
-  training        Training @relation(fields: [training_id], references: [id], onDelete: Cascade)
-  watched_classes  WatchedClasses[]
+  training        Training         @relation(fields: [training_id], references: [id], onDelete: Cascade)
+  watched_classes WatchedClasses[]
 }
 
 model Avatar {
@@ -102,8 +103,8 @@ model WatchedClasses {
   user_id       String
   videoclass_id String
   training_id   String
-  watchedAt     DateTime @default(now())
-  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  watchedAt     DateTime   @default(now())
+  user          User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   videoclass    VideoClass @relation(fields: [videoclass_id], references: [id], onDelete: Cascade)
 
   @@id([user_id, videoclass_id, training_id])
@@ -112,4 +113,11 @@ model WatchedClasses {
 model ContactSupport {
   id             String @id @default(uuid())
   contact_number String
+}
+
+model Log {
+  id         String   @id @default(uuid())
+  user_id    String
+  user       User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  created_at DateTime @default(now())
 }

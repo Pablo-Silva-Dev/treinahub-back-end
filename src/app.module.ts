@@ -5,6 +5,7 @@ import { AvatarsModule } from "./modules/avatars.module";
 import { CertificatesModule } from "./modules/certificates.module";
 import { ContactsSupportModule } from "./modules/contactsSupport.module";
 import { FaqQuestionsModule } from "./modules/faqQuestions.module";
+import { LogsModule } from "./modules/logs.module";
 import { TrainingMetricsModule } from "./modules/trainingMetrics.module";
 import { TrainingsModule } from "./modules/trainings.module";
 import { UsersModule } from "./modules/users.module";
@@ -26,6 +27,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
     WatchedClassesModule,
     ContactsSupportModule,
     TrainingMetricsModule,
+    LogsModule,
   ],
 })
 export class AppModule {}
