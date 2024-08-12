@@ -74,13 +74,13 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
       return;
     }
 
-    const watchedClasses = await this.prisma.watchedClasses.findFirst({
+    const watchedClasses = await this.prisma.watchedClasses.findMany({
       where: {
         user_id,
         training_id,
       },
     });
-    return watchedClasses as never;
+    return watchedClasses;
   }
 
   async getUniqueWatchedClass(
