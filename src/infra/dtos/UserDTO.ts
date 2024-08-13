@@ -45,3 +45,12 @@ export interface IUpdateUserDTO {
   uf?: string;
   residence_number?: string;
 }
+
+export interface IGetRecoveryPasswordCodeByEmailDTO {
+  cpf: string;
+  email: string;
+}
+
+export interface IGetRecoveryPasswordCodeBySMSDTO {
+  phone: string;
+}

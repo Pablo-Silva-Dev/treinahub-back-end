@@ -1,6 +1,13 @@
-import { ICreateUserDTO, IUpdateUserDTO, IUserDTO } from "@/infra/dtos/UserDTO";
+import {
+  ICreateUserDTO,
+  IGetRecoveryPasswordCodeByEmailDTO,
+  IGetRecoveryPasswordCodeBySMSDTO,
+  IUpdateUserDTO,
+  IUserDTO,
+} from "@/infra/dtos/UserDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
+import { randomInt } from "crypto";
 import { IUsersRepository } from "../interfaces/usersRepository";
 
 @Injectable()
@@ -65,6 +72,18 @@ export class UsersImplementation implements IUsersRepository {
       return user;
     }
   }
+
+  async getUserBySMS(phone: string): Promise<IUserDTO | void> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        phone,
+      },
+    });
+    if (user) {
+      return user;
+    }
+  }
+
   async getUserById(id: string): Promise<IUserDTO | void> {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -106,5 +125,47 @@ export class UsersImplementation implements IUsersRepository {
         },
       });
     }
+  }
+  async getRecoveryPasswordCodeByEmail(
+    data: IGetRecoveryPasswordCodeByEmailDTO
+  ): Promise<string> {
+    const { email, cpf } = data;
+    const MIN_RANDOM_CODE = 100000;
+    const MAX_RANDOM_CODE = 900000;
+
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email,
+        cpf,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const recoveryCode = randomInt(MIN_RANDOM_CODE, MAX_RANDOM_CODE).toString();
+    return recoveryCode;
+  }
+
+  async getRecoveryPasswordCodeBySMS(
+    data: IGetRecoveryPasswordCodeBySMSDTO
+  ): Promise<string> {
+    const { phone } = data;
+    const MIN_RANDOM_CODE = 100000;
+    const MAX_RANDOM_CODE = 900000;
+
+    const user = await this.prisma.user.findFirst({
+      where: {
+        phone,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const recoveryCode = randomInt(MIN_RANDOM_CODE, MAX_RANDOM_CODE).toString();
+    return recoveryCode;
   }
 }
