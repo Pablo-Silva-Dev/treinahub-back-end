@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { envSchema } from "./env";
+import { AuthModule } from "./modules/auth.module";
 import { AvatarsModule } from "./modules/avatars.module";
 import { CertificatesModule } from "./modules/certificates.module";
 import { ContactsSupportModule } from "./modules/contactsSupport.module";
@@ -19,6 +20,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
+    AuthModule,
     TrainingsModule,
     UsersModule,
     AvatarsModule,

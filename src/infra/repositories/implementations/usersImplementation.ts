@@ -1,5 +1,7 @@
+import { IAuthTokenDTO } from "@/infra/dtos/AuthTokenDTO";
 import { IRecoveryCodeDTO } from "@/infra/dtos/RecoveryCodeDTO";
 import {
+  IAuthenticateUserDTO,
   ICreateUserDTO,
   IGetRecoveryPasswordCodeByEmailDTO,
   IGetRecoveryPasswordCodeBySMSDTO,
@@ -8,13 +10,18 @@ import {
 } from "@/infra/dtos/UserDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { compare } from "bcryptjs";
 import { randomInt } from "crypto";
 import { addMinutes } from "date-fns";
 import { IUsersRepository } from "../interfaces/usersRepository";
 
 @Injectable()
 export class UsersImplementation implements IUsersRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private jwt: JwtService
+  ) {}
   async createUser(data: ICreateUserDTO): Promise<IUserDTO> {
     const { email, cpf, phone } = data;
 
@@ -196,5 +203,33 @@ export class UsersImplementation implements IUsersRepository {
       },
     });
     return newRecoveryCode;
+  }
+  async authenticateUser(data: IAuthenticateUserDTO): Promise<IAuthTokenDTO> {
+    const { email, password } = data;
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const isPasswordValid = await compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return null;
+    }
+
+    const token = this.jwt.sign(
+      { sub: user.id, isAdmin: user.is_admin },
+      { expiresIn: "30d" }
+    );
+
+    return {
+      token,
+    };
   }
 }

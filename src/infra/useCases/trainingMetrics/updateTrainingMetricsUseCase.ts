@@ -53,8 +53,6 @@ export class UpdateTrainingMetricsUseCase {
     const totalWatchedClassesPercentage =
       Number(totalWatchedClasses / totalTrainingClasses) * 100;
 
-    console.log("#####################", totalTrainingClasses);
-
     const updatedTrainingMetrics =
       await this.trainingMetricsImplementation.updateTrainingMetrics({
         ...data,

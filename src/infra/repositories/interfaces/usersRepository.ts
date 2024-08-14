@@ -1,5 +1,7 @@
+import { IAuthTokenDTO } from "@/infra/dtos/AuthTokenDTO";
 import { IRecoveryCodeDTO } from "@/infra/dtos/RecoveryCodeDTO";
 import {
+  IAuthenticateUserDTO,
   ICreateUserDTO,
   IGetRecoveryPasswordCodeByEmailDTO,
   IGetRecoveryPasswordCodeBySMSDTO,
@@ -22,4 +24,5 @@ export interface IUsersRepository {
   getRecoveryPasswordCodeBySMS(
     data: IGetRecoveryPasswordCodeBySMSDTO
   ): Promise<IRecoveryCodeDTO>;
+  authenticateUser(data: IAuthenticateUserDTO): Promise<IAuthTokenDTO>;
 }

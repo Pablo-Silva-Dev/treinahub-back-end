@@ -4,10 +4,13 @@ import {
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { GetUserByIdUseCase } from "../../useCases/users/getUserByIdUseCase";
 
 @Controller("/users/get-by-id")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetUserByIdController {
   constructor(private getUserByIdUseCase: GetUserByIdUseCase) {}
   @HttpCode(200)

@@ -1,3 +1,4 @@
+import { AuthenticateUserController } from "@/infra/controllers/users/authenticateUserController";
 import { CreateUserController } from "@/infra/controllers/users/createUserController";
 import { DeleteUserController } from "@/infra/controllers/users/deleteUserController";
 import { GetRecoveryPasswordCodeByEmailController } from "@/infra/controllers/users/getReocveryPasswordCodeByEmailController";
@@ -11,6 +12,7 @@ import { UsersImplementation } from "@/infra/repositories/implementations/usersI
 import { PrismaService } from "@/infra/services/prisma";
 import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
 import { TwilioService } from "@/infra/services/twilio";
+import { AuthenticateUserUseCase } from "@/infra/useCases/users/authenticateUserUseCase";
 import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
 import { DeleteUserUseCase } from "@/infra/useCases/users/deleteUserUseCase";
 import { GetRecoveryPasswordCodeByEmailUseCase } from "@/infra/useCases/users/getRecoveryPasswordCodeByEmailUseCase";
@@ -33,6 +35,7 @@ import { Module } from "@nestjs/common";
     UpdateUserController,
     GetRecoveryPasswordCodeByEmailController,
     GetRecoveryPasswordCodeBySMSController,
+    AuthenticateUserController,
   ],
   providers: [
     PrismaService,
@@ -48,6 +51,7 @@ import { Module } from "@nestjs/common";
     UpdateUserUseCase,
     GetRecoveryPasswordCodeByEmailUseCase,
     GetRecoveryPasswordCodeBySMSUseCase,
+    AuthenticateUserUseCase,
   ],
 })
 export class UsersModule {}

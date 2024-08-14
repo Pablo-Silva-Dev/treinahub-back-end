@@ -54,3 +54,8 @@ export interface IGetRecoveryPasswordCodeByEmailDTO {
 export interface IGetRecoveryPasswordCodeBySMSDTO {
   phone: string;
 }
+
+export interface IAuthenticateUserDTO {
+  email: string;
+  password: string;
+}
