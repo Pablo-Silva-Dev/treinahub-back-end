@@ -1,3 +1,4 @@
+import { IRecoveryCodeDTO } from "@/infra/dtos/RecoveryCodeDTO";
 import {
   ICreateUserDTO,
   IGetRecoveryPasswordCodeByEmailDTO,
@@ -17,8 +18,8 @@ export interface IUsersRepository {
   deleteUser(id: string): Promise<void>;
   getRecoveryPasswordCodeByEmail(
     data: IGetRecoveryPasswordCodeByEmailDTO
-  ): Promise<string>;
+  ): Promise<IRecoveryCodeDTO>;
   getRecoveryPasswordCodeBySMS(
     data: IGetRecoveryPasswordCodeBySMSDTO
-  ): Promise<string>;
+  ): Promise<IRecoveryCodeDTO>;
 }

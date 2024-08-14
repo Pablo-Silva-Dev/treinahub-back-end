@@ -15,13 +15,18 @@ export class GetRecoveryPasswordCodeBySMSUseCase {
     const recoveryCode =
       await this.usersImplementation.getRecoveryPasswordCodeBySMS(data);
 
+    const { code } = recoveryCode;
+
     const user = await this.usersImplementation.getUserBySMS(phone);
 
     if (!user) {
       throw new NotFoundException("User not found");
     }
 
-    await this.twilioService.sendSMSRecoveryCode({ to: phone, recoveryCode });
+    await this.twilioService.sendSMSRecoveryCode({
+      to: phone,
+      recoveryCode: code,
+    });
 
     const sendCodeMessage = `O código de recuperação de senha foi enviado para ${phone}`;
 

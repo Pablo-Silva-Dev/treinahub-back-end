@@ -18,6 +18,8 @@ export class GetRecoveryPasswordCodeByEmailUseCase {
     const recoveryCode =
       await this.usersImplementation.getRecoveryPasswordCodeByEmail(data);
 
+    const { code } = recoveryCode;
+
     const user =
       (await this.usersImplementation.getUserByEmail(email)) &&
       (await this.usersImplementation.getUserByCpf(cpf));
@@ -29,7 +31,7 @@ export class GetRecoveryPasswordCodeByEmailUseCase {
     await this.sendGridService.sendRecoveryPasswordEmail({
       from: this.configService.get("SEND_GRID_EMAIL_SENDER_ADDRESS"),
       to: email,
-      recoveryCode,
+      recoveryCode: code,
     });
 
     const sendCodeMessage = `O código de recuperação de senha foi enviado para ${email}`;

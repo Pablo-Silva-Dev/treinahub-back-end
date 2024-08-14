@@ -1,3 +1,4 @@
+import { IRecoveryCodeDTO } from "@/infra/dtos/RecoveryCodeDTO";
 import {
   ICreateUserDTO,
   IGetRecoveryPasswordCodeByEmailDTO,
@@ -8,6 +9,7 @@ import {
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
 import { randomInt } from "crypto";
+import { addMinutes } from "date-fns";
 import { IUsersRepository } from "../interfaces/usersRepository";
 
 @Injectable()
@@ -128,10 +130,8 @@ export class UsersImplementation implements IUsersRepository {
   }
   async getRecoveryPasswordCodeByEmail(
     data: IGetRecoveryPasswordCodeByEmailDTO
-  ): Promise<string> {
+  ): Promise<IRecoveryCodeDTO> {
     const { email, cpf } = data;
-    const MIN_RANDOM_CODE = 100000;
-    const MAX_RANDOM_CODE = 900000;
 
     const user = await this.prisma.user.findFirst({
       where: {
@@ -144,16 +144,30 @@ export class UsersImplementation implements IUsersRepository {
       return null;
     }
 
+    const MIN_RANDOM_CODE = 100000;
+    const MAX_RANDOM_CODE = 900000;
+
     const recoveryCode = randomInt(MIN_RANDOM_CODE, MAX_RANDOM_CODE).toString();
-    return recoveryCode;
+
+    const nowUTC = new Date(new Date().toISOString());
+
+    const expirationDate = addMinutes(nowUTC, 15);
+
+    const newRecoveryCode = await this.prisma.recoveryCode.create({
+      data: {
+        code: recoveryCode,
+        user_id: user.id,
+        expiration_date: expirationDate,
+      },
+    });
+
+    return newRecoveryCode;
   }
 
   async getRecoveryPasswordCodeBySMS(
     data: IGetRecoveryPasswordCodeBySMSDTO
-  ): Promise<string> {
+  ): Promise<IRecoveryCodeDTO> {
     const { phone } = data;
-    const MIN_RANDOM_CODE = 100000;
-    const MAX_RANDOM_CODE = 900000;
 
     const user = await this.prisma.user.findFirst({
       where: {
@@ -165,7 +179,22 @@ export class UsersImplementation implements IUsersRepository {
       return null;
     }
 
+    const MIN_RANDOM_CODE = 100000;
+    const MAX_RANDOM_CODE = 900000;
+
     const recoveryCode = randomInt(MIN_RANDOM_CODE, MAX_RANDOM_CODE).toString();
-    return recoveryCode;
+
+    const nowUTC = new Date(new Date().toISOString());
+
+    const expirationDate = addMinutes(nowUTC, 15);
+
+    const newRecoveryCode = await this.prisma.recoveryCode.create({
+      data: {
+        code: recoveryCode,
+        user_id: user.id,
+        expiration_date: expirationDate,
+      },
+    });
+    return newRecoveryCode;
   }
 }
