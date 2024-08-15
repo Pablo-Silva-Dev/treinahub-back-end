@@ -8,7 +8,9 @@ import {
   Controller,
   HttpCode,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 import { z } from "zod";
 
@@ -24,6 +26,7 @@ const updateUserBodySchema = z.object({
   phone: z.string().regex(phoneValidationRegex).optional(),
 });
 @Controller("/user/update")
+@UseGuards(AuthGuard("jwt-user"))
 export class UpdateUserController {
   constructor(private updateUserUseCase: UpdateUserUseCase) {}
   @Put()

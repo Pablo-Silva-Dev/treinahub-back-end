@@ -7,7 +7,9 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const createTrainingMetricsValidationSchema = z.object({
@@ -16,6 +18,7 @@ const createTrainingMetricsValidationSchema = z.object({
 });
 
 @Controller("/training-metrics/create")
+@UseGuards(AuthGuard("jwt-user"))
 export class CreateTrainingMetricsController {
   constructor(
     private createTrainingMetricsUseCase: CreateTrainingMetricsUseCase

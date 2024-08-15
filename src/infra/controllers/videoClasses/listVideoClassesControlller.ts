@@ -1,7 +1,15 @@
 import { ListVideoClassesUseCase } from "@/infra/useCases/videoClasses/listVideoClassesUseCase";
-import { ConflictException, Controller, Get, HttpCode } from "@nestjs/common";
+import {
+  ConflictException,
+  Controller,
+  Get,
+  HttpCode,
+  UseGuards,
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/video-classes/list")
+@UseGuards(AuthGuard("jwt-user"))
 export class ListVideoClassesController {
   constructor(private listVideoClassesUseCase: ListVideoClassesUseCase) {}
   @Get()

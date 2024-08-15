@@ -1,13 +1,16 @@
+import { GetFaqQuestionByIdUseCase } from "@/infra/useCases/faqQuestions/getFaqQuestionByIdUseCase";
 import {
   ConflictException,
   Controller,
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
-import { GetFaqQuestionByIdUseCase } from "../../useCases/faqQuestions/getFaqQuestionByIdUseCase";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/faq-questions/get-by-id")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetFaqQuestionByIdController {
   constructor(private getFaqQuestionByIdUseCase: GetFaqQuestionByIdUseCase) {}
   @HttpCode(200)

@@ -1,4 +1,5 @@
 import { IUpdateITrainingMetricsDTO } from "@/infra/dtos/TrainingMetricDTO";
+import { UpdateTrainingMetricsUseCase } from "@/infra/useCases/trainingMetrics/updateTrainingMetricsUseCase";
 import {
   BadRequestException,
   Body,
@@ -6,15 +7,17 @@ import {
   Controller,
   HttpCode,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
-import { UpdateTrainingMetricsUseCase } from "./../../useCases/trainingMetrics/updateTrainingMetricsUseCase";
 
 const updateTrainingMetricsValidationSchema = z.object({
   id: z.string(),
 });
 
 @Controller("/training-metrics/update")
+@UseGuards(AuthGuard("jwt-user"))
 export class UpdateTrainingMetricsController {
   constructor(
     private updateTrainingMetricsUseCase: UpdateTrainingMetricsUseCase

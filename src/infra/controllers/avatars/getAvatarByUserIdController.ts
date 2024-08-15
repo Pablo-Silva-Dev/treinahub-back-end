@@ -1,13 +1,16 @@
+import { GetAvatarByUserIdUseCase } from "@/infra/useCases/avatars/getAvatarByUserIdUseCase";
 import {
   ConflictException,
   Controller,
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
-import { GetAvatarByUserIdUseCase } from "../../useCases/avatars/getAvatarByUserIdUseCase";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/avatars/get-by-user-id")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetAvatarByUserIdController {
   constructor(private getAvatarByIdUseCase: GetAvatarByUserIdUseCase) {}
   @HttpCode(200)

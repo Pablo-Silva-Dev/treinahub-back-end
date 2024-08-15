@@ -1,12 +1,14 @@
 import { IGetWatchedClassesByUserAndTrainingDTO } from "@/infra/dtos/WatchedClassDTO";
 import { ListWatchedClassesByUserIdAndTrainingIdUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesByTrainingIdAndUserIdUseCase";
 import {
-    Body,
-    ConflictException,
-    Controller,
-    HttpCode,
-    Post,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const listWatchedClassesValidationSchema = z.object({
@@ -15,6 +17,7 @@ const listWatchedClassesValidationSchema = z.object({
 });
 
 @Controller("watched-classes/list-by-user-and-training")
+@UseGuards(AuthGuard("jwt-user"))
 export class ListWatchedClassesByUserIdAndTrainingIdController {
   constructor(
     private listWatchedClassesByUserIdAndTrainingIdUseCase: ListWatchedClassesByUserIdAndTrainingIdUseCase

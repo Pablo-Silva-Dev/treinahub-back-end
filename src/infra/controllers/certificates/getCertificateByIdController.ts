@@ -5,8 +5,11 @@ import {
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 @Controller("/certificates/get-by-id")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetCertificateByIdController {
   constructor(private getCertificateByIdUseCase: GetCertificateByIdUseCase) {}
   @Get(":certificateId")

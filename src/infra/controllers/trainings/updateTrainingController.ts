@@ -7,7 +7,9 @@ import {
   Controller,
   HttpCode,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const updateTrainingSchema = z.object({
@@ -18,6 +20,7 @@ const updateTrainingSchema = z.object({
 });
 
 @Controller("/trainings/update")
+@UseGuards(AuthGuard("jwt-admin"))
 export class UpdateTrainingController {
   constructor(private updateTrainingUseCase: UpdateTrainingUseCase) {}
 

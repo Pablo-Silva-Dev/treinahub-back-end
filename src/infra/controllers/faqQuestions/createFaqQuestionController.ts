@@ -1,3 +1,4 @@
+import { ICreateFaqQuestionDTO } from "@/infra/dtos/FaqQuestionDTO";
 import { CreateFaqQuestionUseCase } from "@/infra/useCases/faqQuestions/createFaqQuestionUseCase";
 import {
   Body,
@@ -5,9 +6,10 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
-import { ICreateFaqQuestionDTO } from "../../dtos/FaqQuestionDTO";
 
 const createFaqQuestionBodySchema = z.object({
   question: z.string(),
@@ -15,6 +17,7 @@ const createFaqQuestionBodySchema = z.object({
 });
 
 @Controller("/faq-questions/create")
+@UseGuards(AuthGuard("jwt-admin"))
 export class CreateFaqQuestionController {
   constructor(private createFaqQuestionUseCase: CreateFaqQuestionUseCase) {}
   @Post()

@@ -1,7 +1,15 @@
 import { ListLogsUseCase } from "@/infra/useCases/logs/listLogsUseCase";
-import { ConflictException, Controller, Get, HttpCode } from "@nestjs/common";
+import {
+  ConflictException,
+  Controller,
+  Get,
+  HttpCode,
+  UseGuards,
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/logs/list")
+@UseGuards(AuthGuard("jwt-admin"))
 export class ListLogsController {
   constructor(private listLogsUseCase: ListLogsUseCase) {}
   @Get()

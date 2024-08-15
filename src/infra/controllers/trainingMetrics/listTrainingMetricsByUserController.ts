@@ -5,9 +5,12 @@ import {
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/training-metrics/list-by-user")
+@UseGuards(AuthGuard("jwt-user"))
 export class ListTrainingMetricsByUserController {
   constructor(
     private listTrainingMetricsByUserUseCase: ListTrainingMetricsByUserUseCase

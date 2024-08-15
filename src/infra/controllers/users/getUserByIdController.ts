@@ -1,3 +1,4 @@
+import { GetUserByIdUseCase } from "@/infra/useCases/users/getUserByIdUseCase";
 import {
   ConflictException,
   Controller,
@@ -7,7 +8,6 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { GetUserByIdUseCase } from "../../useCases/users/getUserByIdUseCase";
 
 @Controller("/users/get-by-id")
 @UseGuards(AuthGuard("jwt-user"))

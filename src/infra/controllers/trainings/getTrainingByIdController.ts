@@ -1,13 +1,16 @@
+import { GetTrainingByIdUseCase } from "@/infra/useCases/trainings/getTrainingByIdUseCase";
 import {
   ConflictException,
   Controller,
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
-import { GetTrainingByIdUseCase } from "../../useCases/trainings/getTrainingByIdUseCase";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/trainings/get-by-id")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetTrainingByIdController {
   constructor(private getTrainingByIdUseCase: GetTrainingByIdUseCase) {}
   @HttpCode(200)

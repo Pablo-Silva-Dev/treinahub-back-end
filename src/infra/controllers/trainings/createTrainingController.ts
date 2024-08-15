@@ -1,3 +1,4 @@
+import { ICreateTrainingDTO } from "@/infra/dtos/TrainingDTO";
 import { CreateTrainingUseCase } from "@/infra/useCases/trainings/createTrainingUseCase";
 import {
   Body,
@@ -5,9 +6,10 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
-import { ICreateTrainingDTO } from "../../dtos/TrainingDTO";
 
 const createTrainingBodySchema = z.object({
   name: z.string(),
@@ -17,6 +19,7 @@ const createTrainingBodySchema = z.object({
 });
 
 @Controller("/trainings/create")
+@UseGuards(AuthGuard("jwt-admin"))
 export class CreateTrainingController {
   constructor(private createTrainingUseCase: CreateTrainingUseCase) {}
 

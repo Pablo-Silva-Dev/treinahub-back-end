@@ -5,9 +5,12 @@ import {
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/certificates/list-by-user")
+@UseGuards(AuthGuard("jwt-user"))
 export class ListCertificatesByUserController {
   constructor(
     private listCertificatesByUserUseCase: ListCertificatesByUserUseCase
@@ -22,8 +25,7 @@ export class ListCertificatesByUserController {
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
-        message:
-          "An error occurred.",
+        message: "An error occurred.",
         error: error.message,
       });
     }

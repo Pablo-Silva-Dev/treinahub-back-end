@@ -1,13 +1,15 @@
 import { ICreateVideoClassDTO } from "@/infra/dtos/VideoClassDTO";
+import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
 import {
-    Body,
-    ConflictException,
-    Controller,
-    HttpCode,
-    Post,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
-import { CreateVideoClassUseCase } from "./../../useCases/videoClasses/createVideoClassUseCase";
 
 const createVideoClassValidationSchema = z.object({
   name: z.string(),
@@ -19,6 +21,7 @@ const createVideoClassValidationSchema = z.object({
 });
 
 @Controller("/video-classes/create")
+@UseGuards(AuthGuard("jwt-admin"))
 export class CreateVideoClassController {
   constructor(private createVideoClassUseCase: CreateVideoClassUseCase) {}
   @Post()

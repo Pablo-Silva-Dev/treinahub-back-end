@@ -1,13 +1,15 @@
 import { ICreateWatchedClassesDTO } from "@/infra/dtos/WatchedClassDTO";
+import { CreateWatchedClassUseCase } from "@/infra/useCases/watchedClasses/createWatchedClassUseCase";
 import {
   Body,
   ConflictException,
   Controller,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
-import { CreateWatchedClassUseCase } from "./../../useCases/watchedClasses/createWatchedClassUseCase";
 
 const createWatchedClassValidationSchema = z.object({
   user_id: z.string(),
@@ -16,6 +18,7 @@ const createWatchedClassValidationSchema = z.object({
 });
 
 @Controller("/watched-classes/create")
+@UseGuards(AuthGuard("jwt-user"))
 export class CreateWatchedClassController {
   constructor(private createWatchedClassUseCase: CreateWatchedClassUseCase) {}
   @Post()

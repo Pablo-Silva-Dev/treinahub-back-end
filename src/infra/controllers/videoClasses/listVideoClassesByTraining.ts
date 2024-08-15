@@ -5,9 +5,12 @@ import {
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/video-classes/list-by-training")
+@UseGuards(AuthGuard("jwt-user"))
 export class ListVideoClassesByTrainingController {
   constructor(
     private listVideoClassesByTrainingUseCase: ListVideoClassesByTrainingUseCase

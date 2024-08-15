@@ -2,11 +2,11 @@ import { IGetRecoveryPasswordCodeBySMSDTO } from "@/infra/dtos/UserDTO";
 import { GetRecoveryPasswordCodeBySMSUseCase } from "@/infra/useCases/users/getRecoveryPasswordCodeBySMSUseCase";
 import { phoneValidationRegex } from "@/utils/regex";
 import {
-    Body,
-    ConflictException,
-    Controller,
-    HttpCode,
-    Post,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
 } from "@nestjs/common";
 import { z } from "zod";
 

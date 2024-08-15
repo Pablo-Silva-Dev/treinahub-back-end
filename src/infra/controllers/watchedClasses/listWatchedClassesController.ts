@@ -1,7 +1,15 @@
 import { ListWatchedClassesUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesUseCase";
-import { ConflictException, Controller, Get, HttpCode } from "@nestjs/common";
+import {
+  ConflictException,
+  Controller,
+  Get,
+  HttpCode,
+  UseGuards,
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/watched-classes/list")
+@UseGuards(AuthGuard("jwt-admin"))
 export class ListWatchedClassesController {
   constructor(private listWatchedClassesUseCase: ListWatchedClassesUseCase) {}
   @Get()

@@ -8,7 +8,9 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const createContactSupportValidationSchema = z.object({
@@ -16,6 +18,7 @@ const createContactSupportValidationSchema = z.object({
 });
 
 @Controller("/contacts-support/create")
+@UseGuards(AuthGuard("jwt-admin"))
 export class CreateContactSupportController {
   constructor(
     private createContactSupportUseCase: CreateContactSupportUseCase

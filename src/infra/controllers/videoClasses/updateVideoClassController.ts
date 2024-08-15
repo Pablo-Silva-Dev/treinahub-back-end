@@ -7,7 +7,9 @@ import {
   Controller,
   HttpCode,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const updateVideoClassSchema = z.object({
@@ -19,6 +21,7 @@ const updateVideoClassSchema = z.object({
 });
 
 @Controller("/video-classes/update")
+@UseGuards(AuthGuard("jwt-admin"))
 export class UpdateVideoClassController {
   constructor(private updateVideoClassUseCase: UpdateVideoClassUseCase) {}
 

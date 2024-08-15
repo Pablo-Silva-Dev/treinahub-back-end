@@ -1,3 +1,4 @@
+import { DeleteFaqQuestionUseCase } from "@/infra/useCases/faqQuestions/deleteFaqQuestionUseCase";
 import {
   ConflictException,
   Controller,
@@ -5,7 +6,6 @@ import {
   HttpCode,
   Param,
 } from "@nestjs/common";
-import { DeleteFaqQuestionUseCase } from "./../../useCases/faqQuestions/deleteFaqQuestionUseCase";
 
 @Controller("/faq-questions/delete")
 export class DeleteFaqQuestionController {

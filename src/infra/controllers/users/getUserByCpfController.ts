@@ -1,13 +1,16 @@
+import { GetUserByCpfUseCase } from "@/infra/useCases/users/getUserByCpfUseCase";
 import {
   ConflictException,
   Controller,
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
-import { GetUserByCpfUseCase } from "../../useCases/users/getUserByCpfUseCase";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/users/get-by-cpf")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetUserByCpfController {
   constructor(private getUserByCpfUseCase: GetUserByCpfUseCase) {}
   @Get(":userCpf")

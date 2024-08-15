@@ -1,6 +1,6 @@
 import { CreateFaqQuestionController } from "@/infra/controllers/faqQuestions/createFaqQuestionController";
-import { DeleteFaqQuestionController } from "@/infra/controllers/faqQuestions/deleteUserController";
-import { GetFaqQuestionByIdController } from "@/infra/controllers/faqQuestions/getUserByIdController";
+import { DeleteFaqQuestionController } from "@/infra/controllers/faqQuestions/deleteFaqQuestionController";
+import { GetFaqQuestionByIdController } from "@/infra/controllers/faqQuestions/getFaqQuestionByIdController";
 import { ListFaqQuestionsController } from "@/infra/controllers/faqQuestions/listFaqQuestionsController";
 import { UpdateFaqQuestionController } from "@/infra/controllers/faqQuestions/updateFaqQuestionController";
 import { FaqQuestionsImplementation } from "@/infra/repositories/implementations/faqQuestionsImplementation";

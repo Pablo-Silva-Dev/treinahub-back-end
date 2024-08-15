@@ -1,13 +1,16 @@
+import { GetUserByEmailUseCase } from "@/infra/useCases/users/getUserByIEmailUseCase";
 import {
   ConflictException,
   Controller,
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
-import { GetUserByEmailUseCase } from "../../useCases/users/getUserByIEmailUseCase";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/users/get-by-email")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetUserByEmailController {
   constructor(private getUserByEmailUseCase: GetUserByEmailUseCase) {}
   @Get(":userEmail")

@@ -6,9 +6,12 @@ import {
   Get,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/training-metrics/get-by-id")
+@UseGuards(AuthGuard("jwt-user"))
 export class GetTrainingMetricsByIdController {
   constructor(
     private getTrainingMetricsByIdUseCase: GetTrainingMetricsByIdUseCase

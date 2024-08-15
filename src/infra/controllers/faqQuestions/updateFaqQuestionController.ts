@@ -7,7 +7,9 @@ import {
   Controller,
   HttpCode,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 import { z } from "zod";
 
@@ -17,6 +19,7 @@ const updateFaqQuestionBodySchema = z.object({
   answer: z.string().min(24).optional(),
 });
 @Controller("/faq-questions/update")
+@UseGuards(AuthGuard("jwt-admin"))
 export class UpdateFaqQuestionController {
   constructor(private updateFaqQuestionUseCase: UpdateFaqQuestionUseCase) {}
   @Put()

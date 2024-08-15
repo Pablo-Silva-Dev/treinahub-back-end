@@ -5,9 +5,12 @@ import {
   Delete,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("video-classes/delete")
+@UseGuards(AuthGuard("jwt-admin"))
 export class DeleteVideoClassController {
   constructor(private deleteVideoClassUseCase: DeleteVideoClassUseCase) {}
   @Delete(":videoClassId")

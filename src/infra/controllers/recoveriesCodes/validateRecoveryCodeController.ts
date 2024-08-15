@@ -1,4 +1,5 @@
 import { IValidateRecoveryCodeDTO } from "@/infra/dtos/RecoveryCodeDTO";
+import { ValidateRecoveryCodeUseCase } from "@/infra/useCases/recoveriesCodes/validateRecoveryCodeUseCase";
 import {
   BadRequestException,
   Body,
@@ -8,7 +9,6 @@ import {
   Post,
 } from "@nestjs/common";
 import { z } from "zod";
-import { ValidateRecoveryCodeUseCase } from "./../../useCases/recoveriesCodes/validateRecoveryCodeUseCase";
 
 const validateRecoveriesCodeValidationSchema = z.object({
   user_id: z.string(),

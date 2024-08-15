@@ -7,7 +7,9 @@ import {
   Controller,
   HttpCode,
   Put,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const updateAvatarValidationSchema = z.object({
@@ -16,6 +18,7 @@ const updateAvatarValidationSchema = z.object({
 });
 
 @Controller("/avatars/update")
+@UseGuards(AuthGuard("jwt-user"))
 export class UpdateAvatarController {
   constructor(private updateAvatarUseCase: UpdateAvatarUseCase) {}
   @Put()

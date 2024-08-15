@@ -1,7 +1,15 @@
 import { ListTrainingMetricsUseCase } from "@/infra/useCases/trainingMetrics/listTrainingMetricsUseCase";
-import { ConflictException, Controller, Get, HttpCode } from "@nestjs/common";
+import {
+  ConflictException,
+  Controller,
+  Get,
+  HttpCode,
+  UseGuards,
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/training-metrics/list")
+@UseGuards(AuthGuard("jwt-admin"))
 export class ListTrainingMetricsController {
   constructor(private listTrainingMetricsUseCase: ListTrainingMetricsUseCase) {}
   @Get()

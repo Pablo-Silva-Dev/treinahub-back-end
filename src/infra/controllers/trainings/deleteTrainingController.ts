@@ -5,9 +5,12 @@ import {
   Delete,
   HttpCode,
   Param,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("trainings/delete")
+@UseGuards(AuthGuard("jwt-admin"))
 export class DeleteTrainingController {
   constructor(private deleteTrainingUseCase: DeleteTrainingUseCase) {}
   @Delete(":trainingId")

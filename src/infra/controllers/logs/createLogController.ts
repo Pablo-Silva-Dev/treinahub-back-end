@@ -7,7 +7,9 @@ import {
   Controller,
   HttpCode,
   Post,
+  UseGuards,
 } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
 const createLogValidationSchema = z.object({
@@ -15,6 +17,7 @@ const createLogValidationSchema = z.object({
 });
 
 @Controller("/logs/create")
+@UseGuards(AuthGuard("jwt-user"))
 export class CreateLogController {
   constructor(private createLogUseCase: CreateLogUseCase) {}
   @Post()
