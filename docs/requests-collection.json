@@ -1806,7 +1806,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n  \"user_id\": \"178720ee-0b19-49b3-a8cf-ec537aeb77eb\",\n\t\"training_id\": \"e85a50e2-07f2-479d-8a0c-b79f2ff7d6cd\",\n\t\"url\": \"https://www.inovex.de/wp-content/uploads/201328/03/react-native.png\"\n}"
+                "text": "{\n  \"user_id\": \"178720ee-0b19-49b3-a8cf-ec537aeb77eb\",\n\t\"training_id\": \"e85a50e2-07f2-479d-8a0c-b79f2ff7d6cd\"\n}"
             },
             "parameters": [],
             "headers": [

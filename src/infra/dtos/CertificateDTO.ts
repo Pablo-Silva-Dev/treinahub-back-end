@@ -17,3 +17,8 @@ export interface ICreateCertificateDTO {
   url: string;
 }
 
+export interface IGenerateCertificateDTO {
+  user: IUserDTO,
+  training: ITrainingDTO
+}
+

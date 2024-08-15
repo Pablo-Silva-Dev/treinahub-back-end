@@ -10,6 +10,11 @@ export const envSchema = z.object({
   TWILIO_PHONE_NUMBER: z.string(),
   JWT_PRIVATE_KEY: z.string(),
   JWT_PUBLIC_KEY: z.string(),
+  AZURE_BLOB_STORAGE_CONNECTION_STRING: z.string(),
+  AZURE_BLOB_STORAGE_VIDEO_CLASSES_CONTAINER_NAME: z.string(),
+  AZURE_BLOB_STORAGE_COURSES_COVERS_CONTAINER_NAME: z.string(),
+  AZURE_BLOB_STORAGE_MODULES_COVERS_CONTAINER_NAME: z.string(),
+  AZURE_BLOB_STORAGE_CERTIFICATES_CONTAINER_NAME: z.string(),
 });
 
 export type TEnvSchema = z.infer<typeof envSchema>;
