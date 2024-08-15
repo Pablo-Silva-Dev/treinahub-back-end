@@ -1,0 +1,51 @@
+# Role Permissions control
+
+| Route                                          | Access Level |
+|------------------------------------------------|--------------|
+| /recovery-code/validate                        | -            |
+| /users/auth                                    | -            |
+| /users/list                                    | admin        |
+| /users/get-by-id/`user-id`                     | user         |
+| /users/delete/`user-id`                        | user         |
+| /user/update                                   | user         |
+| /users/get-by-email/`user-email`               | user         |
+| /users/get-by-cpf/`user-cpf`                   | user         |
+| /users/create                                  | -            |
+| /users/get-recovery-password-code-by-email     | -            |
+| /users/get-recovery-password-code-by-phone     | -            |
+| /trainings/list                                | user         |
+| /trainings/get-by-id/`training-id`             | user         |
+| /trainings/delete/`training-id`                | admin        |
+| /trainings/update                              | admin        |
+| /trainings/create                              | admin        |
+| /training-metrics/list                         | admin        |
+| /training-metrics/list-by-user/`user-id`       | user         |
+| /training-metrics/get-by-id/`training-metrics-id` | user      |
+| /training-metrics/update                       | user         |
+| /training-metrics/create                       | user         |
+| /faq-questions/list                            | user         |
+| /faq-questions/get-by-id/`faq-question-id`     | user         |
+| /faq-questions/delete/`faq-question-id`        | admin        |
+| /faq-questions/update                          | admin        |
+| /faq-questions/create                          | admin        |
+| /video-classes/list                            | user         |
+| /video-classes/list-by-training/`training-id`  | user         |
+| /video-classes/get-by-id/`video-class-id`      | user         |
+| /video-classes/delete/`video-class-id`         | admin        |
+| /video-classes/update                          | admin        |
+| /video-classes/create                          | admin        |
+| /watched-classes/list                          | admin         |
+| /watched-classes/list-by-user-and-training     | user         |
+| /watched-classes/create                        | user         |
+| /logs/list                                     | admin        |
+| /logs/create                                   | user         |
+| /avatars/get-by-user-id/`user-id`              | user         |
+| /avatars/update                                | user         |
+| /avatars/create                                | user         |
+| /contacts-support/list                         | user         |
+| /contacts-support/update                       | admin        |
+| /contacts-support/create                       | admin        |
+| /certificates/get-by-id/`certificate-id`       | user         |
+| /certificates/list                             | admin        |
+| /certificates/list-by-user/`user-id`           | user         |
+| /certificates/create                           | user         |
