@@ -6,7 +6,7 @@ import { CertificatesImplementation } from "@/infra/repositories/implementations
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
-import { ManageCertificateFileService } from "@/infra/services/manageCertificateFileService";
+import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateCertificateUseCase } from "@/infra/useCases/certificates/createCertificateUseCase";
 import { GetCertificateByIdUseCase } from "@/infra/useCases/certificates/getCertificateByIdUseCase";
@@ -22,7 +22,7 @@ import { Module } from "@nestjs/common";
     CertificatesImplementation,
     UsersImplementation,
     TrainingsImplementation,
-    ManageCertificateFileService,
+    ManageFileService,
     AzureBlobStorageService,
     CreateCertificateUseCase,
     ListCertificatesUseCase,

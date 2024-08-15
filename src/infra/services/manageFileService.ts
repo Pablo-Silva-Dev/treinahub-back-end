@@ -7,25 +7,23 @@ import * as path from "path";
 import { formatDateNow } from "@/utils/formatDate";
 import { formatUserCertificateName } from "@/utils/formatUserCertificateName";
 import { TEnvSchema } from "env";
-import { formatSlug } from "../../utils/formatSlug";
 import { IGenerateCertificateDTO } from "../dtos/CertificateDTO";
 import { AzureBlobStorageService } from "./azureBlobStorageService";
 
 @Injectable()
-export class ManageCertificateFileService {
-  private certificatePath: string;
+export class ManageFileService {
   constructor(
     private azureBlobStorageProvider: AzureBlobStorageService,
     private config: ConfigService<TEnvSchema, true>
-  ) {
+  ) {}
+  async generateCertificate(data: IGenerateCertificateDTO): Promise<string> {
     const certificateName = "certificado" + new Date().getTime();
 
-    this.certificatePath = path.join(
+    const certificatePath = path.join(
       __dirname,
       `../../../temp/${certificateName}.png`
     );
-  }
-  async generateCertificate(data: IGenerateCertificateDTO): Promise<string> {
+
     const { user, training } = data;
 
     return new Promise(async (resolve, reject) => {
@@ -120,25 +118,21 @@ export class ManageCertificateFileService {
       ctx.fillRect(0, canvas.height - 24, canvas.width, 24);
 
       // Save as PNG
-      const fileStream = fs.createWriteStream(this.certificatePath);
+      const fileStream = fs.createWriteStream(certificatePath);
       const stream = canvas.createPNGStream();
       stream.pipe(fileStream);
       fileStream.on("finish", () => {
         console.log(
           "The certificate has been created successfully at:",
-          this.certificatePath
+          certificatePath
         );
-        resolve(this.certificatePath);
+        resolve(certificatePath);
       });
       fileStream.on("error", reject);
     });
   }
 
-  async uploadGeneratedCertificate(
-    certificatePath: string,
-    trainingName: string,
-    userName: string
-  ) {
+  async uploadFile(filePath: string, fileName: string) {
     const blobStorageContainerName = this.config.get(
       "AZURE_BLOB_STORAGE_CERTIFICATES_CONTAINER_NAME",
       { infer: true }
@@ -146,12 +140,10 @@ export class ManageCertificateFileService {
     const blobClient = this.azureBlobStorageProvider
       .getBlobServiceClient()
       .getContainerClient(blobStorageContainerName)
-      .getBlockBlobClient(
-        `${formatSlug(trainingName + "-" + userName)}-certificado.png`
-      );
-    const certificate = fs.readFileSync(certificatePath);
+      .getBlockBlobClient(fileName);
+    const certificate = fs.readFileSync(filePath);
     await blobClient.uploadData(certificate);
-    fs.unlink(this.certificatePath, () =>
+    fs.unlink(filePath, () =>
       console.log("Temporary certificate file removed")
     );
     return blobClient.url;

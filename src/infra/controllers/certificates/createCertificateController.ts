@@ -1,5 +1,6 @@
 import { ICreateCertificateDTO } from "@/infra/dtos/CertificateDTO";
 import { CreateCertificateUseCase } from "@/infra/useCases/certificates/createCertificateUseCase";
+import { formatSlug } from "@/utils/formatSlug";
 import {
   BadRequestException,
   Body,
@@ -11,7 +12,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
-import { ManageCertificateFileService } from "../../services/manageCertificateFileService";
+import { ManageFileService } from "../../services/manageFileService";
 import { GetTrainingByIdUseCase } from "./../../useCases/trainings/getTrainingByIdUseCase";
 import { GetUserByIdUseCase } from "./../../useCases/users/getUserByIdUseCase";
 
@@ -27,7 +28,7 @@ export class CreateCertificateController {
     private createCertificateUseCase: CreateCertificateUseCase,
     private getUserByIdUseCase: GetUserByIdUseCase,
     private getTrainingByIdUseCase: GetTrainingByIdUseCase,
-    private manageCertificateFileService: ManageCertificateFileService
+    private manageCertificateFileService: ManageFileService
   ) {}
   @Post()
   @HttpCode(201)
@@ -54,11 +55,11 @@ export class CreateCertificateController {
       const userName = user.name;
       const trainingName = training.name;
 
+      const certificateName = `${formatSlug(trainingName + "-" + userName)}-certificado.png`;
       const uploadedCertificate =
-        await this.manageCertificateFileService.uploadGeneratedCertificate(
+        await this.manageCertificateFileService.uploadFile(
           cert,
-          trainingName,
-          userName
+          certificateName
         );
 
       const newCertificate = await this.createCertificateUseCase.execute({
