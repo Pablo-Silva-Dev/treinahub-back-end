@@ -1,5 +1,6 @@
 import {
   ICreateWatchedClassesDTO,
+  IRemoveWatchedClassDTO,
   IWatchedClassesDTO,
 } from "@/infra/dtos/WatchedClassDTO";
 import { PrismaService } from "@/infra/services/prisma";
@@ -9,7 +10,6 @@ import { IWatchedClassesRepository } from "../interfaces/watchedClassesRepositor
 @Injectable()
 export class WatchedClassesImplementation implements IWatchedClassesRepository {
   constructor(private prisma: PrismaService) {}
-
   async createWatchedClass(
     data: ICreateWatchedClassesDTO
   ): Promise<IWatchedClassesDTO> {
@@ -100,5 +100,30 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
       return;
     }
     return watchedClass;
+  }
+  async removeWatchedClass(data: IRemoveWatchedClassDTO): Promise<void> {
+    const { user_id, videoclass_id } = data;
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: user_id,
+      },
+    });
+
+    const watchedClass = await this.prisma.watchedClasses.findFirst({
+      where: {
+        videoclass_id,
+      },
+    });
+
+    if (!user || !watchedClass) {
+      return null;
+    }
+
+    await this.prisma.watchedClasses.delete({
+      where: {
+        id: watchedClass.id,
+      },
+    });
   }
 }

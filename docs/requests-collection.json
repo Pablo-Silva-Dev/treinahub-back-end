@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2024-08-15T10:30:10.966Z",
+    "__export_date": "2024-08-15T14:44:01.669Z",
     "__export_source": "insomnia.desktop.app:v9.3.3",
     "resources": [
         {
@@ -1202,7 +1202,7 @@
         {
             "_id": "req_91ddb0016822427d866d7541dfbc05d4",
             "parentId": "fld_5a22a2ad906944f5b1ef9bcc29856112",
-            "modified": 1723717549370,
+            "modified": 1723732517927,
             "created": 1723220798511,
             "url": "{{ _.baseUrl }}/watched-classes/list",
             "name": "list watched-classes",
@@ -1218,7 +1218,7 @@
             ],
             "authentication": {
                 "type": "bearer",
-                "token": "{{ _.userToken }}"
+                "token": "{{ _.adminToken }}"
             },
             "metaSortKey": -1723030160572,
             "isPrivate": false,
@@ -1285,10 +1285,10 @@
         {
             "_id": "req_b0dc03777efb4c549e26e67c4480ebb4",
             "parentId": "fld_5a22a2ad906944f5b1ef9bcc29856112",
-            "modified": 1723717568690,
+            "modified": 1723732751438,
             "created": 1723220798512,
-            "url": "{{ _.baseUrl }}/watched-classes/create",
-            "name": "create watched-class",
+            "url": "{{ _.baseUrl }}/watched-classes/add",
+            "name": "add watched-class",
             "description": "",
             "method": "POST",
             "body": {
@@ -1311,6 +1311,45 @@
                 "token": "{{ _.userToken }}"
             },
             "metaSortKey": -1720090335561,
+            "isPrivate": false,
+            "pathParameters": [],
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_883b14b96ca2437e900050951e00907b",
+            "parentId": "fld_5a22a2ad906944f5b1ef9bcc29856112",
+            "modified": 1723732835473,
+            "created": 1723732547789,
+            "url": "{{ _.baseUrl }}/watched-classes/remove",
+            "name": "remove watched-class",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n  \"videoclass_id\": \"5ea3c2f7-5f74-49e0-bc4b-2419a2612b63\",\n  \"user_id\": \"178720ee-0b19-49b3-a8cf-ec537aeb77eb\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "name": "User-Agent",
+                    "value": "insomnia/9.3.2"
+                }
+            ],
+            "authentication": {
+                "type": "bearer",
+                "token": "{{ _.userToken }}"
+            },
+            "metaSortKey": -1719355379308.25,
             "isPrivate": false,
             "pathParameters": [],
             "settingStoreCookies": true,

@@ -1,5 +1,5 @@
-import { ICreateWatchedClassesDTO } from "@/infra/dtos/WatchedClassDTO";
-import { CreateWatchedClassUseCase } from "@/infra/useCases/watchedClasses/createWatchedClassUseCase";
+import { IRemoveWatchedClassDTO } from "@/infra/dtos/WatchedClassDTO";
+import { RemoveWatchedClassUseCase } from "@/infra/useCases/watchedClasses/removeWatchedClassUseCase";
 import {
   Body,
   ConflictException,
@@ -11,20 +11,19 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 
-const createWatchedClassValidationSchema = z.object({
+const removeWatchedClassSchema = z.object({
   user_id: z.string(),
   videoclass_id: z.string(),
-  training_id: z.string(),
 });
 
-@Controller("/watched-classes/add")
+@Controller("/watched-classes/remove")
 @UseGuards(AuthGuard("jwt-user"))
-export class CreateWatchedClassController {
-  constructor(private createWatchedClassUseCase: CreateWatchedClassUseCase) {}
+export class RemoveWatchedClassController {
+  constructor(private removeWatchedClassUseCase: RemoveWatchedClassUseCase) {}
   @Post()
-  @HttpCode(201)
-  async handle(@Body() body: ICreateWatchedClassesDTO) {
-    const isBodyValidated = createWatchedClassValidationSchema.safeParse(body);
+  @HttpCode(200)
+  async handle(@Body() body: IRemoveWatchedClassDTO) {
+    const isBodyValidated = removeWatchedClassSchema.safeParse(body);
     if (!isBodyValidated.success) {
       throw new ConflictException({
         message: "An error occurred",
@@ -32,9 +31,7 @@ export class CreateWatchedClassController {
       });
     }
     try {
-      const createdWatchedClass =
-        await this.createWatchedClassUseCase.execute(body);
-      return createdWatchedClass;
+      await this.removeWatchedClassUseCase.execute(body);
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({

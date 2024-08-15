@@ -34,9 +34,10 @@
 | /video-classes/delete/`video-class-id`         | admin        |
 | /video-classes/update                          | admin        |
 | /video-classes/create                          | admin        |
-| /watched-classes/list                          | admin         |
+| /watched-classes/list                          | admin        |
 | /watched-classes/list-by-user-and-training     | user         |
-| /watched-classes/create                        | user         |
+| /watched-classes/add                           | user         |
+| /watched-classes/remove                           | user         |
 | /logs/list                                     | admin        |
 | /logs/create                                   | user         |
 | /avatars/get-by-user-id/`user-id`              | user         |

@@ -1,6 +1,7 @@
 import {
-    ICreateWatchedClassesDTO,
-    IWatchedClassesDTO,
+  ICreateWatchedClassesDTO,
+  IRemoveWatchedClassDTO,
+  IWatchedClassesDTO,
 } from "@/infra/dtos/WatchedClassDTO";
 
 export interface IWatchedClassesRepository {
@@ -16,4 +17,5 @@ export interface IWatchedClassesRepository {
     userId: string,
     videoClassId: string
   ): Promise<IWatchedClassesDTO | void>;
+  removeWatchedClass(data: IRemoveWatchedClassDTO): Promise<void>;
 }
