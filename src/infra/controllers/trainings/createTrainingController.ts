@@ -51,7 +51,7 @@ export class CreateTrainingController {
       const fileName = req.body.name + "-cover." + fileExtension;
 
       const blobStorageContainerName = this.configService.get(
-        "AZURE_BLOB_STORAGE_COURSES_COVERS_CONTAINER_NAME"
+        "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
       );
 
       const uploadedFile = await this.manageFileService.uploadFile(
