@@ -50,7 +50,7 @@ model Training {
 
 model VideoClass {
   id              String           @id @default(uuid())
-  name            String           @unique
+  name            String           
   description     String
   duration        Int
   url             String

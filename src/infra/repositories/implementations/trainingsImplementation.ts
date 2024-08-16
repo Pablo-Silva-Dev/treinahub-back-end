@@ -18,13 +18,25 @@ export class TrainingsImplementation implements ITrainingsRepository {
     return newTraining;
   }
 
-  async listTrainings(): Promise<ITrainingDTO[] | []> {
+  async listTrainings(): Promise<ITrainingDTO[]> {
     const trainings = await this.prisma.training.findMany({
       include: {
         video_classes: true,
       },
     });
-    return trainings;
+
+    const totalTrainingDuration = trainings.map((training) => {
+      const totalDuration = training.video_classes.reduce(
+        (acc, videoClass) => acc + videoClass.duration,
+        0
+      );
+      return {
+        ...training,
+        duration: totalDuration,
+      };
+    });
+
+    return totalTrainingDuration;
   }
 
   async getTrainingById(id: string): Promise<ITrainingDTO | void> {
@@ -34,9 +46,19 @@ export class TrainingsImplementation implements ITrainingsRepository {
         video_classes: true,
       },
     });
-    if (training) {
-      return training;
+    if (!training) {
+      return null;
     }
+
+    const totalTrainingDuration = training.video_classes.reduce(
+      (acc, videoClass) => acc + videoClass.duration,
+      0
+    );
+
+    return {
+      ...training,
+      duration: totalTrainingDuration,
+    };
   }
 
   async getTrainingByName(name: string): Promise<ITrainingDTO | void> {
@@ -46,9 +68,19 @@ export class TrainingsImplementation implements ITrainingsRepository {
         video_classes: true,
       },
     });
-    if (training) {
-      return training;
+    if (!training) {
+      return null;
     }
+
+    const totalTrainingDuration = training.video_classes.reduce(
+      (acc, videoClass) => acc + videoClass.duration,
+      0
+    );
+
+    return {
+      ...training,
+      duration: totalTrainingDuration,
+    };
   }
 
   async updateTraining(data: IUpdateTrainingDTO): Promise<ITrainingDTO | void> {
