@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2024-08-15T14:44:01.669Z",
+    "__export_date": "2024-08-16T18:55:58.719Z",
     "__export_source": "insomnia.desktop.app:v9.3.3",
     "resources": [
         {
@@ -470,9 +470,9 @@
         {
             "_id": "req_49092dd3906f493494e7dd58bd74439c",
             "parentId": "fld_666896c362c94086ba458bbc21fb35b7",
-            "modified": 1723717324324,
+            "modified": 1723827583569,
             "created": 1723048348390,
-            "url": "{{ _.baseUrl }}/trainings/get-by-id/c687171e-41fe-4228-81e5-58148c4c2db6",
+            "url": "{{ _.baseUrl }}/trainings/get-by-id/a762245b-fccb-4b22-a465-addf1ad4141a",
             "name": "get training by id",
             "description": "",
             "method": "GET",
@@ -573,21 +573,52 @@
         {
             "_id": "req_a4bc7522cfd541bd8402ca9ab0cc18c6",
             "parentId": "fld_666896c362c94086ba458bbc21fb35b7",
-            "modified": 1723717353577,
+            "modified": 1723807605268,
             "created": 1723048348389,
             "url": "{{ _.baseUrl }}/trainings/create",
             "name": "create training",
             "description": "",
             "method": "POST",
             "body": {
-                "mimeType": "application/json",
-                "text": "{\n  \"name\": \"Treinamento de Software de Gestão Publica\",\n  \"description\": \"Aprenda a manusear o software de treinamento de Gestão Publica\",\n  \"duration\": 0\n}"
+                "mimeType": "multipart/form-data",
+                "params": [
+                    {
+                        "id": "pair_cd024c25be4744999ea3b1c6000bb151",
+                        "name": "name",
+                        "value": "Treinamento de Software de Gestão de Tráfego6",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_0653dbba34e54c39b5dc57c6588aefa6",
+                        "name": "description",
+                        "value": "Aprenda a manusear o software de treinamento de Gestão de tráfego",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_aba9f97cf31b4b7b80c54e733dfdf467",
+                        "name": "duration",
+                        "value": "0",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_63294649f188455caeb25e636cba0006",
+                        "name": "file",
+                        "value": "",
+                        "description": "",
+                        "disabled": false,
+                        "type": "file",
+                        "fileName": "/Users/pablosilva/Downloads/team roping.jpg"
+                    }
+                ]
             },
             "parameters": [],
             "headers": [
                 {
                     "name": "Content-Type",
-                    "value": "application/json"
+                    "value": "multipart/form-data"
                 },
                 {
                     "name": "User-Agent",
@@ -1028,9 +1059,9 @@
         {
             "_id": "req_28b51238c35a48ffaf0a88cb7dba2a31",
             "parentId": "fld_97c1abf93d72422baf461d67d7a97b6c",
-            "modified": 1723717496439,
+            "modified": 1723833701462,
             "created": 1723126328000,
-            "url": "{{ _.baseUrl }}/video-classes/list-by-training/e85a50e2-07f2-479d-8a0c-b79f2ff7d6cd",
+            "url": "{{ _.baseUrl }}/video-classes/list-by-training/690ab90b-48e7-4952-b2e9-b44b4b12bfed",
             "name": "list video-classes by training",
             "description": "",
             "method": "GET",
@@ -1060,9 +1091,9 @@
         {
             "_id": "req_3fb32f2812a24c26b075dae75d631289",
             "parentId": "fld_97c1abf93d72422baf461d67d7a97b6c",
-            "modified": 1723717504145,
+            "modified": 1723833864111,
             "created": 1723126276966,
-            "url": "{{ _.baseUrl }}/video-classes/get-by-id/7564c018-2c77-4cbc-9ea7-75e4330dded2",
+            "url": "{{ _.baseUrl }}/video-classes/get-by-id/5f5041cc-ad1a-4a1e-b455-67d2596b049a",
             "name": "get video-class by id",
             "description": "",
             "method": "GET",
@@ -1163,21 +1194,61 @@
         {
             "_id": "req_4b0f914269cd4a8f9125e4a25f01d0c0",
             "parentId": "fld_97c1abf93d72422baf461d67d7a97b6c",
-            "modified": 1723717528640,
+            "modified": 1723828203486,
             "created": 1723126276966,
             "url": "{{ _.baseUrl }}/video-classes/create",
             "name": "create video-class",
             "description": "",
             "method": "POST",
             "body": {
-                "mimeType": "application/json",
-                "text": "{\n  \"name\": \"Registrando novos usuários88\",\n  \"description\": \"Aprenda como registrar novos usuários no sistema\",\n  \"duration\": 120, \n  \"url\": \"https://www.inovex.de/wp-content/uploads/20188/03/react-native.png\",\n  \"thumbnail_url\": \"https://www.inovex.de/wp-content/uploads/201238/03/react-native.png\",\n  \"training_id\": \"c687171e-41fe-4228-81e5-58148c4c2db6\"\n}"
+                "mimeType": "multipart/form-data",
+                "params": [
+                    {
+                        "id": "pair_7def065dc7cc4ad1bc03cd71f874f046",
+                        "name": "name",
+                        "value": "Listando usuários101",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_f746d078ab2148bc86bf153f04d75185",
+                        "name": "description",
+                        "value": "Aprenda a listar usuários",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_c6ae0ef1eeef48a7a8a0b84793afa000",
+                        "name": "training_id",
+                        "value": "d380c672-46e8-4f93-b530-8fd499752dd7",
+                        "description": "",
+                        "disabled": false
+                    },
+                    {
+                        "id": "pair_c7cb188ca61c432ca094894c78e028b8",
+                        "name": "file",
+                        "value": "",
+                        "description": "",
+                        "disabled": false,
+                        "type": "file",
+                        "fileName": "/Users/pablosilva/Downloads/Video_24-05-03_15-26-10.mov"
+                    },
+                    {
+                        "id": "pair_43d6f4ea77b54e1eb454d123cbe5d0fe",
+                        "name": "file",
+                        "value": "",
+                        "description": "",
+                        "disabled": false,
+                        "type": "file",
+                        "fileName": "/Users/pablosilva/Downloads/team roping.jpg"
+                    }
+                ]
             },
             "parameters": [],
             "headers": [
                 {
                     "name": "Content-Type",
-                    "value": "application/json"
+                    "value": "multipart/form-data"
                 },
                 {
                     "name": "User-Agent",
@@ -1734,7 +1805,7 @@
         {
             "_id": "req_17223e01c6d14e078292d93df6c88cfa",
             "parentId": "fld_678c6c1d9a734626b6731240222fab0c",
-            "modified": 1723717662794,
+            "modified": 1723742776805,
             "created": 1723144931476,
             "url": "{{ _.baseUrl }}/certificates/list",
             "name": "list certificates",
@@ -1750,7 +1821,7 @@
             ],
             "authentication": {
                 "type": "bearer",
-                "token": "{{ _.userToken }}"
+                "token": "{{ _.adminToken }}"
             },
             "metaSortKey": -1721376509003.3125,
             "isPrivate": false,
@@ -1798,7 +1869,7 @@
         {
             "_id": "req_1f3c5fd937d54bf7a43f55b0cc52df33",
             "parentId": "fld_678c6c1d9a734626b6731240222fab0c",
-            "modified": 1723717681199,
+            "modified": 1723807621592,
             "created": 1723140479156,
             "url": "{{ _.baseUrl }}/certificates/create",
             "name": "create certificate",
@@ -1806,7 +1877,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n  \"user_id\": \"178720ee-0b19-49b3-a8cf-ec537aeb77eb\",\n\t\"training_id\": \"e85a50e2-07f2-479d-8a0c-b79f2ff7d6cd\"\n}"
+                "text": "{\n  \"user_id\": \"beda19a6-af27-48da-bcb8-8bea86c0ad65\",\n\t\"training_id\": \"d380c672-46e8-4f93-b530-8fd499752dd7\"\n}"
             },
             "parameters": [],
             "headers": [
