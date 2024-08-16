@@ -4,6 +4,8 @@ import { GetTrainingByIdController } from "@/infra/controllers/trainings/getTrai
 import { ListTrainingsController } from "@/infra/controllers/trainings/listTrainingController";
 import { UpdateTrainingController } from "@/infra/controllers/trainings/updateTrainingController";
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
+import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
+import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateTrainingUseCase } from "@/infra/useCases/trainings/createTrainingUseCase";
 import { DeleteTrainingUseCase } from "@/infra/useCases/trainings/deleteTrainingUseCase";
@@ -23,6 +25,8 @@ import { Module } from "@nestjs/common";
   providers: [
     PrismaService,
     TrainingsImplementation,
+    ManageFileService,
+    AzureBlobStorageService,
     CreateTrainingUseCase,
     ListTrainingsUseCase,
     GetTrainingByIdUseCase,

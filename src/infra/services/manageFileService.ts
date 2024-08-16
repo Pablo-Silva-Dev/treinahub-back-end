@@ -132,20 +132,21 @@ export class ManageFileService {
     });
   }
 
-  async uploadFile(filePath: string, fileName: string) {
-    const blobStorageContainerName = this.config.get(
-      "AZURE_BLOB_STORAGE_CERTIFICATES_CONTAINER_NAME",
-      { infer: true }
-    );
+  async uploadFile(
+    fileContent: Buffer | string,
+    fileName: string,
+    AzureContainerName: string
+  ) {
     const blobClient = this.azureBlobStorageProvider
       .getBlobServiceClient()
-      .getContainerClient(blobStorageContainerName)
+      .getContainerClient(AzureContainerName)
       .getBlockBlobClient(fileName);
-    const certificate = fs.readFileSync(filePath);
-    await blobClient.uploadData(certificate);
-    fs.unlink(filePath, () =>
-      console.log("Temporary certificate file removed")
-    );
+    await blobClient.uploadData(fileContent as Buffer);
+    if (typeof fileContent === "string") {
+      fs.unlink(fileContent, () =>
+        console.log("Temporary certificate file removed")
+      );
+    }
     return blobClient.url;
   }
 }

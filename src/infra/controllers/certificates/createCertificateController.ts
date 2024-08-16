@@ -10,7 +10,10 @@ import {
   Post,
   UseGuards,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
+import { TEnvSchema } from "env";
+import * as fs from "fs";
 import { z } from "zod";
 import { ManageFileService } from "../../services/manageFileService";
 import { GetTrainingByIdUseCase } from "./../../useCases/trainings/getTrainingByIdUseCase";
@@ -28,7 +31,8 @@ export class CreateCertificateController {
     private createCertificateUseCase: CreateCertificateUseCase,
     private getUserByIdUseCase: GetUserByIdUseCase,
     private getTrainingByIdUseCase: GetTrainingByIdUseCase,
-    private manageCertificateFileService: ManageFileService
+    private manageCertificateFileService: ManageFileService,
+    private configService: ConfigService<TEnvSchema, true>
   ) {}
   @Post()
   @HttpCode(201)
@@ -44,23 +48,41 @@ export class CreateCertificateController {
     try {
       const { user_id, training_id } = body;
 
+      const blobStorageContainerName = this.configService.get(
+        "AZURE_BLOB_STORAGE_CERTIFICATES_CONTAINER_NAME",
+        { infer: true }
+      );
+
       const user = await this.getUserByIdUseCase.execute(user_id);
       const training = await this.getTrainingByIdUseCase.execute(training_id);
 
-      const cert = await this.manageCertificateFileService.generateCertificate({
-        user,
-        training,
-      });
+      const certificate =
+        await this.manageCertificateFileService.generateCertificate({
+          user,
+          training,
+        });
+
+      const certificateFile = fs.readFileSync(certificate);
 
       const userName = user.name;
       const trainingName = training.name;
 
       const certificateName = `${formatSlug(trainingName + "-" + userName)}-certificado.png`;
+
       const uploadedCertificate =
         await this.manageCertificateFileService.uploadFile(
-          cert,
-          certificateName
+          certificateFile,
+          certificateName,
+          blobStorageContainerName
         );
+
+      fs.unlink(certificate, (err) => {
+        if (err) {
+          console.log("Error at trying to remove certificate file: ", err);
+        } else {
+          console.log("Local file removed successfully");
+        }
+      });
 
       const newCertificate = await this.createCertificateUseCase.execute({
         ...body,
