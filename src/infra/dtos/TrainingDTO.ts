@@ -13,6 +13,7 @@ export interface ITrainingDTO {
   video_classes?: IVideoClassDTO[];
   certificates?: ICertificateDTO[];
   training_metrics?: ITrainingMetricsDTO[];
+  formatted_duration?: string;
 }
 
 export interface ICreateTrainingDTO {

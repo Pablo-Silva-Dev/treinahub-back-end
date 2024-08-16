@@ -4,6 +4,7 @@ import {
   IUpdateTrainingDTO,
 } from "@/infra/dtos/TrainingDTO";
 import { PrismaService } from "@/infra/services/prisma";
+import { secondsToFullTimeString } from "@/utils/convertTime";
 import { Injectable } from "@nestjs/common";
 import { ITrainingsRepository } from "../interfaces/trainingsRepository";
 
@@ -30,9 +31,13 @@ export class TrainingsImplementation implements ITrainingsRepository {
         (acc, videoClass) => acc + videoClass.duration,
         0
       );
+
+      const formatted_duration = secondsToFullTimeString(totalDuration);
+
       return {
         ...training,
         duration: totalDuration,
+        formatted_duration,
       };
     });
 
@@ -55,9 +60,12 @@ export class TrainingsImplementation implements ITrainingsRepository {
       0
     );
 
+    const formatted_duration = secondsToFullTimeString(totalTrainingDuration);
+
     return {
       ...training,
       duration: totalTrainingDuration,
+      formatted_duration,
     };
   }
 
@@ -77,9 +85,12 @@ export class TrainingsImplementation implements ITrainingsRepository {
       0
     );
 
+    const formatted_duration = secondsToFullTimeString(totalTrainingDuration);
+
     return {
       ...training,
       duration: totalTrainingDuration,
+      formatted_duration,
     };
   }
 

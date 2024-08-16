@@ -4,6 +4,7 @@ import {
   IVideoClassDTO,
 } from "@/infra/dtos/VideoClassDTO";
 import { PrismaService } from "@/infra/services/prisma";
+import { secondsToFullTimeString } from "@/utils/convertTime";
 import { Injectable } from "@nestjs/common";
 import { IVideoClassesRepository } from "../interfaces/videoClassesRepository";
 
@@ -50,7 +51,12 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
   }
   async listVideoClasses(): Promise<IVideoClassDTO[]> {
     const videoClasses = await this.prisma.videoClass.findMany();
-    return videoClasses;
+    const videoClassWithDuration = videoClasses.map((vc) => ({
+      ...vc,
+      formatted_duration: secondsToFullTimeString(vc.duration),
+    }));
+
+    return videoClassWithDuration;
   }
   async listVideoClassesByTraining(
     trainingId: string
@@ -69,7 +75,13 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
         training_id: trainingId,
       },
     });
-    return videoClasses;
+
+    const videoClassWithDuration = videoClasses.map((vc) => ({
+      ...vc,
+      formatted_duration: secondsToFullTimeString(vc.duration),
+    }));
+
+    return videoClassWithDuration;
   }
   async getVideoClassById(
     videoClassId: string
@@ -79,7 +91,15 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
         id: videoClassId,
       },
     });
-    return videoClass;
+
+    const formatted_duration = secondsToFullTimeString(videoClass.duration);
+
+    const videoClassWithDuration = {
+      ...videoClass,
+      formatted_duration,
+    };
+
+    return videoClassWithDuration;
   }
 
   async getVideoClassByNameAndTrainingId(
@@ -93,10 +113,18 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
       },
     });
     if (!videoClass) {
-      return;
+      return null;
     }
-    return videoClass;
+    const formatted_duration = secondsToFullTimeString(videoClass.duration);
+
+    const videoClassWithDuration = {
+      ...videoClass,
+      formatted_duration,
+    };
+
+    return videoClassWithDuration;
   }
+
   async getVideoClassByUrlAndTrainingId(
     url: string,
     trainingId: string

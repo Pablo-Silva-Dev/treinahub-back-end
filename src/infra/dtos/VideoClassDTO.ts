@@ -9,6 +9,7 @@ export interface IVideoClassDTO {
   thumbnail_url?: string;
   training_id: string;
   training?: ITrainingDTO;
+  formatted_duration?: string;
 }
 
 export interface ICreateVideoClassDTO {
