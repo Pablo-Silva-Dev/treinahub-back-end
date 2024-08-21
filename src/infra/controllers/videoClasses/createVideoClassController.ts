@@ -1,5 +1,7 @@
+import { BitmovinVideoEncodingService } from "@/infra/services/bitmovinVideoEncodingService";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
+import { formatSlugFileName } from "@/utils/formatSlug";
 import { getVideoDuration } from "@/utils/getVideoDuration";
 import {
   ConflictException,
@@ -36,7 +38,8 @@ export class CreateVideoClassController {
   constructor(
     private createVideoClassUseCase: CreateVideoClassUseCase,
     private manageFileService: ManageFileService,
-    private configService: ConfigService<TEnvSchema, true>
+    private configService: ConfigService<TEnvSchema, true>,
+    private bitmovinVideoEncodingService: BitmovinVideoEncodingService
   ) {}
   @Post()
   @HttpCode(201)
@@ -98,12 +101,35 @@ export class CreateVideoClassController {
         url: uploadedVideo,
         thumbnail_url: uploadedThumbnail,
       });
-      return createdVideoClass;
+
+      const videInputName = formatSlugFileName(
+        createdVideoClass.url.split("/")[4]
+      );
+      const videoInputPath = req.body.name + "-video." + videoFileExtension;
+
+      if (createdVideoClass) {
+        const dashEncoding =
+          await this.bitmovinVideoEncodingService.encodeDASHVideo(
+            videInputName,
+            videoInputPath
+          );
+
+        const hlsEncoding =
+          await this.bitmovinVideoEncodingService.encodeHLSVideo(
+            videInputName,
+            videoInputPath
+          );
+        return {
+          video_class: createdVideoClass,
+          hls_encoding: hlsEncoding,
+          dash_encoding: dashEncoding,
+        };
+      }
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
         message:
-          "An error occurred. Check all request body fields for possible mismatching.",
+          "An error occurred. Check all request body fields for possible mismatching. Check if the video you are trying to upload is working correctly, and if it has audio.",
         error: error.message,
       });
     }

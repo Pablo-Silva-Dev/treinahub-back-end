@@ -7,6 +7,7 @@ import { UpdateVideoClassController } from "@/infra/controllers/videoClasses/upd
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
 import { VideoClassesImplementation } from "@/infra/repositories/implementations/videoClassesImplementation";
 import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
+import { BitmovinVideoEncodingService } from "@/infra/services/bitmovinVideoEncodingService";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
@@ -24,6 +25,7 @@ import { Module } from "@nestjs/common";
     TrainingsImplementation,
     ManageFileService,
     AzureBlobStorageService,
+    BitmovinVideoEncodingService,
     CreateVideoClassUseCase,
     ListVideoClassesByTrainingUseCase,
     ListVideoClassesUseCase,
