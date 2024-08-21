@@ -26,6 +26,7 @@ import BitmovinApi, {
 } from "@bitmovin/api-sdk";
 import { ConflictException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import axios from "axios";
 import { TEnvSchema } from "env";
 
 @Injectable()
@@ -37,8 +38,6 @@ export class BitmovinVideoEncodingService {
       apiKey: this.configService.get("BITMOVIN_API_KEY"),
       logger: Logger,
     });
-
-    const baseOutputPath = `${videoName}/dash`;
 
     let inputVideo: AzureInput,
       outputVideo: AzureOutput,
@@ -196,15 +195,6 @@ export class BitmovinVideoEncodingService {
 
     const MUXING_SEGMENTS_LENGTH = 4;
 
-    //packs the video into a manifest
-    const manifestOutput = new EncodingOutput({
-      outputId: outputVideo.id,
-      outputPath: `${baseOutputPath}/manifest/`,
-      acl: [
-        new AclEntry({ permission: AclPermission.PUBLIC_READ, scope: "*" }),
-      ],
-    });
-
     return {
       bitmovinApi,
       outputVideo,
@@ -212,7 +202,6 @@ export class BitmovinVideoEncodingService {
       videoStream,
       audioStream,
       MUXING_SEGMENTS_LENGTH,
-      manifestOutput,
     };
   }
   async encodeDASHVideo(videoName: string, videoInputPath: string) {
@@ -223,9 +212,19 @@ export class BitmovinVideoEncodingService {
       audioStream,
       videoStream,
       encoding,
-      manifestOutput,
       outputVideo,
     } = commonData;
+
+    const baseOutputPath = `${videoName}/dash`;
+
+    //packs the video into a manifest
+    const manifestOutput = new EncodingOutput({
+      outputId: outputVideo.id,
+      outputPath: `${baseOutputPath}/manifest/`,
+      acl: [
+        new AclEntry({ permission: AclPermission.PUBLIC_READ, scope: "*" }),
+      ],
+    });
 
     try {
       //FMP4 is used for DASH manifest representation, for HLS manifest, use TS
@@ -340,9 +339,19 @@ export class BitmovinVideoEncodingService {
       audioStream,
       videoStream,
       encoding,
-      manifestOutput,
       outputVideo,
     } = commonData;
+
+    const baseOutputPath = `${videoName}/hls`;
+
+    //packs the video into a manifest
+    const manifestOutput = new EncodingOutput({
+      outputId: outputVideo.id,
+      outputPath: `${baseOutputPath}/manifest/`,
+      acl: [
+        new AclEntry({ permission: AclPermission.PUBLIC_READ, scope: "*" }),
+      ],
+    });
 
     try {
       //creates a ts muxing for HLS manifest
@@ -369,7 +378,8 @@ export class BitmovinVideoEncodingService {
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
-        message: "An error occurred at trying to create a new fmp4 audio muxing.",
+        message:
+          "An error occurred at trying to create a new fmp4 audio muxing.",
         error: error.message,
       });
     }
@@ -400,7 +410,8 @@ export class BitmovinVideoEncodingService {
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
-        message: "An error occurred at trying to create a new fmp4 video muxing.",
+        message:
+          "An error occurred at trying to create a new fmp4 video muxing.",
         error: error.message,
       });
     }
@@ -446,5 +457,26 @@ export class BitmovinVideoEncodingService {
     }
 
     return hlsEncoding;
+  }
+  async getEncodingStatus(encodingId: string): Promise<string> {
+    const bitmovinApi = axios.create({
+      baseURL: "https://api.bitmovin.com/v1/",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Api-Key": this.configService.get("BITMOVIN_API_KEY"),
+      },
+    });
+
+    try {
+      const response = await bitmovinApi.get(
+        `/encoding/encodings/${encodingId}`
+      );
+
+      const { data } = response.data;
+
+      return data.result.status;
+    } catch (error) {
+      console.error("Error fetching encoding details:", error.message);
+    }
   }
 }

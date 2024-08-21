@@ -13,10 +13,6 @@ export interface IVideoClassesRepository {
     name: string,
     trainingId: string
   ): Promise<IVideoClassDTO | void>;
-  getVideoClassByUrlAndTrainingId(
-    url: string,
-    trainingId: string
-  ): Promise<IVideoClassDTO | void>;
   updateVideoClass(data: IUpdateVideoClassDTO): Promise<IVideoClassDTO>;
   deleteVideoClass(videoClassId: string): Promise<void>;
 }

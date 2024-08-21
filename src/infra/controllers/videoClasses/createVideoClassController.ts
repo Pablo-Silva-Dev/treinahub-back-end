@@ -95,36 +95,33 @@ export class CreateVideoClassController {
         videoFile.buffer
       );
 
+      const videInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
+      const videoInputPath = req.body.name + "-video." + videoFileExtension;
+
+      const dashEncoding =
+        await this.bitmovinVideoEncodingService.encodeDASHVideo(
+          videInputName,
+          videoInputPath
+        );
+
+      const hlsEncoding =
+        await this.bitmovinVideoEncodingService.encodeHLSVideo(
+          videInputName,
+          videoInputPath
+        );
+
       const createdVideoClass = await this.createVideoClassUseCase.execute({
         ...req.body,
         duration: videoClassDurationInSeconds,
-        url: uploadedVideo,
+        video_url: uploadedVideo,
         thumbnail_url: uploadedThumbnail,
+        hls_encoding_url: null,
+        dash_encoding_url: null,
+        dash_encoding_id: dashEncoding.id,
+        hls_encoding_id: hlsEncoding.id,
       });
 
-      const videInputName = formatSlugFileName(
-        createdVideoClass.url.split("/")[4]
-      );
-      const videoInputPath = req.body.name + "-video." + videoFileExtension;
-
-      if (createdVideoClass) {
-        const dashEncoding =
-          await this.bitmovinVideoEncodingService.encodeDASHVideo(
-            videInputName,
-            videoInputPath
-          );
-
-        const hlsEncoding =
-          await this.bitmovinVideoEncodingService.encodeHLSVideo(
-            videInputName,
-            videoInputPath
-          );
-        return {
-          video_class: createdVideoClass,
-          hls_encoding: hlsEncoding,
-          dash_encoding: dashEncoding,
-        };
-      }
+      return createdVideoClass;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({

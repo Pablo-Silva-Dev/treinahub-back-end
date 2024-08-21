@@ -49,15 +49,20 @@ model Training {
 }
 
 model VideoClass {
-  id              String           @id @default(uuid())
-  name            String           
-  description     String
-  duration        Int
-  url             String
-  thumbnail_url   String?
-  training_id     String
-  training        Training         @relation(fields: [training_id], references: [id], onDelete: Cascade)
-  watched_classes WatchedClasses[]
+  id                String           @id @default(uuid())
+  name              String
+  description       String
+  duration          Int
+  video_url         String?
+  thumbnail_url     String?
+  training_id       String
+  training          Training         @relation(fields: [training_id], references: [id], onDelete: Cascade)
+  watched_classes   WatchedClasses[]
+  hls_encoding_id   String
+  dash_encoding_id  String
+  hls_encoding_url  String?
+  dash_encoding_url String?
+  reference_number  Int              @default(autoincrement())
 }
 
 model Avatar {

@@ -12,19 +12,11 @@ import { IVideoClassesRepository } from "../interfaces/videoClassesRepository";
 export class VideoClassesImplementation implements IVideoClassesRepository {
   constructor(private prisma: PrismaService) {}
   async createVideoClass(data: ICreateVideoClassDTO): Promise<IVideoClassDTO> {
-    const { name, training_id, url } = data;
+    const { name, training_id } = data;
     const videoClassNameForTrainingAlreadyExists =
       await this.prisma.videoClass.findFirst({
         where: {
           name,
-          training_id,
-        },
-      });
-
-    const videoClassUrlForTrainingAlreadyExists =
-      await this.prisma.videoClass.findFirst({
-        where: {
-          url,
           training_id,
         },
       });
@@ -35,10 +27,7 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
       },
     });
 
-    if (
-      videoClassNameForTrainingAlreadyExists ||
-      videoClassUrlForTrainingAlreadyExists
-    ) {
+    if (videoClassNameForTrainingAlreadyExists) {
       return;
     }
     if (!training) {
@@ -92,6 +81,10 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
       },
     });
 
+    if (!videoClass) {
+      return null;
+    }
+
     const formatted_duration = secondsToFullTimeString(videoClass.duration);
 
     const videoClassWithDuration = {
@@ -123,22 +116,6 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
     };
 
     return videoClassWithDuration;
-  }
-
-  async getVideoClassByUrlAndTrainingId(
-    url: string,
-    trainingId: string
-  ): Promise<IVideoClassDTO | void> {
-    const videoClass = await this.prisma.videoClass.findFirst({
-      where: {
-        training_id: trainingId,
-        url,
-      },
-    });
-    if (!videoClass) {
-      return;
-    }
-    return videoClass;
   }
 
   async updateVideoClass(data: IUpdateVideoClassDTO): Promise<IVideoClassDTO> {

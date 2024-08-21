@@ -14,7 +14,7 @@ export class CreateVideoClassUseCase {
   ) {}
 
   async execute(data: ICreateVideoClassDTO): Promise<IVideoClassDTO> {
-    const { name, url, training_id } = data;
+    const { name, training_id } = data;
 
     const training =
       await this.trainingsImplementation.getTrainingById(training_id);
@@ -22,11 +22,6 @@ export class CreateVideoClassUseCase {
     const videoClassByName =
       await this.videoClassesImplementation.getVideoClassByNameAndTrainingId(
         name,
-        training_id
-      );
-    const videoClassByUrl =
-      await this.videoClassesImplementation.getVideoClassByUrlAndTrainingId(
-        url,
         training_id
       );
 
@@ -37,12 +32,6 @@ export class CreateVideoClassUseCase {
     if (videoClassByName) {
       throw new ConflictException(
         `A video class with the name "${name}" already exists in the specified training.`
-      );
-    }
-
-    if (videoClassByUrl) {
-      throw new ConflictException(
-        `A video class with the provided URL already exists in the specified training.`
       );
     }
 

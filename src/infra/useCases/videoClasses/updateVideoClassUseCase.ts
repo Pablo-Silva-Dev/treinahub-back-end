@@ -14,7 +14,7 @@ export class UpdateVideoClassUseCase {
     private trainingsImplementation: TrainingsImplementation
   ) {}
   async execute(data: IUpdateVideoClassDTO) {
-    const { name, url, training_id, id } = data;
+    const { name, training_id, id } = data;
 
     const training =
       await this.trainingsImplementation.getTrainingById(training_id);
@@ -22,11 +22,6 @@ export class UpdateVideoClassUseCase {
     const videoClassByName =
       await this.videoClassesImplementation.getVideoClassByNameAndTrainingId(
         name,
-        training_id
-      );
-    const videoClassByUrl =
-      await this.videoClassesImplementation.getVideoClassByUrlAndTrainingId(
-        url,
         training_id
       );
 
@@ -37,12 +32,6 @@ export class UpdateVideoClassUseCase {
     if (videoClassByName) {
       throw new ConflictException(
         `A video class with the name "${name}" already exists in the specified training.`
-      );
-    }
-
-    if (videoClassByUrl) {
-      throw new ConflictException(
-        `A video class with the provided URL already exists in the specified training.`
       );
     }
 
