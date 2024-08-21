@@ -11,6 +11,10 @@ async function bootstrap() {
   const port = configService.get("PORT", { infer: true });
   app.useGlobalInterceptors(new ResponseSuccessInterceptor());
   app.useGlobalFilters(new ResponseErrorInterceptor())
+  app.enableCors({
+    origin: '*',
+    methods: '*'
+  })
   await app.listen(port);
 }
 bootstrap();
