@@ -1,5 +1,6 @@
 import { DeleteUserUseCase } from "@/infra/useCases/users/deleteUserUseCase";
 import {
+  BadRequestException,
   ConflictException,
   Controller,
   Delete,
@@ -17,7 +18,7 @@ export class DeleteUserController {
   @HttpCode(200)
   async handle(@Param("userId") userId: string) {
     if (!userId) {
-      throw new ConflictException("userId is required");
+      throw new BadRequestException("userId is required");
     }
     try {
       await this.deleteUserUseCase.execute(userId);

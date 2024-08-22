@@ -24,6 +24,7 @@ import {
         SUCCESS: false,
         TIMESTAMP: new Date().toISOString(),
         PATH: request.url,
+        STATUS: status
       };
   
       response.status(status).json(errorResponse);

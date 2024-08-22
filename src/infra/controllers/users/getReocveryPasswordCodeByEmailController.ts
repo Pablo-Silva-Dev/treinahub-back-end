@@ -2,6 +2,7 @@ import { IGetRecoveryPasswordCodeByEmailDTO } from "@/infra/dtos/UserDTO";
 import { GetRecoveryPasswordCodeByEmailUseCase } from "@/infra/useCases/users/getRecoveryPasswordCodeByEmailUseCase";
 import { cpfValidationRegex } from "@/utils/regex";
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -26,7 +27,7 @@ export class GetRecoveryPasswordCodeByEmailController {
     const isBodyValidated = getRecoveryPasswordCodeBodySchema.safeParse(body);
 
     if (!isBodyValidated.success) {
-      throw new ConflictException({
+      throw new BadRequestException({
         message: "The body format is invalid. Check the fields below:",
         error: isBodyValidated.error.issues,
       });

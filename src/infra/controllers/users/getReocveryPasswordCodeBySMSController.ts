@@ -2,6 +2,7 @@ import { IGetRecoveryPasswordCodeBySMSDTO } from "@/infra/dtos/UserDTO";
 import { GetRecoveryPasswordCodeBySMSUseCase } from "@/infra/useCases/users/getRecoveryPasswordCodeBySMSUseCase";
 import { phoneValidationRegex } from "@/utils/regex";
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -25,7 +26,7 @@ export class GetRecoveryPasswordCodeBySMSController {
     const isBodyValidated = getRecoveryPasswordCodeBodySchema.safeParse(body);
 
     if (!isBodyValidated.success) {
-      throw new ConflictException({
+      throw new BadRequestException({
         message: "The body format is invalid. Check the fields below:",
         error: isBodyValidated.error.issues,
       });

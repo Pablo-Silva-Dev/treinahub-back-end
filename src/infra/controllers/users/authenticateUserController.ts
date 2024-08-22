@@ -1,6 +1,7 @@
 import { IAuthenticateUserDTO } from "@/infra/dtos/UserDTO";
 import { AuthenticateUserUseCase } from "@/infra/useCases/users/authenticateUserUseCase";
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -23,7 +24,7 @@ export class AuthenticateUserController {
     const isBodyValidated = authenticateUserBodySchema.safeParse(body);
 
     if (!isBodyValidated.success) {
-      throw new ConflictException({
+      throw new BadRequestException({
         message: "The body format is invalid. Check the fields below:",
         error: isBodyValidated.error.issues,
       });

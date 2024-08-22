@@ -2,6 +2,7 @@ import { ICreateUserDTO } from "@/infra/dtos/UserDTO";
 import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
 import { cpfValidationRegex, phoneValidationRegex } from "@/utils/regex";
 import {
+  BadRequestException,
   Body,
   ConflictException,
   Controller,
@@ -28,7 +29,7 @@ export class CreateUserController {
     const isBodyValidated = createUserBodySchema.safeParse(body);
 
     if (!isBodyValidated.success) {
-      throw new ConflictException({
+      throw new BadRequestException({
         message: "The body format is invalid. Check the fields below:",
         error: isBodyValidated.error.issues,
       });
