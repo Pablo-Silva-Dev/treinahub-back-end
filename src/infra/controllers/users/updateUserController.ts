@@ -7,10 +7,12 @@ import {
   ConflictException,
   Controller,
   HttpCode,
+  NotFoundException,
   Put,
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { GetUserByIdUseCase } from "./../../useCases/users/getUserByIdUseCase";
 
 import { z } from "zod";
 
@@ -28,7 +30,10 @@ const updateUserBodySchema = z.object({
 @Controller("/user/update")
 @UseGuards(AuthGuard("jwt-user"))
 export class UpdateUserController {
-  constructor(private updateUserUseCase: UpdateUserUseCase) {}
+  constructor(
+    private updateUserUseCase: UpdateUserUseCase,
+    private getUserByIdUseCase: GetUserByIdUseCase
+  ) {}
   @Put()
   @HttpCode(203)
   async handle(@Body() body: IUpdateUserDTO) {
@@ -40,6 +45,15 @@ export class UpdateUserController {
         error: isBodyValidated.error.issues,
       });
     }
+
+    const user = await this.getUserByIdUseCase.execute(body.id);
+
+    if (!user) {
+      throw new NotFoundException({
+        message: "User not found",
+      });
+    }
+
     try {
       const updatedUser = await this.updateUserUseCase.execute(body);
       return updatedUser;

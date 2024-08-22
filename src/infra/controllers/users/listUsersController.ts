@@ -22,7 +22,7 @@ export class ListUsersController {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
         message:
-          "An error occurred. Check all request body fields for possible mismatching.",
+          "An error occurred.",
         error: error.message,
       });
     }

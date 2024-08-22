@@ -1,9 +1,9 @@
 import { GetUserByEmailUseCase } from "@/infra/useCases/users/getUserByIEmailUseCase";
 import {
-  ConflictException,
   Controller,
   Get,
   HttpCode,
+  NotFoundException,
   Param,
   UseGuards,
 } from "@nestjs/common";
@@ -21,9 +21,9 @@ export class GetUserByEmailController {
       return user;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
-      throw new ConflictException({
+      throw new NotFoundException({
         message:
-          "An error occurred. Check all request body fields for possible mismatching.",
+          "User not found",
         error: error.message,
       });
     }
