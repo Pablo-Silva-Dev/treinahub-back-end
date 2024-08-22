@@ -230,6 +230,8 @@ export class UsersImplementation implements IUsersRepository {
 
     return {
       token,
+      email: user.email,
+      name: user.name
     };
   }
 }
