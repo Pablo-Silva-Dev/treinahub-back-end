@@ -19,7 +19,6 @@ export interface ITrainingDTO {
 export interface ICreateTrainingDTO {
   name: string;
   description: string;
-  duration: number;
   cover_url?: string;
 }
 

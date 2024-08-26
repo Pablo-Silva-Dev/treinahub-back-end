@@ -20,7 +20,6 @@ import { z } from "zod";
 const createTrainingBodySchema = z.object({
   name: z.string(),
   description: z.string(),
-  duration: z.string(),
 });
 
 @Controller("/trainings/create")
@@ -62,7 +61,6 @@ export class CreateTrainingController {
 
       const createdTraining = await this.createTrainingUseCase.execute({
         ...req.body,
-        duration: parseInt(req.body.duration),
         cover_url: uploadedFile,
       });
 
