@@ -34,8 +34,6 @@ export class GetRecoveryPasswordCodeByEmailUseCase {
       recoveryCode: code,
     });
 
-    const sendCodeMessage = `O código de recuperação de senha foi enviado para ${email}`;
-
-    return sendCodeMessage;
+    return code;
   }
 }

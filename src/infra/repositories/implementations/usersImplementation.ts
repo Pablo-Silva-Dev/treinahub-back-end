@@ -43,12 +43,15 @@ export class UsersImplementation implements IUsersRepository {
       },
     });
 
-    if (!emailAlreadyExists && !phoneAlreadyExists && !cpfAlreadyExists) {
-      const newUser = await this.prisma.user.create({
-        data,
-      });
-      return newUser;
+    if (emailAlreadyExists && phoneAlreadyExists && cpfAlreadyExists) {
+      return null;
     }
+
+    const newUser = await this.prisma.user.create({
+      data,
+    });
+
+    return newUser;
   }
   async listUsers(): Promise<IUserDTO[] | []> {
     const users = await this.prisma.user.findMany({
@@ -82,7 +85,7 @@ export class UsersImplementation implements IUsersRepository {
     }
   }
 
-  async getUserBySMS(phone: string): Promise<IUserDTO | void> {
+  async getUserByPhone(phone: string): Promise<IUserDTO | void> {
     const user = await this.prisma.user.findUnique({
       where: {
         phone,
@@ -231,7 +234,7 @@ export class UsersImplementation implements IUsersRepository {
     return {
       token,
       email: user.email,
-      name: user.name
+      name: user.name,
     };
   }
 }

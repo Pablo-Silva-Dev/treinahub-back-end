@@ -17,7 +17,7 @@ export class GetRecoveryPasswordCodeBySMSUseCase {
 
     const { code } = recoveryCode;
 
-    const user = await this.usersImplementation.getUserBySMS(phone);
+    const user = await this.usersImplementation.getUserByPhone(phone);
 
     if (!user) {
       throw new NotFoundException("User not found");
@@ -28,8 +28,6 @@ export class GetRecoveryPasswordCodeBySMSUseCase {
       recoveryCode: code,
     });
 
-    const sendCodeMessage = `O código de recuperação de senha foi enviado para ${phone}`;
-
-    return sendCodeMessage;
+    return code;
   }
 }

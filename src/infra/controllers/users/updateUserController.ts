@@ -9,9 +9,7 @@ import {
   HttpCode,
   NotFoundException,
   Put,
-  UseGuards,
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { GetUserByIdUseCase } from "./../../useCases/users/getUserByIdUseCase";
 
 import { z } from "zod";
@@ -19,16 +17,15 @@ import { z } from "zod";
 const updateUserBodySchema = z.object({
   id: z.string(),
   password: z.string().min(8).optional(),
-  cep: z.string().regex(cepValidationRegex).optional(),
-  street: z.string().optional(),
-  district: z.string().optional(),
-  city: z.string().optional(),
-  uf: z.string().optional(),
-  residence_number: z.string().optional(),
+  cep: z.string().regex(cepValidationRegex).optional().nullable(),
+  street: z.string().optional().nullable(),
+  district: z.string().optional().nullable(),
+  city: z.string().optional().nullable(),
+  uf: z.string().optional().nullable(),
+  residence_number: z.string().optional().nullable(),
   phone: z.string().regex(phoneValidationRegex).optional(),
 });
-@Controller("/user/update")
-@UseGuards(AuthGuard("jwt-user"))
+@Controller("/users/update")
 export class UpdateUserController {
   constructor(
     private updateUserUseCase: UpdateUserUseCase,

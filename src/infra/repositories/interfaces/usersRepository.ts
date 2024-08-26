@@ -15,7 +15,7 @@ export interface IUsersRepository {
   getUserByEmail(email: string): Promise<IUserDTO | void>;
   getUserByCpf(cpf: string): Promise<IUserDTO | void>;
   getUserById(id: string): Promise<IUserDTO | void>;
-  getUserBySMS(phone: string): Promise<IUserDTO | void>;
+  getUserByPhone(phone: string): Promise<IUserDTO | void>;
   updateUser(data: IUpdateUserDTO): Promise<IUserDTO | void>;
   deleteUser(id: string): Promise<void>;
   getRecoveryPasswordCodeByEmail(
