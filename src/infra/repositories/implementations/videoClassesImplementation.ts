@@ -28,10 +28,10 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
     });
 
     if (videoClassNameForTrainingAlreadyExists) {
-      return;
+      return null;
     }
     if (!training) {
-      return;
+      return null;
     }
     const newVideoClass = await this.prisma.videoClass.create({
       data,

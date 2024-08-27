@@ -9,12 +9,13 @@ import {
   HttpCode,
   Post,
   Req,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
-import { FilesInterceptor } from "@nestjs/platform-express";
+import { FileFieldsInterceptor } from "@nestjs/platform-express";
 import { TEnvSchema } from "env";
 import { Request } from "express";
 import * as multer from "multer";
@@ -29,10 +30,15 @@ const createVideoClassValidationSchema = z.object({
 @Controller("/video-classes/create")
 @UseGuards(AuthGuard("jwt-admin"))
 @UseInterceptors(
-  FilesInterceptor("file", 2, {
-    //upload the files on memory temporarily instead on hard disk
-    storage: multer.memoryStorage(),
-  })
+  FileFieldsInterceptor(
+    [
+      { name: "video_file", maxCount: 1 },
+      { name: "img_file", maxCount: 1 },
+    ],
+    {
+      storage: multer.memoryStorage(),
+    }
+  )
 )
 export class CreateVideoClassController {
   constructor(
@@ -43,7 +49,25 @@ export class CreateVideoClassController {
   ) {}
   @Post()
   @HttpCode(201)
-  async handle(@Req() req: Request) {
+  async handle(
+    @UploadedFiles()
+    files: {
+      video_file: Express.Multer.File[];
+      img_file: Express.Multer.File[];
+    },
+    @Req() req: Request
+  ) {
+    const { img_file, video_file } = files;
+
+    if (
+      !video_file ||
+      !img_file ||
+      video_file.length === 0 ||
+      img_file.length === 0
+    ) {
+      throw new ConflictException("Video and image files are required.");
+    }
+
     const isBodyValidated = createVideoClassValidationSchema.safeParse(
       req.body
     );
@@ -53,17 +77,12 @@ export class CreateVideoClassController {
         error: isBodyValidated.error.issues,
       });
     }
+
     try {
       const { name } = req.body;
 
-      const files: Express.Multer.File[] = req.files as Express.Multer.File[];
-
-      const videoFile = files.find(
-        (file) => file.mimetype.substring(0, 5) !== "image"
-      );
-      const thumbnailFile = files.find(
-        (file) => file.mimetype.substring(0, 5) === "image"
-      );
+      const videoFile = video_file[0];
+      const thumbnailFile = img_file[0];
 
       const videoFileExtension = videoFile.originalname.split(".")[1];
       const thumbnailFileExtension = thumbnailFile.originalname.split(".")[1];
