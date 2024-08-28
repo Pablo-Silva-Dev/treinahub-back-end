@@ -31,10 +31,14 @@ export interface ICreateVideoClassDTO {
 
 export interface IUpdateVideoClassDTO {
   id: string;
-  name?: string;
-  description?: string;
-  thumbnail_url?: string;
-  training_id?: string;
-  hls_encoding_url?: string;
-  dash_encoding_url?: string;
+  name: string;
+  description: string;
+  duration: number;
+  video_url: string;
+  thumbnail_url: string;
+  training_id: string;
+  hls_encoding_id: string;
+  dash_encoding_id: string;
+  hls_encoding_url: string;
+  dash_encoding_url: string;
 }

@@ -114,18 +114,18 @@ export class CreateVideoClassController {
         videoFile.buffer
       );
 
-      const videInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
+      const videoInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
       const videoInputPath = req.body.name + "-video." + videoFileExtension;
 
       const dashEncoding =
         await this.bitmovinVideoEncodingService.encodeDASHVideo(
-          videInputName,
+          videoInputName,
           videoInputPath
         );
 
       const hlsEncoding =
         await this.bitmovinVideoEncodingService.encodeHLSVideo(
-          videInputName,
+          videoInputName,
           videoInputPath
         );
 

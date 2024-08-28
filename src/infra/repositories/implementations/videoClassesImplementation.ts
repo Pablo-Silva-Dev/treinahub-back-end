@@ -39,7 +39,11 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
     return newVideoClass;
   }
   async listVideoClasses(): Promise<IVideoClassDTO[]> {
-    const videoClasses = await this.prisma.videoClass.findMany();
+    const videoClasses = await this.prisma.videoClass.findMany({
+      include: {
+        training: true,
+      },
+    });
     const videoClassWithDuration = videoClasses.map((vc) => ({
       ...vc,
       formatted_duration: secondsToFullTimeString(vc.duration),
@@ -62,6 +66,9 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
     const videoClasses = await this.prisma.videoClass.findMany({
       where: {
         training_id: trainingId,
+      },
+      include: {
+        training: true,
       },
     });
 
@@ -128,7 +135,7 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
     });
 
     if (!videoClass) {
-      return;
+      return null;
     }
 
     const updatedVideoClass = await this.prisma.videoClass.update({

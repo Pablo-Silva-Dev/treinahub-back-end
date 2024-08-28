@@ -1,4 +1,7 @@
-import { IUpdateVideoClassDTO } from "@/infra/dtos/VideoClassDTO";
+import {
+  IUpdateVideoClassDTO,
+  IVideoClassDTO,
+} from "@/infra/dtos/VideoClassDTO";
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
 import { VideoClassesImplementation } from "@/infra/repositories/implementations/videoClassesImplementation";
 import {
@@ -13,7 +16,7 @@ export class UpdateVideoClassUseCase {
     private videoClassesImplementation: VideoClassesImplementation,
     private trainingsImplementation: TrainingsImplementation
   ) {}
-  async execute(data: IUpdateVideoClassDTO) {
+  async execute(data: IUpdateVideoClassDTO): Promise<IVideoClassDTO> {
     const { name, training_id, id } = data;
 
     const training =
