@@ -67,10 +67,34 @@ export class CertificatesImplementation implements ICertificatesRepository {
     });
     return certificates;
   }
+  async listCertificatesByTraining(
+    trainingId: string
+  ): Promise<ICertificateDTO[]> {
+    const training = await this.prisma.training.findUnique({
+      where: {
+        id: trainingId,
+      },
+    });
+
+    if (!training) {
+      return;
+    }
+
+    const certificates = await this.prisma.certificate.findMany({
+      where: {
+        training_id: trainingId,
+      },
+      include: { user: true, training: true },
+    });
+    return certificates;
+  }
   async getCertificateById(certificateId: string): Promise<ICertificateDTO> {
     const certificate = await this.prisma.certificate.findUnique({
       where: {
         id: certificateId,
+      },
+      include: {
+        training: true,
       },
     });
     return certificate;

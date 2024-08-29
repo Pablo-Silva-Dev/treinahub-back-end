@@ -17,7 +17,21 @@ export class ListCertificatesController {
   async handle() {
     try {
       const certificates = await this.listCertificatesUseCase.execute();
-      return certificates;
+      const completeCertificates = certificates.map((cert) => {
+        if (cert.training) {
+          return {
+            ...cert,
+            training_name: cert.training.name,
+          };
+        }
+        if (cert.user) {
+          return {
+            ...cert,
+            user_name: cert.user.name,
+          };
+        }
+      });
+      return completeCertificates;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({

@@ -1,5 +1,6 @@
 import { CreateCertificateController } from "@/infra/controllers/certificates/createCertificateController";
 import { GetCertificateByIdController } from "@/infra/controllers/certificates/getCertificateByIdController";
+import { ListCertificatesByTrainingController } from "@/infra/controllers/certificates/listCertificatesByTrainingController";
 import { ListCertificatesByUserController } from "@/infra/controllers/certificates/listCertificatesByUserController";
 import { ListCertificatesController } from "@/infra/controllers/certificates/listCertificatesController";
 import { CertificatesImplementation } from "@/infra/repositories/implementations/certificatesImplementation";
@@ -10,6 +11,7 @@ import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateCertificateUseCase } from "@/infra/useCases/certificates/createCertificateUseCase";
 import { GetCertificateByIdUseCase } from "@/infra/useCases/certificates/getCertificateByIdUseCase";
+import { ListCertificatesByTrainingUseCase } from "@/infra/useCases/certificates/listCertificatesByTrainingUseCase";
 import { ListCertificatesByUserUseCase } from "@/infra/useCases/certificates/listCertificatesByUserUseCase";
 import { ListCertificatesUseCase } from "@/infra/useCases/certificates/listCertificatesUseCase";
 import { GetTrainingByIdUseCase } from "@/infra/useCases/trainings/getTrainingByIdUseCase";
@@ -28,6 +30,7 @@ import { Module } from "@nestjs/common";
     ListCertificatesUseCase,
     ListCertificatesByUserUseCase,
     GetCertificateByIdUseCase,
+    ListCertificatesByTrainingUseCase,
     GetUserByIdUseCase,
     GetTrainingByIdUseCase,
   ],
@@ -35,6 +38,7 @@ import { Module } from "@nestjs/common";
     CreateCertificateController,
     ListCertificatesController,
     ListCertificatesByUserController,
+    ListCertificatesByTrainingController,
     GetCertificateByIdController,
   ],
 })
