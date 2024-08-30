@@ -15,6 +15,7 @@ import { z } from "zod";
 
 const createContactSupportValidationSchema = z.object({
   contact_number: z.string().regex(phoneValidationRegex),
+  name: z.string(),
 });
 
 @Controller("/contacts-support/create")

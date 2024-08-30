@@ -1,5 +1,6 @@
 import { IUpdateContactSupportDTO } from "@/infra/dtos/ContactSupportDTO";
 import { UpdateContactSupportUseCase } from "@/infra/useCases/contactsSupport/updateContactSupportUseCase";
+import { phoneValidationRegex } from "@/utils/regex";
 import {
   BadRequestException,
   Body,
@@ -14,7 +15,8 @@ import { z } from "zod";
 
 const updateContactSupportValidationSchema = z.object({
   id: z.string(),
-  contact_number: z.string(),
+  contact_number: z.string().regex(phoneValidationRegex).optional(),
+  name: z.string().optional(),
 });
 
 @Controller("contacts-support/update")

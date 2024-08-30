@@ -17,7 +17,7 @@ export class CreateContactSupportUseCase {
 
     if (contactAlreadyExists) {
       throw new ConflictException(
-        "ContactSupport already exists for this user and training"
+        "Contact support already exists."
       );
     }
 

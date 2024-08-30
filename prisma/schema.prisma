@@ -118,6 +118,7 @@ model WatchedClasses {
 model ContactSupport {
   id             String @id @default(uuid())
   contact_number String
+  name           String
 }
 
 model Log {

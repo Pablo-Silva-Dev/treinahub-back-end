@@ -1,7 +1,7 @@
 import {
-    IContactSupportDTO,
-    ICreateContactSupportDTO,
-    IUpdateContactSupportDTO,
+  IContactSupportDTO,
+  ICreateContactSupportDTO,
+  IUpdateContactSupportDTO,
 } from "@/infra/dtos/ContactSupportDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
@@ -51,9 +51,7 @@ export class ContactsSupportImplementation
     return contactsSupport;
   }
 
-  async getContactSupportById(
-    id: string
-  ): Promise<IContactSupportDTO | void> {
+  async getContactSupportById(id: string): Promise<IContactSupportDTO | void> {
     const contactsSupport = await this.prisma.contactSupport.findUnique({
       where: {
         id,
@@ -85,14 +83,31 @@ export class ContactsSupportImplementation
     });
 
     if (contactAlreadyExists || !contact) {
-      return;
+      return null;
     }
     const newContactSupport = await this.prisma.contactSupport.update({
-      where:{
-        id
+      where: {
+        id,
       },
-      data
+      data,
     });
     return newContactSupport;
+  }
+  async deleteContactSupport(contactId: string) {
+    const contactSupport = await this.prisma.contactSupport.findUnique({
+      where: {
+        id: contactId,
+      },
+    });
+
+    if (!contactSupport) {
+      return null;
+    }
+
+    await this.prisma.contactSupport.delete({
+      where: {
+        id: contactId,
+      },
+    });
   }
 }

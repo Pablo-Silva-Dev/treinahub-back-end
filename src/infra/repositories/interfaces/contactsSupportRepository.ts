@@ -15,4 +15,5 @@ export interface IContactSupportRepository {
   updateContactSupport(
     data: IUpdateContactSupportDTO
   ): Promise<IContactSupportDTO>;
+  deleteContactSupport(contact_id: string): Promise<void>;
 }
