@@ -23,6 +23,7 @@ export class TrainingsImplementation implements ITrainingsRepository {
     const trainings = await this.prisma.training.findMany({
       include: {
         video_classes: true,
+        training_metrics: true
       },
     });
 

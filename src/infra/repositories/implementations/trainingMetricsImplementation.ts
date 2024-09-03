@@ -67,6 +67,9 @@ export class TrainingMetricsImplementation
     }
 
     const trainingMetrics = await this.prisma.trainingMetrics.findMany({
+      where: {
+        user_id: user.id,
+      },
       include: { user: true, training: true },
     });
     return trainingMetrics;

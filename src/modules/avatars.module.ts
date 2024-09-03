@@ -3,6 +3,8 @@ import { GetAvatarByUserIdController } from "@/infra/controllers/avatars/getAvat
 import { UpdateAvatarController } from "@/infra/controllers/avatars/updateAvatarController";
 import { AvatarsImplementation } from "@/infra/repositories/implementations/avatarsImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
+import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
+import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateAvatarUseCase } from "@/infra/useCases/avatars/createsAvatarUseCase";
 import { GetAvatarByUserIdUseCase } from "@/infra/useCases/avatars/getAvatarByUserIdUseCase";
@@ -18,6 +20,8 @@ import { Module } from "@nestjs/common";
   providers: [
     PrismaService,
     AvatarsImplementation,
+    ManageFileService,
+    AzureBlobStorageService,
     UsersImplementation,
     CreateAvatarUseCase,
     GetAvatarByUserIdUseCase,
