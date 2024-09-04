@@ -23,11 +23,15 @@ export class TrainingsImplementation implements ITrainingsRepository {
     const trainings = await this.prisma.training.findMany({
       include: {
         video_classes: true,
-        training_metrics: true
+        training_metrics: true,
       },
     });
 
     const totalTrainingDuration = trainings.map((training) => {
+      training.video_classes.forEach((vc) => ({
+        ...vc,
+        formatted_duration: secondsToFullTimeString(vc.duration),
+      }));
       const totalDuration = training.video_classes.reduce(
         (acc, videoClass) => acc + videoClass.duration,
         0

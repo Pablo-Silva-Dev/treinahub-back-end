@@ -1,4 +1,5 @@
 import { ListTrainingsUseCase } from "@/infra/useCases/trainings/listTrainingsUseCase";
+import { secondsToFullTimeString } from "@/utils/convertTime";
 import {
   ConflictException,
   Controller,
@@ -17,7 +18,14 @@ export class ListTrainingsController {
   async handle() {
     try {
       const trainings = await this.listTrainingsUseCase.execute();
-      return trainings;
+      const completeData = trainings.map((t) => ({
+        ...t,
+        video_classes: t.video_classes.map((vc) => ({
+          ...vc,
+          formatted_duration: secondsToFullTimeString(vc.duration),
+        })),
+      }));
+      return completeData;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
@@ -28,3 +36,4 @@ export class ListTrainingsController {
     }
   }
 }
+//
