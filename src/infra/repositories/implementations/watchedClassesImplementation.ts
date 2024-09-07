@@ -55,6 +55,27 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
     });
     return watchedClasses;
   }
+  async listWatchedClassesByUser(
+    userId: string
+  ): Promise<IWatchedClassesDTO[]> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const watchedClasses = await this.prisma.watchedClasses.findMany({
+      include: { user: true, videoclass: true },
+      where: {
+        user_id: userId,
+      },
+    });
+    return watchedClasses;
+  }
 
   async listWatchedClassesByUserIdAndTrainingId(
     user_id: string,

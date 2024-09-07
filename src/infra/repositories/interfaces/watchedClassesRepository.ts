@@ -9,6 +9,7 @@ export interface IWatchedClassesRepository {
     data: ICreateWatchedClassesDTO
   ): Promise<IWatchedClassesDTO>;
   listWatchedClasses(): Promise<IWatchedClassesDTO[]>;
+  listWatchedClassesByUser(userId: string): Promise<IWatchedClassesDTO[]>;
   listWatchedClassesByUserIdAndTrainingId(
     user_id: string,
     training_id: string
