@@ -1,5 +1,6 @@
 import { CreateTrainingMetricsController } from "@/infra/controllers/trainingMetrics/createTrainingMetricsController";
 import { GetTrainingMetricsByIdController } from "@/infra/controllers/trainingMetrics/getTrainingByIdController";
+import { GetTrainingMetricsByUserIdAndTrainingIdController } from "@/infra/controllers/trainingMetrics/getTrainingMetricsByUserIdAndTrainingIdController";
 import { ListTrainingMetricsByUserController } from "@/infra/controllers/trainingMetrics/listTrainingMetricsByUserController";
 import { ListTrainingMetricsController } from "@/infra/controllers/trainingMetrics/listTrainingMetricsController";
 import { UpdateTrainingMetricsController } from "@/infra/controllers/trainingMetrics/updateTrainingMetricsController";
@@ -10,6 +11,7 @@ import { WatchedClassesImplementation } from "@/infra/repositories/implementatio
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateTrainingMetricsUseCase } from "@/infra/useCases/trainingMetrics/createTrainingMetricsUseCase";
 import { GetTrainingMetricsByIdUseCase } from "@/infra/useCases/trainingMetrics/getTrainingMetricsByIdUseCase";
+import { GetTrainingMetricsByUserIdAndTrainingIdUseCase } from "@/infra/useCases/trainingMetrics/getTrainingMetricsByTrainingAndUserUseCase";
 
 import { ListTrainingMetricsByUserUseCase } from "@/infra/useCases/trainingMetrics/listTrainingMetricsByUserUseCase";
 import { ListTrainingMetricsUseCase } from "@/infra/useCases/trainingMetrics/listTrainingMetricsUseCase";
@@ -28,6 +30,7 @@ import { Module } from "@nestjs/common";
     GetTrainingMetricsByIdUseCase,
     ListTrainingMetricsByUserUseCase,
     UpdateTrainingMetricsUseCase,
+    GetTrainingMetricsByUserIdAndTrainingIdUseCase,
   ],
   controllers: [
     CreateTrainingMetricsController,
@@ -35,6 +38,7 @@ import { Module } from "@nestjs/common";
     GetTrainingMetricsByIdController,
     ListTrainingMetricsByUserController,
     UpdateTrainingMetricsController,
+    GetTrainingMetricsByUserIdAndTrainingIdController,
   ],
 })
 export class TrainingMetricsModule {}

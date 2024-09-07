@@ -16,14 +16,14 @@ import { z } from "zod";
 
 const updateUserBodySchema = z.object({
   id: z.string(),
-  password: z.string().min(8).optional(),
-  cep: z.string().regex(cepValidationRegex).optional().nullable(),
+  password: z.string().optional(),
+  cep: z.string().optional().nullable(),
   street: z.string().optional().nullable(),
   district: z.string().optional().nullable(),
   city: z.string().optional().nullable(),
   uf: z.string().optional().nullable(),
   residence_number: z.string().optional().nullable(),
-  phone: z.string().regex(phoneValidationRegex).optional(),
+  phone: z.string().optional().nullable(),
 });
 @Controller("/users/update")
 export class UpdateUserController {
