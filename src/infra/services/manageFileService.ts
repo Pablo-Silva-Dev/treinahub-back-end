@@ -4,6 +4,7 @@ import { createCanvas, loadImage, registerFont } from "canvas";
 import * as fs from "fs";
 import * as path from "path";
 
+import { secondsToFullTimeStringV2 } from "@/utils/convertTime";
 import { formatDateNow } from "@/utils/formatDate";
 import { formatUserCertificateName } from "@/utils/formatUserCertificateName";
 import { TEnvSchema } from "env";
@@ -94,10 +95,10 @@ export class ManageFileService {
       ctx.fillStyle = "#FFFFFF";
       ctx.textAlign = "left";
       ctx.fillText(formatUserCertificateName(user.name), 200, 360);
-
+      //
       //draws conclusion text
-      const conclusionTextPt1 = `concluiu o treinamento ${training.name} com duração total de ${training.duration} horas`;
-      const conclusionTextPt2 = `na data de ${formatDateNow()}.`;
+      const conclusionTextPt1 = `concluiu na data de ${formatDateNow()} com duração total de ${secondsToFullTimeStringV2(training.duration)} `;
+      const conclusionTextPt2 = `o treinamento de "${training.name}".`;
       ctx.font = "28px Verdana";
       ctx.fillStyle = "#FFFFFF";
       ctx.textAlign = "left";
