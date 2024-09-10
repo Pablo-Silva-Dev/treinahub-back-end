@@ -28,28 +28,10 @@ export class GetVideoClassByIdController {
       const videoClass =
         await this.getVideoClassByIdUseCase.execute(videoClassId);
 
-      const dashEncodingStatus =
-        await this.bitmovinVideoEncodingService.getEncodingStatus(
-          videoClass.dash_encoding_id
-        );
-
       const hlsEncodingStatus =
         await this.bitmovinVideoEncodingService.getEncodingStatus(
           videoClass.hls_encoding_id
         );
-
-      if (dashEncodingStatus === "FINISHED") {
-        videoClass.dash_encoding_url = formatSlugAzureEncodingManifestUrl(
-          this.configService.get("AZURE_STORAGE_ACCOUNT_NAME"),
-          this.configService.get(
-            "AZURE_BLOB_STORAGE_BITMOVIN_OUTPUTS_CONTAINER_NAME"
-          ),
-          videoClass.video_url,
-          "dash"
-        );
-      } else {
-        videoClass.dash_encoding_url = null;
-      }
 
       if (hlsEncodingStatus === "FINISHED") {
         videoClass.hls_encoding_url = formatSlugAzureEncodingManifestUrl(
@@ -57,8 +39,7 @@ export class GetVideoClassByIdController {
           this.configService.get(
             "AZURE_BLOB_STORAGE_BITMOVIN_OUTPUTS_CONTAINER_NAME"
           ),
-          videoClass.video_url,
-          "hls"
+          videoClass.video_url
         );
       } else {
         videoClass.hls_encoding_url = null;

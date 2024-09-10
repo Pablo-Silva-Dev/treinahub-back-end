@@ -117,12 +117,6 @@ export class CreateVideoClassController {
       const videoInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
       const videoInputPath = req.body.name + "-video." + videoFileExtension;
 
-      const dashEncoding =
-        await this.bitmovinVideoEncodingService.encodeDASHVideo(
-          videoInputName,
-          videoInputPath
-        );
-
       const hlsEncoding =
         await this.bitmovinVideoEncodingService.encodeHLSVideo(
           videoInputName,
@@ -135,8 +129,6 @@ export class CreateVideoClassController {
         video_url: uploadedVideo,
         thumbnail_url: uploadedThumbnail,
         hls_encoding_url: null,
-        dash_encoding_url: null,
-        dash_encoding_id: dashEncoding.id,
         hls_encoding_id: hlsEncoding.id,
       });
 

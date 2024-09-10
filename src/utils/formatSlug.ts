@@ -30,8 +30,7 @@ export function formatSlugFileName(str: string): string {
 export function formatSlugAzureEncodingManifestUrl(
   AzureStorageAccount: string,
   AzureContainerName: string,
-  url: string,
-  manifest: "dash" | "hls"
+  url: string
 ) {
   // Extract the file name from the URL
   const fileNameMatch = url.match(/\/([^\/]+)$/);
@@ -62,10 +61,7 @@ export function formatSlugAzureEncodingManifestUrl(
 
   // Construct the new URL
   const newBaseUrl = `https://${AzureStorageAccount}.blob.core.windows.net/${AzureContainerName}/`;
-  const outputUrl =
-    manifest === "dash"
-      ? `${newBaseUrl}${fileName}/dash/manifest/stream.mpd`
-      : `${newBaseUrl}${fileName}/hls/manifest/stream.m3u8`;
+  const outputUrl = `${newBaseUrl}${fileName}/hls/manifest/stream.m3u8`;
 
   return outputUrl;
 }
