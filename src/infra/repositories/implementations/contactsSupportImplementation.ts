@@ -16,16 +16,23 @@ export class ContactsSupportImplementation
   async createContactSupport(
     data: ICreateContactSupportDTO
   ): Promise<IContactSupportDTO> {
-    const { contact_number } = data;
+    const { contact_number, email } = data;
 
-    const contactAlreadyExists = await this.prisma.contactSupport.findFirst({
+    const contactNumberAlreadyExists =
+      await this.prisma.contactSupport.findFirst({
+        where: {
+          contact_number,
+        },
+      });
+
+    const emailAlreadyExists = await this.prisma.contactSupport.findFirst({
       where: {
-        contact_number,
+        email,
       },
     });
 
-    if (contactAlreadyExists) {
-      return;
+    if (contactNumberAlreadyExists || emailAlreadyExists) {
+      return null;
     }
 
     const newContactSupport = await this.prisma.contactSupport.create({ data });

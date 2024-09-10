@@ -6,10 +6,12 @@ export interface IContactSupportDTO {
 export interface ICreateContactSupportDTO {
   contact_number: string;
   name: string;
+  email: string;
 }
 
 export interface IUpdateContactSupportDTO {
   id: string;
   contact_number?: string;
   name?: string;
+  email?: string;
 }

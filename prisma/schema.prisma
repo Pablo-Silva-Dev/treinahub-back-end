@@ -114,9 +114,11 @@ model WatchedClasses {
 }
 
 model ContactSupport {
-  id             String @id @default(uuid())
-  contact_number String
-  name           String
+  id                  String  @id @default(uuid())
+  contact_number      String
+  name                String
+  email               String
+  hide_contact_number Boolean @default(false)
 }
 
 model Log {
