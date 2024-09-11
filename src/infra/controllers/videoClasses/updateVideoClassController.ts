@@ -8,6 +8,7 @@ import {
   ConflictException,
   Controller,
   HttpCode,
+  NotAcceptableException,
   Put,
   Req,
   UploadedFiles,
@@ -91,6 +92,18 @@ export class UpdateVideoClassController {
       const videoFileName = name + "-video." + videoFileExtension;
       const thumbnailFileName = name + "-thumbnail." + thumbnailFileExtension;
 
+      const MAX_VIDEO_DURATION_IN_SECONDS = 15 * 60; // 15 minutes
+
+      const videoClassDurationInSeconds = await getVideoDuration(
+        videoFile.buffer
+      );
+
+      if (videoClassDurationInSeconds > MAX_VIDEO_DURATION_IN_SECONDS) {
+        throw new NotAcceptableException(
+          "Video duration can not be more than 15 minutes."
+        );
+      }
+
       const blobStorageVideoContainer = this.configService.get(
         "AZURE_BLOB_STORAGE_VIDEO_CLASSES_CONTAINER_NAME"
       );
@@ -109,10 +122,6 @@ export class UpdateVideoClassController {
         thumbnailFile.buffer,
         thumbnailFileName,
         blobStorageThumbnailContainerName
-      );
-
-      const videoClassDurationInSeconds = await getVideoDuration(
-        videoFile.buffer
       );
 
       const videoInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
@@ -135,6 +144,11 @@ export class UpdateVideoClassController {
       return updatedVideoClass;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
+
+      if (error instanceof NotAcceptableException) {
+        throw error;
+      }
+
       throw new ConflictException({
         message:
           "An error occurred. Check all request body fields for possible mismatching.",
