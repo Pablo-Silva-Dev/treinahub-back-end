@@ -1,4 +1,6 @@
+import { ManageFileService } from "@/infra/services/manageFileService";
 import { DeleteTrainingUseCase } from "@/infra/useCases/trainings/deleteTrainingUseCase";
+import { extractFileNameFromUrl } from "@/utils/formatString";
 import {
   ConflictException,
   Controller,
@@ -7,12 +9,20 @@ import {
   Param,
   UseGuards,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
+import { TEnvSchema } from "env";
+import { GetTrainingByIdUseCase } from "./../../useCases/trainings/getTrainingByIdUseCase";
 
 @Controller("trainings/delete")
 @UseGuards(AuthGuard("jwt-admin"))
 export class DeleteTrainingController {
-  constructor(private deleteTrainingUseCase: DeleteTrainingUseCase) {}
+  constructor(
+    private deleteTrainingUseCase: DeleteTrainingUseCase,
+    private getTrainingByIdUseCase: GetTrainingByIdUseCase,
+    private manageFileService: ManageFileService,
+    private configService: ConfigService<TEnvSchema, true>
+  ) {}
   @Delete(":trainingId")
   @HttpCode(200)
   async handle(@Param("trainingId") trainingId: string) {
@@ -20,6 +30,16 @@ export class DeleteTrainingController {
       throw new ConflictException("trainingId is required");
     }
     try {
+      const training = await this.getTrainingByIdUseCase.execute(trainingId);
+
+      const { cover_url } = training;
+      const fileName = extractFileNameFromUrl(cover_url);
+      const containerName = await this.configService.get(
+        "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
+      );
+
+      await this.manageFileService.removeUploadedFile(fileName, containerName);
+
       await this.deleteTrainingUseCase.execute(trainingId);
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);

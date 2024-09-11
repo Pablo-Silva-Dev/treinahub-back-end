@@ -21,7 +21,7 @@ export class AvatarsImplementation implements IAvatarsRepository {
     });
 
     if (!user) {
-      return;
+      return null;
     }
 
     const userAlreadyHasAvatar = await this.prisma.avatar.findFirst({
@@ -31,7 +31,7 @@ export class AvatarsImplementation implements IAvatarsRepository {
     });
 
     if (userAlreadyHasAvatar) {
-      return;
+      return null;
     }
 
     const newAvatar = await this.prisma.avatar.create({
@@ -53,13 +53,13 @@ export class AvatarsImplementation implements IAvatarsRepository {
   }
 
   async getAvatarById(id: string): Promise<IAvatarDTO | void> {
-    const avatar = await this.prisma.avatar.findFirst({
+    const avatar = await this.prisma.avatar.findUnique({
       where: {
         id,
       },
     });
     if (!avatar) {
-      return;
+      return null;
     }
     return avatar;
   }
@@ -81,5 +81,23 @@ export class AvatarsImplementation implements IAvatarsRepository {
       data,
     });
     return updatedAvatar;
+  }
+
+  async deleteAvatarByUserId(userId: string) {
+    const avatars = await this.prisma.avatar.findMany({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!avatars) {
+      return null;
+    }
+
+    await this.prisma.avatar.deleteMany({
+      where: {
+        user_id: userId,
+      },
+    });
   }
 }

@@ -9,6 +9,7 @@ import { GetUserByIdController } from "@/infra/controllers/users/getUserByIdCont
 import { GetUserByPhoneController } from "@/infra/controllers/users/getUserByPhoneController";
 import { ListUsersController } from "@/infra/controllers/users/listUsersController";
 import { UpdateUserController } from "@/infra/controllers/users/updateUserController";
+import { AvatarsImplementation } from "@/infra/repositories/implementations/avatarsImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { PrismaService } from "@/infra/services/prisma";
 import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
@@ -45,6 +46,7 @@ import { Module } from "@nestjs/common";
     SendGridEmailSenderService,
     TwilioService,
     UsersImplementation,
+    AvatarsImplementation,
     CreateUserUseCase,
     ListUsersUseCase,
     GetUserByCpfUseCase,

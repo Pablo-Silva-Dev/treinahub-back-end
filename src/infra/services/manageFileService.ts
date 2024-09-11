@@ -150,4 +150,28 @@ export class ManageFileService {
     }
     return blobClient.url;
   }
+
+  async removeUploadedFile(fileName: string, AzureContainerName: string) {
+    const blobClient = this.azureBlobStorageProvider
+      .getBlobServiceClient()
+      .getContainerClient(AzureContainerName)
+      .getBlockBlobClient(fileName);
+
+    const blobExists = await blobClient.exists();
+
+    if (!blobExists) {
+      console.error(
+        `Blob ${fileName} does not exist in container ${AzureContainerName}`
+      );
+      throw new Error(`Blob ${fileName} does not exist.`);
+    }
+
+    await blobClient.delete({
+      deleteSnapshots: "include",
+    });
+
+    console.log(
+      `File ${fileName} deleted from container ${AzureContainerName}`
+    );
+  }
 }

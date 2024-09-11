@@ -12,3 +12,9 @@ export interface IUpdateAvatarDTO {
   id: string
   url: string
 }
+
+export interface IDeleteAvatarDTO {
+  avatar_id: string
+  user_id: string
+}
+
