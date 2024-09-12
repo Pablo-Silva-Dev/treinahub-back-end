@@ -1,6 +1,8 @@
 import { BitmovinVideoEncodingService } from "@/infra/services/bitmovinVideoEncodingService";
+import { ManageFileService } from "@/infra/services/manageFileService";
 import { ListVideoClassesUseCase } from "@/infra/useCases/videoClasses/listVideoClassesUseCase";
 import { formatSlugAzureEncodingManifestUrl } from "@/utils/formatSlug";
+import { extractFileNameFromUrl } from "@/utils/formatString";
 import {
   ConflictException,
   Controller,
@@ -18,7 +20,8 @@ export class ListVideoClassesController {
   constructor(
     private listVideoClassesUseCase: ListVideoClassesUseCase,
     private bitmovinVideoEncodingService: BitmovinVideoEncodingService,
-    private configService: ConfigService<TEnvSchema, true>
+    private configService: ConfigService<TEnvSchema, true>,
+    private manageFileService: ManageFileService
   ) {}
   @Get()
   @HttpCode(200)
@@ -40,6 +43,22 @@ export class ListVideoClassesController {
             ),
             vc.video_url
           );
+
+          const videoContainerName = this.configService.get(
+            "AZURE_BLOB_STORAGE_VIDEO_CLASSES_CONTAINER_NAME"
+          );
+          const fileName = extractFileNameFromUrl(vc.video_url);
+
+          try {
+            await this.manageFileService.removeUploadedFile(
+              fileName,
+              videoContainerName
+            );
+          } catch (error) {
+            console.log(
+              `[DELETE ERROR] Failed to delete blob: ${fileName}. Error: ${error.message}`
+            );
+          }
         } else {
           vc.hls_encoding_url = null;
         }
