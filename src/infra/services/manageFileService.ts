@@ -174,4 +174,19 @@ export class ManageFileService {
       `File ${fileName} deleted from container ${AzureContainerName}`
     );
   }
+  async removeAllExistingUploadedFiles(
+    AzureContainerName: string
+  ): Promise<void> {
+    const containerClient = this.azureBlobStorageProvider
+      .getBlobServiceClient()
+      .getContainerClient(AzureContainerName);
+
+    // List all blobs in the container
+    for await (const blob of containerClient.listBlobsFlat()) {
+      const blobClient = containerClient.getBlobClient(blob.name);
+
+      // Delete each blob
+      await blobClient.delete();
+    }
+  }
 }

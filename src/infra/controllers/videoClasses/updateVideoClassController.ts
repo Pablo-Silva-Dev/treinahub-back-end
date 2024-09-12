@@ -112,6 +112,13 @@ export class UpdateVideoClassController {
         "AZURE_BLOB_STORAGE_VIDEOS_THUMBNAILS_CONTAINER_NAME"
       );
 
+      await this.manageFileService.removeAllExistingUploadedFiles(
+        blobStorageVideoContainer
+      );
+      await this.manageFileService.removeAllExistingUploadedFiles(
+        blobStorageThumbnailContainerName
+      );
+
       const uploadedVideo = await this.manageFileService.uploadFile(
         videoFile.buffer,
         videoFileName,

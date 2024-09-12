@@ -54,6 +54,10 @@ export class UpdateTrainingController {
         "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
       );
 
+      this.manageFileService.removeAllExistingUploadedFiles(
+        blobStorageContainerName
+      );
+
       const uploadedFile = await this.manageFileService.uploadFile(
         file.buffer,
         fileName,

@@ -55,6 +55,10 @@ export class UpdateAvatarController {
 
       const fileName = req.body.id + "." + fileExtension;
 
+      await this.manageFileService.removeAllExistingUploadedFiles(
+        blobStorageContainer
+      );
+
       const uploadedFile = await this.manageFileService.uploadFile(
         file.buffer,
         fileName,
