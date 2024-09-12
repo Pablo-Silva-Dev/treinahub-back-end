@@ -183,10 +183,23 @@ export class ManageFileService {
 
     // List all blobs in the container
     for await (const blob of containerClient.listBlobsFlat()) {
-      const blobClient = containerClient.getBlobClient(blob.name);
+      const file = containerClient.getBlobClient(blob.name);
 
       // Delete each blob
-      await blobClient.delete();
+      await file.delete();
+    }
+  }
+
+  async removeFolderAndContents(containerName: string, folderName: string) {
+    const containerClient = this.azureBlobStorageProvider
+      .getBlobServiceClient()
+      .getContainerClient(containerName);
+
+    for await (const blob of containerClient.listBlobsFlat({
+      prefix: folderName + "/",
+    })) {
+      const file = containerClient.getBlobClient(blob.name);
+      await file.delete();
     }
   }
 }

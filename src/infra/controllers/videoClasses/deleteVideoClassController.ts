@@ -1,6 +1,9 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { DeleteVideoClassUseCase } from "@/infra/useCases/videoClasses/deleteVideoClassUseCase";
-import { extractFileNameFromUrl } from "@/utils/formatString";
+import {
+  extractFileNameFromUrl,
+  extractFolderNameFromUrl,
+} from "@/utils/formatString";
 import {
   ConflictException,
   Controller,
@@ -30,26 +33,31 @@ export class DeleteVideoClassController {
       throw new ConflictException("videoClassId is required");
     }
     try {
-      const { thumbnail_url, video_url } =
+      const videoClass =
         await this.getVideoClassByIdUseCase.execute(videoClassId);
 
+      const { thumbnail_url, video_url } = videoClass;
+
       const thumbnailFileName = extractFileNameFromUrl(thumbnail_url);
-      const videoFileName = extractFileNameFromUrl(video_url);
 
       const thumbnailContainerName = await this.configService.get(
         "AZURE_BLOB_STORAGE_VIDEOS_THUMBNAILS_CONTAINER_NAME"
       );
-      const videoContainerName = await this.configService.get(
-        "AZURE_BLOB_STORAGE_VIDEO_CLASSES_CONTAINER_NAME"
+
+      const bitmovinEncodingsContainerName = await this.configService.get(
+        "AZURE_BLOB_STORAGE_BITMOVIN_OUTPUTS_CONTAINER_NAME"
       );
 
       await this.manageFileService.removeUploadedFile(
         thumbnailFileName,
         thumbnailContainerName
       );
-      await this.manageFileService.removeUploadedFile(
-        videoFileName,
-        videoContainerName
+
+      const folderName = extractFolderNameFromUrl(video_url);
+
+      await this.manageFileService.removeFolderAndContents(
+        bitmovinEncodingsContainerName,
+        folderName
       );
 
       await this.deleteVideoClassUseCase.execute(videoClassId);
