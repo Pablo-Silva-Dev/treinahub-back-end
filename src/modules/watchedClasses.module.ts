@@ -3,6 +3,7 @@ import { ListWatchedClassesByUserController } from "@/infra/controllers/watchedC
 import { ListWatchedClassesByUserIdAndTrainingIdController } from "@/infra/controllers/watchedClasses/listWatchedClassesByUserIdAndTrainingIdController";
 import { ListWatchedClassesController } from "@/infra/controllers/watchedClasses/listWatchedClassesController";
 import { RemoveWatchedClassController } from "@/infra/controllers/watchedClasses/removeWatchedClassController";
+import { UpdateVideoClassExecutionStatusController } from "@/infra/controllers/watchedClasses/UpdateVideoClassExecutionStatusController";
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { VideoClassesImplementation } from "@/infra/repositories/implementations/videoClassesImplementation";
@@ -13,6 +14,7 @@ import { ListWatchedClassesByUserIdAndTrainingIdUseCase } from "@/infra/useCases
 import { ListWatchedClassesByUserUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesByUserUseCase";
 import { ListWatchedClassesUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesUseCase";
 import { RemoveWatchedClassUseCase } from "@/infra/useCases/watchedClasses/removeWatchedClassUseCase";
+import { UpdateVideoClassExecutionStatusUseCase } from "@/infra/useCases/watchedClasses/UpdateVideoClassExecutionStatusUseCase";
 import { Module } from "@nestjs/common";
 
 @Module({
@@ -27,6 +29,7 @@ import { Module } from "@nestjs/common";
     ListWatchedClassesByUserIdAndTrainingIdUseCase,
     RemoveWatchedClassUseCase,
     ListWatchedClassesByUserUseCase,
+    UpdateVideoClassExecutionStatusUseCase,
   ],
   controllers: [
     CreateWatchedClassController,
@@ -34,6 +37,7 @@ import { Module } from "@nestjs/common";
     ListWatchedClassesByUserIdAndTrainingIdController,
     RemoveWatchedClassController,
     ListWatchedClassesByUserController,
+    UpdateVideoClassExecutionStatusController,
   ],
 })
 export class WatchedClassesModule {}

@@ -1,6 +1,7 @@
 import {
   ICreateWatchedClassesDTO,
   IRemoveWatchedClassDTO,
+  IUpdateVideoClassExecutionStatusDTO,
   IWatchedClassesDTO,
 } from "@/infra/dtos/WatchedClassDTO";
 import { PrismaService } from "@/infra/services/prisma";
@@ -146,5 +147,33 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
         id: watchedClass.id,
       },
     });
+  }
+
+  async updateVideoClassExecutionStatus(
+    data: IUpdateVideoClassExecutionStatusDTO
+  ): Promise<IWatchedClassesDTO> {
+    const { user_id, videoclass_id, execution_time, completely_watched } = data;
+
+    const watchedClass = await this.prisma.watchedClasses.findFirst({
+      where: {
+        user_id,
+        videoclass_id,
+      },
+    });
+
+    if (!watchedClass) {
+      return null;
+    }
+
+    const updatedWatchedClass = await this.prisma.watchedClasses.update({
+      where: {
+        id: watchedClass.id,
+      },
+      data: {
+        completely_watched,
+        execution_time,
+      },
+    });
+    return updatedWatchedClass;
   }
 }

@@ -15,6 +15,7 @@ const createWatchedClassValidationSchema = z.object({
   user_id: z.string(),
   videoclass_id: z.string(),
   training_id: z.string(),
+  completely_watched: z.boolean(),
 });
 
 @Controller("/watched-classes/add")

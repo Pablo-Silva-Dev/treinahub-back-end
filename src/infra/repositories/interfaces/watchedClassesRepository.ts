@@ -1,6 +1,7 @@
 import {
   ICreateWatchedClassesDTO,
   IRemoveWatchedClassDTO,
+  IUpdateVideoClassExecutionStatusDTO,
   IWatchedClassesDTO,
 } from "@/infra/dtos/WatchedClassDTO";
 
@@ -19,4 +20,7 @@ export interface IWatchedClassesRepository {
     videoClassId: string
   ): Promise<IWatchedClassesDTO | void>;
   removeWatchedClass(data: IRemoveWatchedClassDTO): Promise<void>;
+  updateVideoClassExecutionStatus(
+    data: IUpdateVideoClassExecutionStatusDTO
+  ): Promise<IWatchedClassesDTO>;
 }

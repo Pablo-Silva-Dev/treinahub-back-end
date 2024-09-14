@@ -104,13 +104,15 @@ model TrainingMetrics {
 }
 
 model WatchedClasses {
-  id            String     @id @default(uuid())
-  user_id       String
-  videoclass_id String
-  training_id   String
-  watchedAt     DateTime   @default(now())
-  user          User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  videoclass    VideoClass @relation(fields: [videoclass_id], references: [id], onDelete: Cascade)
+  id                 String     @id @default(uuid())
+  user_id            String
+  videoclass_id      String
+  training_id        String
+  watchedAt          DateTime   @default(now())
+  user               User       @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  videoclass         VideoClass @relation(fields: [videoclass_id], references: [id], onDelete: Cascade)
+  execution_time     Int        @default(0)
+  completely_watched Boolean
 }
 
 model ContactSupport {
