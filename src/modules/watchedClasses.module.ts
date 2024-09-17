@@ -1,4 +1,5 @@
 import { CreateWatchedClassController } from "@/infra/controllers/watchedClasses/createWatchedClassController";
+import { GetWatchedClassByUserAndClassController } from "@/infra/controllers/watchedClasses/GetWatchedClassByUserAndClassController";
 import { ListWatchedClassesByUserController } from "@/infra/controllers/watchedClasses/listWatchedClassesByUserController";
 import { ListWatchedClassesByUserIdAndTrainingIdController } from "@/infra/controllers/watchedClasses/listWatchedClassesByUserIdAndTrainingIdController";
 import { ListWatchedClassesController } from "@/infra/controllers/watchedClasses/listWatchedClassesController";
@@ -10,6 +11,7 @@ import { VideoClassesImplementation } from "@/infra/repositories/implementations
 import { WatchedClassesImplementation } from "@/infra/repositories/implementations/watchedClassesImplementation";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateWatchedClassUseCase } from "@/infra/useCases/watchedClasses/createWatchedClassUseCase";
+import { GetWatchedClassByUserAndClassUseCase } from "@/infra/useCases/watchedClasses/GetWatchedClassByUserAndClassUseCase";
 import { ListWatchedClassesByUserIdAndTrainingIdUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesByTrainingIdAndUserIdUseCase";
 import { ListWatchedClassesByUserUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesByUserUseCase";
 import { ListWatchedClassesUseCase } from "@/infra/useCases/watchedClasses/listWatchedClassesUseCase";
@@ -30,6 +32,7 @@ import { Module } from "@nestjs/common";
     RemoveWatchedClassUseCase,
     ListWatchedClassesByUserUseCase,
     UpdateVideoClassExecutionStatusUseCase,
+    GetWatchedClassByUserAndClassUseCase,
   ],
   controllers: [
     CreateWatchedClassController,
@@ -38,6 +41,7 @@ import { Module } from "@nestjs/common";
     RemoveWatchedClassController,
     ListWatchedClassesByUserController,
     UpdateVideoClassExecutionStatusController,
+    GetWatchedClassByUserAndClassController,
   ],
 })
 export class WatchedClassesModule {}

@@ -1,5 +1,6 @@
 import {
   ICreateWatchedClassesDTO,
+  IGetWatchedClassByUserAndVideoDTO,
   IRemoveWatchedClassDTO,
   IUpdateVideoClassExecutionStatusDTO,
   IWatchedClassesDTO,
@@ -109,18 +110,30 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
   }
 
   async getUniqueWatchedClass(
-    userId: string,
-    videoClassId: string
+    data: IGetWatchedClassByUserAndVideoDTO
   ): Promise<IWatchedClassesDTO | void> {
+    const { user_id, videoclass_id } = data;
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: user_id,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
     const watchedClass = await this.prisma.watchedClasses.findFirst({
       where: {
-        user_id: userId,
-        videoclass_id: videoClassId,
+        user_id,
+        videoclass_id,
       },
     });
     if (!watchedClass) {
-      return;
+      return null;
     }
+
     return watchedClass;
   }
   async removeWatchedClass(data: IRemoveWatchedClassDTO): Promise<void> {

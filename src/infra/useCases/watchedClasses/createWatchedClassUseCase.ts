@@ -53,10 +53,10 @@ export class CreateWatchedClassUseCase {
     }
 
     const alreadyWatchedClass =
-      await this.watchedClassesImplementation.getUniqueWatchedClass(
+      await this.watchedClassesImplementation.getUniqueWatchedClass({
         user_id,
-        videoclass_id
-      );
+        videoclass_id,
+      });
     if (alreadyWatchedClass) {
       return;
     }

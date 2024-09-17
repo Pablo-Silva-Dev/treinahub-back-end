@@ -10,10 +10,10 @@ export class UpdateVideoClassExecutionStatusUseCase {
   async execute(data: IUpdateVideoClassExecutionStatusDTO) {
     const { user_id, videoclass_id } = data;
     const watchedClass =
-      await this.watchedClassesImplementation.getUniqueWatchedClass(
+      await this.watchedClassesImplementation.getUniqueWatchedClass({
         user_id,
-        videoclass_id
-      );
+        videoclass_id,
+      });
 
     if (!watchedClass) {
       throw new NotFoundException("Video class did not watched.");

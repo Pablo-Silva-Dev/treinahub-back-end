@@ -29,6 +29,10 @@ export interface IGetWatchedClassesByUserAndTrainingDTO {
   training_id: string;
   videoclass_id: string;
 }
+export interface IGetWatchedClassByUserAndVideoDTO {
+  user_id: string;
+  videoclass_id: string;
+}
 
 export interface IRemoveWatchedClassDTO {
   user_id: string;

@@ -1,5 +1,6 @@
 import {
   ICreateWatchedClassesDTO,
+  IGetWatchedClassByUserAndVideoDTO,
   IRemoveWatchedClassDTO,
   IUpdateVideoClassExecutionStatusDTO,
   IWatchedClassesDTO,
@@ -16,8 +17,7 @@ export interface IWatchedClassesRepository {
     training_id: string
   ): Promise<IWatchedClassesDTO[]>;
   getUniqueWatchedClass(
-    userId: string,
-    videoClassId: string
+    data: IGetWatchedClassByUserAndVideoDTO
   ): Promise<IWatchedClassesDTO | void>;
   removeWatchedClass(data: IRemoveWatchedClassDTO): Promise<void>;
   updateVideoClassExecutionStatus(
