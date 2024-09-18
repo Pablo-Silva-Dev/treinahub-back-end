@@ -20,6 +20,8 @@ export const envSchema = z.object({
   AZURE_BLOB_STORAGE_BITMOVIN_OUTPUTS_CONTAINER_NAME: z.string(),
   AZURE_BLOB_STORAGE_AVATARS_CONTAINER_NAME: z.string(),
   BITMOVIN_API_KEY: z.string(),
+  CERTIFICATE_PATH: z.string(),
+  CERTIFICATE_KEY_PATH: z.string(),
 });
 
 export type TEnvSchema = z.infer<typeof envSchema>;
