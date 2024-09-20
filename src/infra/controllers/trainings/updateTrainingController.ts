@@ -47,26 +47,32 @@ export class UpdateTrainingController {
     }
 
     try {
-      const fileExtension = file.originalname.split(".")[1];
-      const fileName = req.body.name + "-cover" + fileExtension;
+      if (file) {
+        const fileExtension = file.originalname.split(".")[1];
+        const fileName = req.body.name + "-cover" + fileExtension;
 
-      const blobStorageContainerName = this.configService.get(
-        "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
-      );
+        const blobStorageContainerName = this.configService.get(
+          "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
+        );
 
-      this.manageFileService.removeAllExistingUploadedFiles(
-        blobStorageContainerName
-      );
+        this.manageFileService.removeAllExistingUploadedFiles(
+          blobStorageContainerName
+        );
 
-      const uploadedFile = await this.manageFileService.uploadFile(
-        file.buffer,
-        fileName,
-        blobStorageContainerName
-      );
+        const uploadedFile = await this.manageFileService.uploadFile(
+          file.buffer,
+          fileName,
+          blobStorageContainerName
+        );
 
+        const updatedTraining = await this.updateTrainingUseCase.execute({
+          ...req.body,
+          cover_url: uploadedFile,
+        });
+        return updatedTraining;
+      }
       const updatedTraining = await this.updateTrainingUseCase.execute({
         ...req.body,
-        cover_url: uploadedFile,
       });
       return updatedTraining;
     } catch (error) {

@@ -10,8 +10,8 @@ import { ResponseSuccessInterceptor } from "./infra/interceptors/responseSuccess
 async function bootstrap() {
   const configService = new ConfigService<TEnvSchema, true>();
 
-  const certificateKeyPath = configService.get("CERTIFICATE_KEY_PATH");
   const certificatePath = configService.get("CERTIFICATE_PATH");
+  const certificateKeyPath = configService.get("CERTIFICATE_KEY_PATH");
 
   const httpsOptions = {
     key: fs.readFileSync(path.resolve(certificateKeyPath)),
