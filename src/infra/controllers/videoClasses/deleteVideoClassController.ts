@@ -1,9 +1,6 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { DeleteVideoClassUseCase } from "@/infra/useCases/videoClasses/deleteVideoClassUseCase";
-import {
-  extractFileNameFromUrl,
-  extractFolderNameFromUrl,
-} from "@/utils/formatString";
+import { extractFolderNameFromUrl } from "@/utils/formatString";
 import {
   ConflictException,
   Controller,
@@ -36,21 +33,10 @@ export class DeleteVideoClassController {
       const videoClass =
         await this.getVideoClassByIdUseCase.execute(videoClassId);
 
-      const { thumbnail_url, video_url } = videoClass;
-
-      const thumbnailFileName = extractFileNameFromUrl(thumbnail_url);
-
-      const thumbnailContainerName = await this.configService.get(
-        "AZURE_BLOB_STORAGE_VIDEOS_THUMBNAILS_CONTAINER_NAME"
-      );
+      const { video_url } = videoClass;
 
       const bitmovinEncodingsContainerName = await this.configService.get(
         "AZURE_BLOB_STORAGE_BITMOVIN_OUTPUTS_CONTAINER_NAME"
-      );
-
-      await this.manageFileService.removeUploadedFile(
-        thumbnailFileName,
-        thumbnailContainerName
       );
 
       const folderName = extractFolderNameFromUrl(video_url);

@@ -32,15 +32,9 @@ const updateVideoClassSchema = z.object({
 @Controller("/video-classes/update")
 @UseGuards(AuthGuard("jwt-admin"))
 @UseInterceptors(
-  FileFieldsInterceptor(
-    [
-      { name: "video_file", maxCount: 1 },
-      { name: "img_file", maxCount: 1 },
-    ],
-    {
-      storage: multer.memoryStorage(),
-    }
-  )
+  FileFieldsInterceptor([{ name: "video_file", maxCount: 1 }], {
+    storage: multer.memoryStorage(),
+  })
 )
 export class UpdateVideoClassController {
   constructor(
@@ -56,18 +50,12 @@ export class UpdateVideoClassController {
     @UploadedFiles()
     files: {
       video_file: Express.Multer.File[];
-      img_file: Express.Multer.File[];
     },
     @Req() req: Request
   ) {
-    const { img_file, video_file } = files;
+    const { video_file } = files;
 
-    if (
-      !video_file ||
-      !img_file ||
-      video_file.length === 0 ||
-      img_file.length === 0
-    ) {
+    if (!video_file || video_file.length === 0) {
       throw new ConflictException("Video and image files are required.");
     }
 
@@ -84,13 +72,10 @@ export class UpdateVideoClassController {
       const { name } = req.body;
 
       const videoFile = video_file[0];
-      const thumbnailFile = img_file[0];
 
       const videoFileExtension = videoFile.originalname.split(".")[1];
-      const thumbnailFileExtension = thumbnailFile.originalname.split(".")[1];
 
       const videoFileName = name + "-video." + videoFileExtension;
-      const thumbnailFileName = name + "-thumbnail." + thumbnailFileExtension;
 
       const MAX_VIDEO_DURATION_IN_SECONDS = 15 * 60; // 15 minutes
 
@@ -108,27 +93,14 @@ export class UpdateVideoClassController {
         "AZURE_BLOB_STORAGE_VIDEO_CLASSES_CONTAINER_NAME"
       );
 
-      const blobStorageThumbnailContainerName = this.configService.get(
-        "AZURE_BLOB_STORAGE_VIDEOS_THUMBNAILS_CONTAINER_NAME"
-      );
-
       await this.manageFileService.removeAllExistingUploadedFiles(
         blobStorageVideoContainer
-      );
-      await this.manageFileService.removeAllExistingUploadedFiles(
-        blobStorageThumbnailContainerName
       );
 
       const uploadedVideo = await this.manageFileService.uploadFile(
         videoFile.buffer,
         videoFileName,
         blobStorageVideoContainer
-      );
-
-      const uploadedThumbnail = await this.manageFileService.uploadFile(
-        thumbnailFile.buffer,
-        thumbnailFileName,
-        blobStorageThumbnailContainerName
       );
 
       const videoInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
@@ -144,7 +116,6 @@ export class UpdateVideoClassController {
         ...req.body,
         duration: videoClassDurationInSeconds,
         video_url: uploadedVideo,
-        thumbnail_url: uploadedThumbnail,
         hls_encoding_url: null,
         hls_encoding_id: hlsEncoding.id,
       });

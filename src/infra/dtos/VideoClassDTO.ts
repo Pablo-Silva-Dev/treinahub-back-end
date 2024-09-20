@@ -6,7 +6,6 @@ export interface IVideoClassDTO {
   description: string;
   duration: number;
   video_url?: string;
-  thumbnail_url?: string;
   training_id: string;
   training?: ITrainingDTO;
   formatted_duration?: string;
@@ -19,7 +18,6 @@ export interface ICreateVideoClassDTO {
   description: string;
   duration: number;
   video_url: string;
-  thumbnail_url: string;
   training_id: string;
   hls_encoding_id: string;
   hls_encoding_url: string;
@@ -31,7 +29,6 @@ export interface IUpdateVideoClassDTO {
   description: string;
   duration: number;
   video_url: string;
-  thumbnail_url: string;
   training_id: string;
   hls_encoding_id: string;
   hls_encoding_url: string;

@@ -54,7 +54,6 @@ model VideoClass {
   description      String
   duration         Int
   video_url        String?
-  thumbnail_url    String?
   training_id      String
   training         Training         @relation(fields: [training_id], references: [id], onDelete: Cascade)
   watched_classes  WatchedClasses[]
