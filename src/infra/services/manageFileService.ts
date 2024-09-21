@@ -6,6 +6,7 @@ import * as path from "path";
 
 import { secondsToFullTimeStringV2 } from "@/utils/convertTime";
 import { formatDateNow } from "@/utils/formatDate";
+import { formatSlugFolderName } from "@/utils/formatSlug";
 import { formatUserCertificateName } from "@/utils/formatUserCertificateName";
 import { TEnvSchema } from "env";
 import { IGenerateCertificateDTO } from "../dtos/CertificateDTO";
@@ -195,11 +196,22 @@ export class ManageFileService {
       .getBlobServiceClient()
       .getContainerClient(containerName);
 
+    // Decode the folder name to handle spaces and other encoded characters
+    // const decodedFolderName = decodeURIComponent(folderName);
+    const formattedFolderName = formatSlugFolderName(folderName);
+
+    // Ensure the folder name ends with a slash to represent the folder path
+    const folderPath = formattedFolderName + "/";
+
     for await (const blob of containerClient.listBlobsFlat({
-      prefix: folderName + "/",
+      prefix: folderPath,
     })) {
-      const file = containerClient.getBlobClient(blob.name);
-      await file.delete();
+      console.log("Deleting blob:", blob.name);
+      const blobClient = containerClient.getBlobClient(blob.name);
+      await blobClient.delete();
+      console.log("Deleted blob:", blob.name);
     }
+
+    console.log("Completed deletion of all blobs in folder:", folderPath);
   }
 }

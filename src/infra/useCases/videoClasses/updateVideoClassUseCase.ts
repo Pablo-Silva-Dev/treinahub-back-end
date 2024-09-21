@@ -17,25 +17,13 @@ export class UpdateVideoClassUseCase {
     private trainingsImplementation: TrainingsImplementation
   ) {}
   async execute(data: IUpdateVideoClassDTO): Promise<IVideoClassDTO> {
-    const { name, training_id, id } = data;
+    const { training_id, id } = data;
 
     const training =
       await this.trainingsImplementation.getTrainingById(training_id);
 
-    const videoClassByName =
-      await this.videoClassesImplementation.getVideoClassByNameAndTrainingId(
-        name,
-        training_id
-      );
-
     if (!training) {
       throw new ConflictException("Training not found");
-    }
-
-    if (videoClassByName) {
-      throw new ConflictException(
-        `A video class with the name "${name}" already exists in the specified training.`
-      );
     }
 
     const videoClass =

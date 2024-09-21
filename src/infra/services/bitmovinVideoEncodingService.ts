@@ -130,7 +130,7 @@ export class BitmovinVideoEncodingService {
 
     try {
       // create a new encoding with a specified cloud region
-      const encodingName = videoName + "-encoding";
+      const encodingName = videoName;
       encoding = await bitmovinApi.encoding.encodings.create(
         new Encoding({
           name: encodingName,

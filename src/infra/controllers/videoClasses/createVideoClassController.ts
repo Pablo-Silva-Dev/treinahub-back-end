@@ -74,7 +74,9 @@ export class CreateVideoClassController {
 
       const videoFileExtension = videoFile.originalname.split(".")[1];
 
-      const videoFileName = name + "-video." + videoFileExtension;
+      const formattedName = formatSlugFileName(name);
+
+      const videoFileName = formattedName + "." + videoFileExtension;
 
       const MAX_VIDEO_DURATION_IN_SECONDS = 15 * 60; // 15 minutes
 
@@ -98,8 +100,9 @@ export class CreateVideoClassController {
         blobStorageVideoContainerName
       );
 
-      const videoInputName = formatSlugFileName(uploadedVideo.split("/")[4]);
-      const videoInputPath = req.body.name + "-video." + videoFileExtension;
+      const videoInputName =
+        formatSlugFileName(formattedName) + "." + videoFileExtension;
+      const videoInputPath = formattedName + "." + videoFileExtension;
 
       const hlsEncoding =
         await this.bitmovinVideoEncodingService.encodeHLSVideo(

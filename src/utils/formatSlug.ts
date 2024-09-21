@@ -20,9 +20,30 @@ export function formatSlugFileName(str: string): string {
 
   str = str.toLowerCase();
 
+  return str;
+}
+
+export function formatSlugFolderName(str: string): string {
+  // Remove accents
+  const from = "ÁÀÂÃÄáàâãäÉÈÊËéèêëÍÌÎÏíìîïÓÒÔÕÖóòôõöÚÙÛÜúùûüÑñÇç";
+  const to = "AAAAAaaaaaEEEEeeeeIIIIiiiiOOOOOoooooUUUUuuuuNnCc";
+
+  str = str
+    .split("")
+    .map((letter) => {
+      const accentIndex = from.indexOf(letter);
+      return accentIndex !== -1 ? to[accentIndex] : letter;
+    })
+    .join("");
+
+  // Remove special characters and replace spaces with hyphens
+  str = str.replace(/[^a-zA-Z0-9\s]/g, "").replace(/\s+/g, "");
+
   if (str.length > 2) {
     str = str.slice(0, -3) + "." + str.slice(-3);
   }
+
+  str = str.toLowerCase();
 
   return str;
 }

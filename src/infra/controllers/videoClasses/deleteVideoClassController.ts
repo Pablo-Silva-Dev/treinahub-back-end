@@ -1,5 +1,6 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { DeleteVideoClassUseCase } from "@/infra/useCases/videoClasses/deleteVideoClassUseCase";
+import { formatSlugFileName } from "@/utils/formatSlug";
 import { extractFolderNameFromUrl } from "@/utils/formatString";
 import {
   ConflictException,
@@ -41,9 +42,11 @@ export class DeleteVideoClassController {
 
       const folderName = extractFolderNameFromUrl(video_url);
 
+      const formattedFolderName = formatSlugFileName(folderName);
+
       await this.manageFileService.removeFolderAndContents(
         bitmovinEncodingsContainerName,
-        folderName
+        formattedFolderName
       );
 
       await this.deleteVideoClassUseCase.execute(videoClassId);

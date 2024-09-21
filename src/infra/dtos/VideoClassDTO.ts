@@ -28,8 +28,8 @@ export interface IUpdateVideoClassDTO {
   name: string;
   description: string;
   duration: number;
-  video_url: string;
-  training_id: string;
-  hls_encoding_id: string;
-  hls_encoding_url: string;
+  video_url?: string;
+  training_id?: string;
+  hls_encoding_id?: string;
+  hls_encoding_url?: string;
 }
