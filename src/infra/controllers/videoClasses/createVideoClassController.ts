@@ -1,3 +1,4 @@
+import { VideoClassesImplementation } from "@/infra/repositories/implementations/videoClassesImplementation";
 import { BitmovinVideoEncodingService } from "@/infra/services/bitmovinVideoEncodingService";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
@@ -38,6 +39,7 @@ const createVideoClassValidationSchema = z.object({
 export class CreateVideoClassController {
   constructor(
     private createVideoClassUseCase: CreateVideoClassUseCase,
+    private videoClassesImplementation: VideoClassesImplementation,
     private manageFileService: ManageFileService,
     private configService: ConfigService<TEnvSchema, true>,
     private bitmovinVideoEncodingService: BitmovinVideoEncodingService
@@ -54,7 +56,7 @@ export class CreateVideoClassController {
     const { video_file } = files;
 
     if (!video_file || video_file.length === 0) {
-      throw new ConflictException("Video and image files are required.");
+      throw new ConflictException("Video file is required.");
     }
 
     const isBodyValidated = createVideoClassValidationSchema.safeParse(
@@ -68,7 +70,19 @@ export class CreateVideoClassController {
     }
 
     try {
-      const { name } = req.body;
+      const { name, training_id } = req.body;
+
+      const videoClassByName =
+        await this.videoClassesImplementation.getVideoClassByNameAndTrainingId(
+          name,
+          training_id
+        );
+
+      if (videoClassByName) {
+        throw new ConflictException(
+          `A video class with the name "${name}" already exists in the specified training.`
+        );
+      }
 
       const videoFile = video_file[0];
 
