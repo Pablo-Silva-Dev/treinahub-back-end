@@ -2,6 +2,7 @@ import { VideoClassesImplementation } from "@/infra/repositories/implementations
 import { BitmovinVideoEncodingService } from "@/infra/services/bitmovinVideoEncodingService";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
+import { checkVideoAudio } from "@/utils/checkVideoAudio";
 import { formatSlugFileName } from "@/utils/formatSlug";
 import { getVideoDuration } from "@/utils/getVideoDuration";
 import {
@@ -98,10 +99,16 @@ export class CreateVideoClassController {
         videoFile.buffer
       );
 
+      const videoHasAudio = await checkVideoAudio(videoFile.buffer);
+
       if (videoClassDurationInSeconds > MAX_VIDEO_DURATION_IN_SECONDS) {
         throw new NotAcceptableException(
           "Video duration can not be more than 15 minutes."
         );
+      }
+
+      if (!videoHasAudio) {
+        throw new NotAcceptableException("Video must have an audio.");
       }
 
       const blobStorageVideoContainerName = this.configService.get(
