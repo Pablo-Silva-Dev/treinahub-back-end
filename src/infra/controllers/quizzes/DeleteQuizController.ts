@@ -1,5 +1,5 @@
 import { ConflictException, Controller, Delete, Param } from "@nestjs/common";
-import { DeleteQuizUseCase } from "./../../useCases/quizzes/deleteQuizUseCase";
+import { DeleteQuizUseCase } from "../../useCases/quizzes/deleteQuizUseCase";
 
 @Controller("/quizzes/delete")
 export class DeleteQuizController {

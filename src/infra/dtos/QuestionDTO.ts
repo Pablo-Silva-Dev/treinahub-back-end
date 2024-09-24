@@ -1,11 +1,17 @@
-import { IQuestionOptionDTO } from "./QuestionOptionDTO";
-import { IQuizResponseDTO } from "./QuizResponseDTO";
-
-export interface IQuestionDTO {
+export interface IQuizQuestionDTO {
   id: string;
   quiz_id: string;
   content: string;
-  options: IQuestionOptionDTO[];
   correct_option_id: string;
-  quiz_responses?: IQuizResponseDTO[];
+}
+
+export interface ICreateQuizQuestionDTO {
+  quiz_id: string;
+  content: string;
+  correct_option_id: string;
+}
+export interface IUpdateQuizQuestionDTO {
+  id: string;
+  content?: string;
+  correct_option_id?: string;
 }

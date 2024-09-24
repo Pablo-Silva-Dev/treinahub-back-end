@@ -7,6 +7,7 @@ import { CertificatesModule } from "./modules/certificates.module";
 import { ContactsSupportModule } from "./modules/contactsSupport.module";
 import { FaqQuestionsModule } from "./modules/faqQuestions.module";
 import { LogsModule } from "./modules/logs.module";
+import { QuizzesQuestionsModule } from "./modules/quizQuestions.module";
 import { QuizzesModule } from "./modules/quizzes.module";
 import { RecoveriesCodeModule } from "./modules/recoveriesCode.module";
 import { TrainingMetricsModule } from "./modules/trainingMetrics.module";
@@ -34,6 +35,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
     LogsModule,
     RecoveriesCodeModule,
     QuizzesModule,
+    QuizzesQuestionsModule,
   ],
 })
 export class AppModule {}

@@ -1,10 +1,10 @@
-import { IQuestionDTO } from "./QuestionDTO";
+import { IQuizQuestionDTO } from "./QuestionDTO";
 import { IQuizAttemptDTO } from "./QuizAttemptDTO";
 
 export interface IQuizDTO {
   id: string;
   training_id: string;
-  question?: IQuestionDTO[];
+  question?: IQuizQuestionDTO[];
   quiz_attempts?: IQuizAttemptDTO[];
 }
 
