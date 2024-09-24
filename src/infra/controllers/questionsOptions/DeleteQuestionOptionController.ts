@@ -6,16 +6,18 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { DeleteQuizQuestionUseCase } from "../../useCases/quizQuestions/deleteQuizQuestionUseCase";
+import { DeleteQuestionOptionUseCase } from "../../useCases/questionOptions/deleteQuestionOptionUseCase";
 
-@Controller("/quizzes-questions/delete")
+@Controller("/question-options/delete")
 @UseGuards(AuthGuard("jwt-admin"))
-export class DeleteQuizQuestionController {
-  constructor(private deleteQuizQuestionUseCase: DeleteQuizQuestionUseCase) {}
-  @Delete(":quizQuestionId")
-  async handle(@Param("quizQuestionId") questionId: string) {
+export class DeleteQuestionOptionController {
+  constructor(
+    private deleteQuestionOptionUseCase: DeleteQuestionOptionUseCase
+  ) {}
+  @Delete(":questionOptionId")
+  async handle(@Param("questionOptionId") optionId: string) {
     try {
-      await this.deleteQuizQuestionUseCase.execute(questionId);
+      await this.deleteQuestionOptionUseCase.execute(optionId);
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
