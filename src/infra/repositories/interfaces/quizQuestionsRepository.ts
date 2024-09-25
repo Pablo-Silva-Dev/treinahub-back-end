@@ -5,7 +5,7 @@ import {
 
 export interface IQuizQuestionsRepository {
   createQuizQuestion(data: ICreateQuizQuestionDTO): Promise<IQuizQuestionDTO>;
-  listQuizQuestions(): Promise<IQuizQuestionDTO[]>;
+  listQuizQuestionsByQuiz(quizId: string): Promise<IQuizQuestionDTO[]>;
   getQuizQuestionById(question_id: string): Promise<IQuizQuestionDTO | void>;
   deleteQuizQuestion(questionId: string): Promise<void>;
 }

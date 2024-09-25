@@ -11,6 +11,7 @@ import { QuestionOptionsModule } from "./modules/questionOptions.module";
 import { QuizzesAttemptsModule } from "./modules/quizAttempts.module";
 import { QuizzesQuestionsModule } from "./modules/quizQuestions.module";
 import { QuizzesResponsesModule } from "./modules/quizResponses.module";
+import { QuizResultsModule } from "./modules/quizResult.module";
 import { QuizzesModule } from "./modules/quizzes.module";
 import { RecoveriesCodeModule } from "./modules/recoveriesCode.module";
 import { TrainingMetricsModule } from "./modules/trainingMetrics.module";
@@ -42,6 +43,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
     QuestionOptionsModule,
     QuizzesAttemptsModule,
     QuizzesResponsesModule,
+    QuizResultsModule,
   ],
 })
 export class AppModule {}

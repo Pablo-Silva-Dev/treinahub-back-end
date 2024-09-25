@@ -27,8 +27,20 @@ export class QuizQuestionsImplementation implements IQuizQuestionsRepository {
     const newQuizQuestion = await this.prisma.question.create({ data });
     return newQuizQuestion;
   }
-  async listQuizQuestions(): Promise<IQuizQuestionDTO[]> {
+  async listQuizQuestionsByQuiz(quizId: string): Promise<IQuizQuestionDTO[]> {
+    const quiz = await this.prisma.quiz.findUnique({
+      where: {
+        id: quizId,
+      },
+    });
+    if (!quiz) {
+      return null;
+    }
+
     const questions = await this.prisma.question.findMany({
+      where: {
+        quiz_id: quizId,
+      },
       include: {
         options: true,
       },
