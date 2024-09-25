@@ -1,5 +1,5 @@
 import { ICreateQuizAttemptDTO } from "@/infra/dtos/QuizAttemptDTO";
-import { QuizAttemptRepositoryImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
+import { QuizAttemptsImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
 import { QuizzesImplementation } from "@/infra/repositories/implementations/quizzesImplementation";
 
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
@@ -8,7 +8,7 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 @Injectable()
 export class CreateQuizAttemptUseCase {
   constructor(
-    private quizAttemptRepository: QuizAttemptRepositoryImplementation,
+    private quizAttemptRepository: QuizAttemptsImplementation,
     private quizzesImplementation: QuizzesImplementation,
     private usersImplementation: UsersImplementation
   ) {}

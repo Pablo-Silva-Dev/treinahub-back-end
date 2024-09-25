@@ -1,7 +1,7 @@
 import { CreateQuizAttemptController } from "@/infra/controllers/quizzesAttempts/CreateQuizAttemptController";
 import { GetQuizAttemptByIdController } from "@/infra/controllers/quizzesAttempts/GetQuizAttemptByIdController";
 import { ListQuizAttemptsByUserController } from "@/infra/controllers/quizzesAttempts/ListQuizAttemptsByUserController";
-import { QuizAttemptRepositoryImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
+import { QuizAttemptsImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
 import { QuizzesImplementation } from "@/infra/repositories/implementations/quizzesImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { PrismaService } from "@/infra/services/prisma";
@@ -13,7 +13,7 @@ import { Module } from "@nestjs/common";
 @Module({
   providers: [
     PrismaService,
-    QuizAttemptRepositoryImplementation,
+    QuizAttemptsImplementation,
     QuizzesImplementation,
     UsersImplementation,
     CreateQuizAttemptUseCase,

@@ -1,11 +1,9 @@
-import { QuizAttemptRepositoryImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
+import { QuizAttemptsImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class GetQuizAttemptByIdUseCase {
-  constructor(
-    private quizAttemptRepository: QuizAttemptRepositoryImplementation
-  ) {}
+  constructor(private quizAttemptRepository: QuizAttemptsImplementation) {}
 
   async execute(quizAttemptId: string) {
     const quizAttempt =

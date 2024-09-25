@@ -1,11 +1,11 @@
-import { QuizAttemptRepositoryImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
+import { QuizAttemptsImplementation } from "@/infra/repositories/implementations/quizAttemptImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { Injectable, NotFoundException } from "@nestjs/common";
 
 @Injectable()
 export class ListQuizAttemptsByUserUseCase {
   constructor(
-    private quizAttemptRepository: QuizAttemptRepositoryImplementation,
+    private quizAttemptRepository: QuizAttemptsImplementation,
     private usersImplementation: UsersImplementation
   ) {}
 

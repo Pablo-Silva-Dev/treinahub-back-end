@@ -7,9 +7,7 @@ import { Injectable } from "@nestjs/common";
 import { IQuizAttemptRepository } from "../interfaces/quizAttemptsRepository";
 
 @Injectable()
-export class QuizAttemptRepositoryImplementation
-  implements IQuizAttemptRepository
-{
+export class QuizAttemptsImplementation implements IQuizAttemptRepository {
   constructor(private prisma: PrismaService) {}
 
   async createQuizAttempt(
