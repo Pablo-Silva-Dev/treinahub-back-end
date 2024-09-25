@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 
-@Controller("/question-options/list")
+@Controller("/question-options/list-by-quiz-question")
 @UseGuards(AuthGuard("jwt-admin"))
 export class ListQuestionOptionsController {
   constructor(private listQuestionOptionsUseCase: ListQuestionOptionsUseCase) {}

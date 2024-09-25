@@ -15,6 +15,7 @@ import { z } from "zod";
 const createQuestionOptionValidationSchema = z.object({
   question_id: z.string(),
   content: z.string(),
+  is_correct: z.boolean(),
 });
 
 @Controller("/question-options/create")

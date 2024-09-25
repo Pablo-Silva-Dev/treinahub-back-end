@@ -34,10 +34,8 @@ export class CreateQuizQuestionController {
     }
 
     try {
-      const createdQuizQuestion = await this.createQuizQuestionUseCase.execute({
-        ...body,
-        correct_option_id: "",
-      });
+      const createdQuizQuestion =
+        await this.createQuizQuestionUseCase.execute(body);
 
       return createdQuizQuestion;
     } catch (error) {

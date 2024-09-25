@@ -1,13 +1,13 @@
 import { ICreateQuizResponseDTO } from "@/infra/dtos/QuizResponseDTO";
 import { CreateQuizResponseUseCase } from "@/infra/useCases/quizResponses/createQuizResponseUseCase";
 import {
-    BadRequestException,
-    Body,
-    ConflictException,
-    Controller,
-    HttpCode,
-    Post,
-    UseGuards,
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+  UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
@@ -16,7 +16,6 @@ const createQuizResponseValidationSchema = z.object({
   quiz_attempt_id: z.string(),
   question_id: z.string(),
   selected_option_id: z.string(),
-  is_correct: z.boolean(),
 });
 
 @Controller("/quizzes-responses/create")

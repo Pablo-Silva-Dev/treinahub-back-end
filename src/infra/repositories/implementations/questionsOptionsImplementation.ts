@@ -29,6 +29,15 @@ export class QuestionsOptionsImplementation
   async listQuestionOptions(
     quizQuestionId: string
   ): Promise<IQuestionOptionDTO[]> {
+    const question = await this.prisma.question.findUnique({
+      where: {
+        id: quizQuestionId,
+      },
+    });
+    if (!question) {
+      return null;
+    }
+
     const options = await this.prisma.option.findMany({
       where: {
         question_id: quizQuestionId,

@@ -25,6 +25,9 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       where: {
         id: question_id,
       },
+      include: {
+        options: true,
+      },
     });
 
     const option = await this.prisma.option.findUnique({
@@ -41,7 +44,9 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       data,
     });
 
-    return newQuizResponse;
+    const correctOption = question.options.find((option) => option.is_correct);
+
+    return { ...newQuizResponse, correct_option: correctOption };
   }
 
   async listQuizResponsesByQuizAttempt(
@@ -61,11 +66,22 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       where: { quiz_attempt_id: quizAttemptId },
       include: {
         selected_option: true,
-        question: true,
+        question: {
+          include: {
+            options: true,
+          },
+        },
       },
     });
 
-    return quizResponses;
+    quizResponses;
+
+    return quizResponses.map((qr) => {
+      const correctOption = qr.question.options.find(
+        (option) => option.is_correct
+      );
+      return { ...qr, correct_option: correctOption };
+    });
   }
 
   async getQuizResponseById(
@@ -75,10 +91,21 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       where: { id: quizResponseId },
       include: {
         selected_option: true,
-        question: true,
+        question: {
+          include: {
+            options: true,
+          },
+        },
       },
     });
 
-    return quizResponse || null;
+    if (!quizResponse) {
+      return null;
+    }
+    const correctOption = quizResponse.question.options.find(
+      (option) => option.is_correct
+    );
+
+    return { ...quizResponse, correct_option: correctOption } || null;
   }
 }

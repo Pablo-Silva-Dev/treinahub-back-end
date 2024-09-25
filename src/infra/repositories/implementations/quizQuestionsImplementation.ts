@@ -1,7 +1,6 @@
 import {
   ICreateQuizQuestionDTO,
   IQuizQuestionDTO,
-  IUpdateQuizQuestionDTO,
 } from "@/infra/dtos/QuestionDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
@@ -44,26 +43,7 @@ export class QuizQuestionsImplementation implements IQuizQuestionsRepository {
     });
     return question;
   }
-  async updateQuizQuestion(
-    data: IUpdateQuizQuestionDTO
-  ): Promise<IQuizQuestionDTO> {
-    const { id } = data;
-    const quizQuestion = await this.prisma.question.findUnique({
-      where: { id },
-    });
 
-    if (!quizQuestion) {
-      return null;
-    }
-    const updatedQuestion = await this.prisma.question.update({
-      where: {
-        id,
-      },
-      data,
-    });
-
-    return updatedQuestion;
-  }
   async deleteQuizQuestion(questionId: string): Promise<void> {
     const quiz = await this.prisma.question.findUnique({
       where: {

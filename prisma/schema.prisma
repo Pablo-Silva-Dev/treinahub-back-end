@@ -149,13 +149,12 @@ model Quiz {
 }
 
 model Question {
-  id                String         @id @default(uuid())
-  quiz_id           String
-  quiz              Quiz           @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
-  content           String
-  options           Option[]
-  correct_option_id String
-  quiz_responses    QuizResponse[]
+  id             String         @id @default(uuid())
+  quiz_id        String
+  quiz           Quiz           @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
+  content        String
+  options        Option[]
+  quiz_responses QuizResponse[]
 }
 
 model Option {
@@ -164,6 +163,7 @@ model Option {
   question       Question       @relation(fields: [question_id], references: [id], onDelete: Cascade)
   content        String
   quiz_responses QuizResponse[]
+  is_correct     Boolean
 }
 
 model QuizAttempt {
@@ -185,5 +185,5 @@ model QuizResponse {
   question           Question    @relation(fields: [question_id], references: [id], onDelete: Cascade)
   selected_option_id String?
   selected_option    Option?     @relation(fields: [selected_option_id], references: [id], onDelete: SetNull)
-  is_correct         Boolean
+  is_correct         Boolean     @default(false)
 }

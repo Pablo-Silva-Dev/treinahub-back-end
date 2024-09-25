@@ -10,9 +10,9 @@ export class QuizzesImplementation implements IQuizzesRepository {
   async createQuiz(data: ICreateQuizDTO): Promise<IQuizDTO> {
     const { training_id } = data;
 
-    const trainingExists = await this.prisma.quiz.findFirst({
+    const trainingExists = await this.prisma.training.findUnique({
       where: {
-        training_id,
+        id: training_id,
       },
     });
 
