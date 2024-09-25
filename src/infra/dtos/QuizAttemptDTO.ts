@@ -8,3 +8,8 @@ export interface IQuizAttemptDTO {
   finishedAt?: Date;
   quiz_responses?: IQuizResponseDTO[];
 }
+
+export interface ICreateQuizAttemptDTO {
+  quiz_id: string;
+  user_id: string;
+}

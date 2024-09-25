@@ -8,6 +8,7 @@ import { ContactsSupportModule } from "./modules/contactsSupport.module";
 import { FaqQuestionsModule } from "./modules/faqQuestions.module";
 import { LogsModule } from "./modules/logs.module";
 import { QuestionOptionsModule } from "./modules/questionOptions.module";
+import { QuizzesAttemptsModule } from "./modules/quizAttempts.module";
 import { QuizzesQuestionsModule } from "./modules/quizQuestions.module";
 import { QuizzesModule } from "./modules/quizzes.module";
 import { RecoveriesCodeModule } from "./modules/recoveriesCode.module";
@@ -38,6 +39,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
     QuizzesModule,
     QuizzesQuestionsModule,
     QuestionOptionsModule,
+    QuizzesAttemptsModule,
   ],
 })
 export class AppModule {}
