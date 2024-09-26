@@ -20,7 +20,10 @@ export class QuizzesImplementation implements IQuizzesRepository {
       return null;
     }
 
-    const newQuiz = await this.prisma.quiz.create({ data });
+    const newQuiz = await this.prisma.quiz.create({
+      data,
+      include: { training: true },
+    });
     return newQuiz;
   }
   async listQuizzes(): Promise<IQuizDTO[]> {
