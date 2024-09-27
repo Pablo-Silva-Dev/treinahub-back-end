@@ -31,6 +31,7 @@ export class QuizzesImplementation implements IQuizzesRepository {
       include: {
         questions: true,
         quiz_attempts: true,
+        training: true,
       },
     });
     return quizzes;

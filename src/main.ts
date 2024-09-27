@@ -17,9 +17,7 @@ async function bootstrap() {
     key: fs.readFileSync(path.resolve(certificateKeyPath)),
     cert: fs.readFileSync(path.resolve(certificatePath)),
   };
-  const app = await NestFactory.create(AppModule, {
-  
-  });
+  const app = await NestFactory.create(AppModule);
   const port = configService.get("PORT", { infer: true });
   app.useGlobalInterceptors(new ResponseSuccessInterceptor());
   app.useGlobalFilters(new ResponseErrorInterceptor());
