@@ -31,10 +31,10 @@ export class CreateCertificateUseCase {
     }
 
     const certificateAlreadyExists =
-      await this.certificatesImplementation.getCertificateByUserAndTraining(
+      await this.certificatesImplementation.getCertificateByUserAndTraining({
         user_id,
-        training_id
-      );
+        training_id,
+      });
 
     if (certificateAlreadyExists) {
       throw new ConflictException(
