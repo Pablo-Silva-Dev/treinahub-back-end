@@ -44,6 +44,11 @@ export class QuizQuestionsImplementation implements IQuizQuestionsRepository {
       },
       include: {
         options: true,
+        quiz: {
+          include: {
+            training: true,
+          },
+        },
       },
     });
     return questions;

@@ -29,7 +29,16 @@ export class QuizzesImplementation implements IQuizzesRepository {
   async listQuizzes(): Promise<IQuizDTO[]> {
     const quizzes = await this.prisma.quiz.findMany({
       include: {
-        questions: true,
+        questions: {
+          include: {
+            options: true,
+            quiz: {
+              include: {
+                training: true,
+              },
+            },
+          },
+        },
         quiz_attempts: true,
         training: true,
       },
