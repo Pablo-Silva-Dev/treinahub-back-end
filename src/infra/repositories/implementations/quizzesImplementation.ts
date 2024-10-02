@@ -20,6 +20,16 @@ export class QuizzesImplementation implements IQuizzesRepository {
       return null;
     }
 
+    const quizAlreadyExistsForTraining = await this.prisma.quiz.findFirst({
+      where: {
+        training_id,
+      },
+    });
+
+    if (quizAlreadyExistsForTraining) {
+      return null;
+    }
+
     const newQuiz = await this.prisma.quiz.create({
       data,
       include: { training: true },
@@ -55,6 +65,33 @@ export class QuizzesImplementation implements IQuizzesRepository {
     if (!quiz) {
       return null;
     }
+    return quiz;
+  }
+
+  async getQuizByTraining(training_id: string): Promise<IQuizDTO | void> {
+    const training = await this.prisma.training.findUnique({
+      where: {
+        id: training_id,
+      },
+    });
+    if (!training) {
+      return null;
+    }
+
+    const quiz = await this.prisma.quiz.findFirst({
+      where: {
+        training_id,
+      },
+      include: {
+        training: true,
+        questions: {
+          include: {
+            options: true,
+          },
+        },
+      },
+    });
+
     return quiz;
   }
 
