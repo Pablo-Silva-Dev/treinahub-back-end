@@ -40,6 +40,17 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       return null;
     }
 
+    const quizResponseAlreadyExists = await this.prisma.quizResponse.findFirst({
+      where: {
+        quiz_attempt_id,
+        question_id,
+      },
+    });
+
+    if (quizResponseAlreadyExists) {
+      return null;
+    }
+
     const newQuizResponse = await this.prisma.quizResponse.create({
       data,
     });
@@ -107,5 +118,23 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
     );
 
     return { ...quizResponse, correct_option: correctOption } || null;
+  }
+
+  async deleteManyQuizzesResponsesByQuizAttempt(quizAttemptId: string) {
+    const quizAttempt = await this.prisma.quizAttempt.findUnique({
+      where: {
+        id: quizAttemptId,
+      },
+    });
+
+    if (!quizAttempt) {
+      return null;
+    }
+
+    await this.prisma.quizResponse.deleteMany({
+      where: {
+        quiz_attempt_id: quizAttemptId,
+      },
+    });
   }
 }

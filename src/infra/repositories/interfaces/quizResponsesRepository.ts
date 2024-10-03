@@ -9,4 +9,5 @@ export interface IQuizResponseRepository {
     quizAttemptId: string
   ): Promise<IQuizResponseDTO[]>;
   getQuizResponseById(quizResponseId: string): Promise<IQuizResponseDTO | void>;
+  deleteManyQuizzesResponsesByQuizAttempt(attemptId: string): Promise<void>;
 }

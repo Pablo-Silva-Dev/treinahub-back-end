@@ -113,4 +113,36 @@ export class QuizResultsImplementation implements IQuizResultsRepository {
     });
     return quizResult;
   }
+
+  async getQuizResultById(quizResultId: string) {
+    const quizResult = await this.prisma.quizResult.findUnique({
+      where: {
+        id: quizResultId,
+      },
+    });
+
+    if (!quizResult) {
+      return null;
+    }
+
+    return quizResult;
+  }
+
+  async deleteQuizResult(quizResultId: string) {
+    const quizResult = await this.prisma.quizResult.findUnique({
+      where: {
+        id: quizResultId,
+      },
+    });
+
+    if (!quizResult) {
+      return null;
+    }
+
+    await this.prisma.quizResult.delete({
+      where: {
+        id: quizResultId,
+      },
+    });
+  }
 }
