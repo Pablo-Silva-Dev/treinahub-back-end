@@ -10,5 +10,6 @@ export interface IQuizResultsRepository {
     data: IGetQuizResultDTO
   ): Promise<IQuizResultDTO>;
   getQuizResultById(quizResultId: string): Promise<IQuizResultDTO>;
+  listQuizzesResultsByUser(userId: string): Promise<IQuizResultDTO[]>;
   deleteQuizResult(quizResultId: string): Promise<void>;
 }

@@ -110,6 +110,13 @@ export class QuizResultsImplementation implements IQuizResultsRepository {
         quiz_attempt_id,
         user_id,
       },
+      include: {
+        quiz: {
+          include: {
+            training: true,
+          },
+        },
+      },
     });
     return quizResult;
   }
@@ -126,6 +133,37 @@ export class QuizResultsImplementation implements IQuizResultsRepository {
     }
 
     return quizResult;
+  }
+
+  async listQuizzesResultsByUser(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const quizResults = await this.prisma.quizResult.findMany({
+      where: {
+        user_id: userId,
+      },
+      include: {
+        quiz: {
+          include: {
+            training: true,
+          },
+        },
+      },
+    });
+
+    if (!quizResults) {
+      return null;
+    }
+
+    return quizResults;
   }
 
   async deleteQuizResult(quizResultId: string) {

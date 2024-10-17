@@ -77,6 +77,15 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       where: { quiz_attempt_id: quizAttemptId },
       include: {
         selected_option: true,
+        quiz_attempt:{
+          include:{
+            quiz:{
+              include:{
+                training: true
+              }
+            }
+          }
+        },
         question: {
           include: {
             options: true,

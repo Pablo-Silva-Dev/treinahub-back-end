@@ -58,4 +58,24 @@ export class QuizAttemptsImplementation implements IQuizAttemptRepository {
     });
     return quizAttempts;
   }
+
+  async deleteQuizAttempt(quizAttemptId: string): Promise<void> {
+    const quizAttempt = await this.prisma.quizAttempt.findUnique({
+      where: { id: quizAttemptId },
+      include: {
+        quiz_responses: true,
+        quiz: true,
+      },
+    });
+
+    if (!quizAttempt) {
+      return null;
+    }
+
+    await this.prisma.quizAttempt.delete({
+      where: {
+        id: quizAttemptId,
+      },
+    });
+  }
 }
