@@ -126,6 +126,7 @@ export class QuizResponsesImplementation implements IQuizResponseRepository {
       (option) => option.is_correct
     );
 
+    //@ts-ignore
     return { ...quizResponse, correct_option: correctOption } || null;
   }
 
