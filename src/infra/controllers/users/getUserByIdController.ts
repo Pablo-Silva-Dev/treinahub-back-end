@@ -1,6 +1,5 @@
 import { GetUserByIdUseCase } from "@/infra/useCases/users/getUserByIdUseCase";
 import {
-  ConflictException,
   Controller,
   Get,
   HttpCode,
@@ -23,8 +22,7 @@ export class GetUserByIdController {
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new NotFoundException({
-        message:
-         "User not found",
+        message: "User not found",
         error: error.message,
       });
     }

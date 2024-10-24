@@ -34,6 +34,8 @@ model User {
   training_metrics TrainingMetrics[]
   logs             Log[]
   recovery_codes   RecoveryCode[]
+  quiz_attempts    QuizAttempt[]
+  quiz_results     QuizResult[]
 }
 
 model Training {
@@ -46,6 +48,7 @@ model Training {
   video_classes    VideoClass[]
   certificates     Certificate[]
   training_metrics TrainingMetrics[]
+  quizes           Quiz[]
 }
 
 model VideoClass {
@@ -136,4 +139,67 @@ model RecoveryCode {
   user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at      DateTime @default(now())
   expiration_date DateTime
+}
+
+model Quiz {
+  id            String        @id @default(uuid())
+  training_id   String
+  training      Training      @relation(fields: [training_id], references: [id], onDelete: Cascade)
+  questions     Question[]
+  quiz_attempts QuizAttempt[]
+  quiz_results  QuizResult[]
+}
+
+model Question {
+  id             String         @id @default(uuid())
+  quiz_id        String
+  quiz           Quiz           @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
+  content        String
+  options        Option[]
+  quiz_responses QuizResponse[]
+}
+
+model Option {
+  id             String         @id @default(uuid())
+  question_id    String
+  question       Question       @relation(fields: [question_id], references: [id], onDelete: Cascade)
+  content        String
+  quiz_responses QuizResponse[]
+  is_correct     Boolean
+}
+
+model QuizAttempt {
+  id             String         @id @default(uuid())
+  quiz_id        String
+  quiz           Quiz           @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
+  user_id        String
+  user           User           @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  startedAt      DateTime       @default(now())
+  finishedAt     DateTime?
+  quiz_responses QuizResponse[]
+  quiz_result    QuizResult?
+}
+
+model QuizResponse {
+  id                 String      @id @default(uuid())
+  quiz_attempt_id    String
+  quiz_attempt       QuizAttempt @relation(fields: [quiz_attempt_id], references: [id], onDelete: Cascade)
+  question_id        String
+  question           Question    @relation(fields: [question_id], references: [id], onDelete: Cascade)
+  selected_option_id String?
+  selected_option    Option?     @relation(fields: [selected_option_id], references: [id], onDelete: SetNull)
+  is_correct         Boolean     @default(false)
+}
+
+model QuizResult {
+  id                                 String      @id @default(uuid())
+  quiz_id                            String
+  quiz                               Quiz        @relation(fields: [quiz_id], references: [id], onDelete: Cascade)
+  quiz_attempt_id                    String      @unique()
+  quiz_attempt                       QuizAttempt @relation(fields: [quiz_attempt_id], references: [id], onDelete: Cascade)
+  user_id                            String
+  user                               User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  total_quiz_questions               Int
+  total_correct_questions            Int
+  total_correct_questions_percentage Int
 }

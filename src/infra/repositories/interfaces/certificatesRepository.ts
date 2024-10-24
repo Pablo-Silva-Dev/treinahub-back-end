@@ -1,6 +1,7 @@
 import {
   ICertificateDTO,
   ICreateCertificateDTO,
+  IGetCertificateByUserAndTrainingDTO,
 } from "@/infra/dtos/CertificateDTO";
 
 export interface ICertificatesRepository {
@@ -9,7 +10,6 @@ export interface ICertificatesRepository {
   listCertificatesByUser(userId: string): Promise<ICertificateDTO[]>;
   getCertificateById(certificateId: string): Promise<ICertificateDTO>;
   getCertificateByUserAndTraining(
-    userId: string,
-    trainingId: string
+    data: IGetCertificateByUserAndTrainingDTO
   ): Promise<ICertificateDTO>;
 }

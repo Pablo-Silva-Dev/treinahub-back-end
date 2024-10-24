@@ -1,6 +1,7 @@
 import {
   ICertificateDTO,
   ICreateCertificateDTO,
+  IGetCertificateByUserAndTrainingDTO,
 } from "@/infra/dtos/CertificateDTO";
 import { ICertificatesRepository } from "@/infra/repositories/interfaces/certificatesRepository";
 import { PrismaService } from "@/infra/services/prisma";
@@ -100,13 +101,13 @@ export class CertificatesImplementation implements ICertificatesRepository {
     return certificate;
   }
   async getCertificateByUserAndTraining(
-    userId: string,
-    trainingId: string
+    data: IGetCertificateByUserAndTrainingDTO
   ): Promise<ICertificateDTO> {
+    const { user_id, training_id } = data;
     const certificate = await this.prisma.certificate.findFirst({
       where: {
-        user_id: userId,
-        training_id: trainingId,
+        user_id,
+        training_id,
       },
     });
     return certificate;
