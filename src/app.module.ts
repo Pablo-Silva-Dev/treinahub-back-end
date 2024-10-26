@@ -4,6 +4,7 @@ import { envSchema } from "./env";
 import { AuthModule } from "./modules/auth.module";
 import { AvatarsModule } from "./modules/avatars.module";
 import { CertificatesModule } from "./modules/certificates.module";
+import { CompaniesModules } from "./modules/companies.module";
 import { ContactsSupportModule } from "./modules/contactsSupport.module";
 import { FaqQuestionsModule } from "./modules/faqQuestions.module";
 import { LogsModule } from "./modules/logs.module";
@@ -44,6 +45,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
     QuizzesAttemptsModule,
     QuizzesResponsesModule,
     QuizResultsModule,
+    CompaniesModules,
   ],
 })
 export class AppModule {}

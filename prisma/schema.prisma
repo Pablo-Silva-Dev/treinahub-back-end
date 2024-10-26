@@ -13,6 +13,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Plan {
+  gold
+  platinum
+  diamond
+}
+
 model User {
   id               String            @id @default(uuid())
   name             String
@@ -36,6 +42,8 @@ model User {
   recovery_codes   RecoveryCode[]
   quiz_attempts    QuizAttempt[]
   quiz_results     QuizResult[]
+  company_id       String
+  company          Company           @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model Training {
@@ -49,6 +57,8 @@ model Training {
   certificates     Certificate[]
   training_metrics TrainingMetrics[]
   quizes           Quiz[]
+  company_id       String
+  company          Company           @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model VideoClass {
@@ -202,4 +212,19 @@ model QuizResult {
   total_quiz_questions               Int
   total_correct_questions            Int
   total_correct_questions_percentage Int
+}
+
+model Company {
+  id            String     @id @default(uuid())
+  fantasy_name  String
+  cnpj          String     @unique()
+  social_reason String     @unique()
+  email         String
+  phone         String?
+  current_plan  Plan
+  logo_url      String?
+  users         User[]
+  trainings     Training[]
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @default(now())
 }

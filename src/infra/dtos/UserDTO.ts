@@ -22,6 +22,7 @@ export interface IUserDTO {
   certificates?: ICertificateDTO[];
   watched_classes?: IWatchedClassesDTO[];
   training_metrics?: ITrainingMetricsDTO[];
+  company_id: string;
 }
 
 export interface ICreateUserDTO {
@@ -32,6 +33,7 @@ export interface ICreateUserDTO {
   birth_date: Date;
   password: string;
   is_admin?: boolean;
+  company_id: string;
 }
 
 export interface IUpdateUserDTO {

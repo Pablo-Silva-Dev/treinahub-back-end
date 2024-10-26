@@ -14,12 +14,14 @@ export interface ITrainingDTO {
   certificates?: ICertificateDTO[];
   training_metrics?: ITrainingMetricsDTO[];
   formatted_duration?: string;
+  company_id: string;
 }
 
 export interface ICreateTrainingDTO {
   name: string;
   description: string;
   cover_url?: string;
+  company_id: string;
 }
 
 export interface IUpdateTrainingDTO {
