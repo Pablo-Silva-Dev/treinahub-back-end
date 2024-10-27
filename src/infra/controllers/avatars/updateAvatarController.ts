@@ -51,18 +51,22 @@ export class UpdateAvatarController {
         "AZURE_BLOB_STORAGE_AVATARS_CONTAINER_NAME"
       );
 
+      const avatarId = req.body.id;
+
+      const containerFolderName = await this.manageFileService.createFolder(
+        blobStorageContainer,
+        avatarId
+      );
+
       const fileExtension = file.originalname.split(".")[1];
 
-      const fileName = req.body.id + "." + fileExtension;
+      const fileName = avatarId + "." + fileExtension;
 
-      await this.manageFileService.removeAllExistingUploadedFiles(
-        blobStorageContainer
-      );
 
       const uploadedFile = await this.manageFileService.uploadFile(
         file.buffer,
-        fileName,
-        blobStorageContainer
+        `${containerFolderName}/${fileName}`,
+        blobStorageContainer + ""
       );
 
       const updatedAvatar = await this.updateAvatarUseCase.execute({
