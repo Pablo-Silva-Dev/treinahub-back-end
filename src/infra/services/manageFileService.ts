@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { createCanvas, loadImage, registerFont } from "canvas";
 import * as fs from "fs";
 import * as path from "path";
@@ -8,16 +7,12 @@ import { secondsToFullTimeStringV2 } from "@/utils/convertTime";
 import { formatDateNow } from "@/utils/formatDate";
 import { formatSlugFolderName } from "@/utils/formatSlug";
 import { formatUserCertificateName } from "@/utils/formatUserCertificateName";
-import { TEnvSchema } from "env";
 import { IGenerateCertificateDTO } from "../dtos/CertificateDTO";
 import { AzureBlobStorageService } from "./azureBlobStorageService";
 
 @Injectable()
 export class ManageFileService {
-  constructor(
-    private azureBlobStorageProvider: AzureBlobStorageService,
-    private config: ConfigService<TEnvSchema, true>
-  ) {}
+  constructor(private azureBlobStorageProvider: AzureBlobStorageService) {}
   async generateCertificate(data: IGenerateCertificateDTO): Promise<string> {
     const certificateName = "certificado" + new Date().getTime();
 
@@ -145,9 +140,7 @@ export class ManageFileService {
       .getBlockBlobClient(fileName);
     await blobClient.uploadData(fileContent as Buffer);
     if (typeof fileContent === "string") {
-      fs.unlink(fileContent, () =>
-        console.log("Temporary certificate file removed")
-      );
+      fs.unlink(fileContent, () => console.log("Temporary file removed"));
     }
     return blobClient.url;
   }
@@ -213,5 +206,30 @@ export class ManageFileService {
     }
 
     console.log("Completed deletion of all blobs in folder:", folderPath);
+  }
+
+  async createFolder(containerName: string, folderName: string) {
+    try {
+      const containerClient = this.azureBlobStorageProvider
+        .getBlobServiceClient()
+        .getContainerClient(containerName);
+
+      const folderPath = folderName.endsWith("/")
+        ? folderName
+        : folderName + "/";
+      //uploads a placeholder file to create a folder automatically
+      const blobClient = containerClient.getBlockBlobClient(
+        `${folderPath}placeholder.txt`
+      );
+      const placeholderContent = "";
+      blobClient.upload(placeholderContent, placeholderContent.length);
+      return folderName;
+    } catch (error) {
+      console.error(
+        `Failed to create folder "${folderName}" in container "${containerName}":`,
+        error
+      );
+      throw error;
+    }
   }
 }

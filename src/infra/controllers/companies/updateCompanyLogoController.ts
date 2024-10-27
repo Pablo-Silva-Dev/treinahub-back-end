@@ -1,4 +1,6 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { GetCompanyByIdUseCase } from "@/infra/useCases/companies/getCompanyByIdUseCase";
+import { formatSlug } from "@/utils/formatSlug";
 import {
   BadRequestException,
   ConflictException,
@@ -28,6 +30,7 @@ const validationSchema = z.object({
 export class UpdateCompanyLogoController {
   constructor(
     private updateCompanyLogoUseCase: UpdateCompanyLogoUseCase,
+    private getCompanyByIdUseCase: GetCompanyByIdUseCase,
     private manageFileService: ManageFileService,
     private configService: ConfigService<TEnvSchema, true>
   ) {}
@@ -44,8 +47,11 @@ export class UpdateCompanyLogoController {
     }
 
     try {
+      const { id: companyId, fantasy_name } =
+        await this.getCompanyByIdUseCase.execute(req.body.id);
+
       const fileExtension = file.originalname.split(".")[1];
-      const fileName = req.body.id + "." + fileExtension;
+      const fileName = `${formatSlug(fantasy_name)}-logo.${fileExtension}`;
 
       const blobStorageContainer = await this.configService.get(
         "AZURE_BLOB_STORAGE_COMPANIES_LOGOS_CONTAINER_NAME"
@@ -54,7 +60,7 @@ export class UpdateCompanyLogoController {
       const uploadedFileUrl = await this.manageFileService.uploadFile(
         file.buffer,
         fileName,
-        blobStorageContainer
+        `${blobStorageContainer}/${companyId}`
       );
 
       const updatedCompanyLogo = this.updateCompanyLogoUseCase.execute({

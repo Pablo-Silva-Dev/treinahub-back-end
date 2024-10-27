@@ -1,5 +1,9 @@
+import { ICreateCompanyDTO } from "@/infra/dtos/CompanyDTO";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
+import { DeleteCompanyUseCase } from "@/infra/useCases/companies/deleteCompanyUseCase";
+import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
+import { formatSlug } from "@/utils/formatSlug";
 import { phoneValidationRegex } from "@/utils/regex";
 import {
   BadRequestException,
@@ -34,12 +38,17 @@ const validationSchema = z.object({
 export class CreateCompanyController {
   constructor(
     private createCompanyUseCase: CreateCompanyUseCase,
+    private updateCompanyUseCase: UpdateCompanyUseCase,
+    private deleteCompanyUseCase: DeleteCompanyUseCase,
     private manageFileService: ManageFileService,
     private configService: ConfigService<TEnvSchema, true>
   ) {}
   @HttpCode(201)
   @Post()
-  async handle(@Req() req: Request, @UploadedFile() file: Express.Multer.File) {
+  async handle(
+    @Req() req: Request<any, ICreateCompanyDTO>,
+    @UploadedFile() file: Express.Multer.File
+  ) {
     const isBodyValidated = validationSchema.safeParse(req.body);
     if (!isBodyValidated.success) {
       throw new BadRequestException({
@@ -49,25 +58,40 @@ export class CreateCompanyController {
     }
 
     try {
+      // Create the company and get the new company's ID
+      const newCompany = await this.createCompanyUseCase.execute(req.body);
+      const { id: companyId } = newCompany;
+
+      // Get the Azure blob storage container name
       const blobStorageContainer = await this.configService.get(
         "AZURE_BLOB_STORAGE_COMPANIES_LOGOS_CONTAINER_NAME"
       );
 
-      const fileExtension = file.originalname.split(".")[1];
+      // Create a folder using the new company's ID
+      const containerFolderName = await this.manageFileService.createFolder(
+        blobStorageContainer,
+        companyId
+      );
 
-      const fileName = req.body.id + "." + fileExtension;
+      // Determine the file extension for the uploaded file
+      const fileExtension = file.originalname.split(".").pop();
+      const fileName = `${formatSlug(newCompany.fantasy_name)}-logo.${fileExtension}`;
 
+      // Upload the file to the new folder
       const uploadedFileUrl = await this.manageFileService.uploadFile(
         file.buffer,
-        fileName,
+        `${containerFolderName}/${fileName}`,
         blobStorageContainer
       );
 
-      const newCompany = await this.createCompanyUseCase.execute({
-        ...req.body,
+      // Update the company with the uploaded file's URL
+      const updatedCompany = await this.updateCompanyUseCase.execute({
+        id: companyId,
         logo_url: uploadedFileUrl,
       });
-      return newCompany;
+
+      // Return the updated company
+      return updatedCompany;
     } catch (error) {
       console.log(["INTERNAL_ERROR"], error.message);
       throw new ConflictException({

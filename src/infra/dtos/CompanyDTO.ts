@@ -26,6 +26,7 @@ export interface IUpdateCompanyDTO {
   fantasy_name?: string;
   email?: string;
   phone?: string;
+  logo_url?: string;
 }
 
 export interface IUpdateCompanyPlanDTO {
