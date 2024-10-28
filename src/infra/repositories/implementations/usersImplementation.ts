@@ -60,6 +60,7 @@ export class UsersImplementation implements IUsersRepository {
         training_metrics: true,
         trainings: true,
         watched_classes: true,
+        avatars: true
       },
     });
     return users;

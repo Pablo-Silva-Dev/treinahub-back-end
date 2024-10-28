@@ -58,7 +58,12 @@ export class DeleteUserAvatarController {
       const containerName = await this.configService.get(
         "AZURE_BLOB_STORAGE_AVATARS_CONTAINER_NAME"
       );
-      await this.manageFileService.removeUploadedFile(fileName, containerName);
+
+      await this.manageFileService.removeUploadedFile(
+        fileName,
+        containerName,
+        avatar_id
+      );
 
       await this.deleteUserAvatarUseCase.execute(user.id);
 

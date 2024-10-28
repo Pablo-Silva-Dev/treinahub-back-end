@@ -31,9 +31,9 @@ export class DeleteCompanyController {
       const blobStorageContainer = await this.ConfigService.get(
         "AZURE_BLOB_STORAGE_COMPANIES_LOGOS_CONTAINER_NAME"
       );
-      //TODO-PABLO refactor method to create a folder on Azure for each company
       await this.ManageFileService.removeAllExistingUploadedFiles(
-        blobStorageContainer
+        blobStorageContainer,
+        companyId
       );
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
