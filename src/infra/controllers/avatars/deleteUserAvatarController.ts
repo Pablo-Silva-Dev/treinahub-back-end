@@ -1,6 +1,5 @@
 import { IDeleteAvatarDTO } from "@/infra/dtos/AvatarDTO";
 import { ManageFileService } from "@/infra/services/manageFileService";
-import { CreateAvatarUseCase } from "@/infra/useCases/avatars/createsAvatarUseCase";
 import { DeleteUserAvatarUseCase } from "@/infra/useCases/avatars/deleteUserAvatarUseCase";
 import { GetAvatarByIdUseCase } from "@/infra/useCases/avatars/getAvatarByIdUseCase";
 import { GetUserByIdUseCase } from "@/infra/useCases/users/getUserByIdUseCase";
@@ -32,7 +31,6 @@ export class DeleteUserAvatarController {
     private getUserByIdUseCase: GetUserByIdUseCase,
     private getAvatarByIdUseCase: GetAvatarByIdUseCase,
     private manageFileService: ManageFileService,
-    private createAvatarUseCase: CreateAvatarUseCase,
     private configService: ConfigService<TEnvSchema, true>
   ) {}
   @Delete()

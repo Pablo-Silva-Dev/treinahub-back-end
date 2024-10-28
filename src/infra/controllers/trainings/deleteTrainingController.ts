@@ -32,13 +32,17 @@ export class DeleteTrainingController {
     try {
       const training = await this.getTrainingByIdUseCase.execute(trainingId);
 
-      const { cover_url } = training;
+      const { cover_url, company_id } = training;
       const fileName = extractFileNameFromUrl(cover_url);
       const containerName = await this.configService.get(
         "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
       );
 
-      await this.manageFileService.removeUploadedFile(fileName, containerName);
+      await this.manageFileService.removeUploadedFile(
+        fileName,
+        containerName,
+        company_id
+      );
 
       await this.deleteTrainingUseCase.execute(trainingId);
     } catch (error) {

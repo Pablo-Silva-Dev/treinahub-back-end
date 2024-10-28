@@ -1,4 +1,5 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { GetTrainingByIdUseCase } from "@/infra/useCases/trainings/getTrainingByIdUseCase";
 import { UpdateTrainingUseCase } from "@/infra/useCases/trainings/updateTrainingUseCase";
 import {
   BadRequestException,
@@ -30,6 +31,7 @@ const updateTrainingSchema = z.object({
 export class UpdateTrainingController {
   constructor(
     private updateTrainingUseCase: UpdateTrainingUseCase,
+    private getTrainingByIdUseCase: GetTrainingByIdUseCase,
     private configService: ConfigService<TEnvSchema, true>,
     private manageFileService: ManageFileService
   ) {}
@@ -48,20 +50,20 @@ export class UpdateTrainingController {
 
     try {
       if (file) {
+        const { company_id } = await this.getTrainingByIdUseCase.execute(
+          req.body.id
+        );
+
         const fileExtension = file.originalname.split(".")[1];
-        const fileName = req.body.name + "-cover" + fileExtension;
+        const fileName = req.body.name + "-cover." + fileExtension;
 
         const blobStorageContainerName = this.configService.get(
           "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
         );
 
-        this.manageFileService.removeAllExistingUploadedFiles(
-          blobStorageContainerName
-        );
-
         const uploadedFile = await this.manageFileService.uploadFile(
           file.buffer,
-          fileName,
+          `${company_id}/${fileName}`,
           blobStorageContainerName
         );
 

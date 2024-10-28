@@ -20,6 +20,7 @@ import { z } from "zod";
 const createTrainingBodySchema = z.object({
   name: z.string(),
   description: z.string(),
+  company_id: z.string(),
 });
 
 @Controller("/trainings/create")
@@ -53,9 +54,14 @@ export class CreateTrainingController {
         "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
       );
 
+      const containerFolderName = await this.manageFileService.createFolder(
+        blobStorageContainerName,
+        req.body.company_id
+      );
+
       const uploadedFile = await this.manageFileService.uploadFile(
         file.buffer,
-        fileName,
+        `${containerFolderName}/${fileName}`,
         blobStorageContainerName
       );
 

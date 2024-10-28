@@ -145,11 +145,24 @@ export class ManageFileService {
     return blobClient.url;
   }
 
-  async removeUploadedFile(fileName: string, AzureContainerName: string) {
-    const blobClient = this.azureBlobStorageProvider
-      .getBlobServiceClient()
-      .getContainerClient(AzureContainerName)
-      .getBlockBlobClient(fileName);
+  async removeUploadedFile(
+    fileName: string,
+    AzureContainerName: string,
+    prefix?: string
+  ) {
+    const blobPath = prefix.endsWith("/")
+      ? `${prefix}${fileName}`
+      : `${prefix}/${fileName}`;
+
+    const blobClient = prefix
+      ? this.azureBlobStorageProvider
+          .getBlobServiceClient()
+          .getContainerClient(AzureContainerName)
+          .getBlockBlobClient(blobPath)
+      : this.azureBlobStorageProvider
+          .getBlobServiceClient()
+          .getContainerClient(AzureContainerName)
+          .getBlockBlobClient(fileName);
 
     const blobExists = await blobClient.exists();
 
@@ -168,15 +181,19 @@ export class ManageFileService {
       `File ${fileName} deleted from container ${AzureContainerName}`
     );
   }
+
   async removeAllExistingUploadedFiles(
-    AzureContainerName: string
+    AzureContainerName: string,
+    prefix?: string
   ): Promise<void> {
     const containerClient = this.azureBlobStorageProvider
       .getBlobServiceClient()
       .getContainerClient(AzureContainerName);
 
     // List all blobs in the container
-    for await (const blob of containerClient.listBlobsFlat()) {
+    for await (const blob of prefix
+      ? containerClient.listBlobsFlat({ prefix })
+      : containerClient.listBlobsFlat()) {
       const file = containerClient.getBlobClient(blob.name);
 
       // Delete each blob

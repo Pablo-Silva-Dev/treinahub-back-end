@@ -1,7 +1,6 @@
 import { ICreateCompanyDTO } from "@/infra/dtos/CompanyDTO";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
-import { DeleteCompanyUseCase } from "@/infra/useCases/companies/deleteCompanyUseCase";
 import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
 import { formatSlug } from "@/utils/formatSlug";
 import { phoneValidationRegex } from "@/utils/regex";
