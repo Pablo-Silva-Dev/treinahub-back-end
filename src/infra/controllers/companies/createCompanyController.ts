@@ -39,7 +39,6 @@ export class CreateCompanyController {
   constructor(
     private createCompanyUseCase: CreateCompanyUseCase,
     private updateCompanyUseCase: UpdateCompanyUseCase,
-    private deleteCompanyUseCase: DeleteCompanyUseCase,
     private manageFileService: ManageFileService,
     private configService: ConfigService<TEnvSchema, true>
   ) {}

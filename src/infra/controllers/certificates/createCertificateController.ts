@@ -64,15 +64,22 @@ export class CreateCertificateController {
 
       const certificateFile = fs.readFileSync(certificate);
 
-      const userName = user.name;
-      const trainingName = training.name;
+      const { name: userName, company_id } = user;
+      const { name: trainingName } = training;
+
+      // Create a folder using the new company's ID
+      const containerFolderName =
+        await this.manageCertificateFileService.createFolder(
+          blobStorageContainerName,
+          company_id
+        );
 
       const certificateName = `${formatSlug(trainingName + "-" + userName)}-certificado.png`;
 
       const uploadedCertificate =
         await this.manageCertificateFileService.uploadFile(
           certificateFile,
-          certificateName,
+          `${containerFolderName}/${certificateName}`,
           blobStorageContainerName
         );
 
