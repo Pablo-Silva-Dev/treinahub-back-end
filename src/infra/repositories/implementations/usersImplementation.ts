@@ -60,7 +60,7 @@ export class UsersImplementation implements IUsersRepository {
         training_metrics: true,
         trainings: true,
         watched_classes: true,
-        avatars: true
+        avatars: true,
       },
     });
     return users;
@@ -101,6 +101,14 @@ export class UsersImplementation implements IUsersRepository {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
+      },
+      include: {
+        company: {
+          select: {
+            id: true,
+            fantasy_name: true,
+          },
+        },
       },
     });
     if (user) {
@@ -221,6 +229,8 @@ export class UsersImplementation implements IUsersRepository {
       return null;
     }
 
+    const { company_id } = user;
+
     const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -237,6 +247,7 @@ export class UsersImplementation implements IUsersRepository {
       id: user.id,
       email: user.email,
       name: user.name,
+      companyId: company_id,
     };
   }
 }

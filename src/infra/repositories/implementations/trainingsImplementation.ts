@@ -19,13 +19,20 @@ export class TrainingsImplementation implements ITrainingsRepository {
     return newTraining;
   }
 
-  async listTrainings(): Promise<ITrainingDTO[]> {
+  async listTrainings(companyId: string): Promise<ITrainingDTO[]> {
     const trainings = await this.prisma.training.findMany({
+      where: {
+        company_id: companyId,
+      },
       include: {
         video_classes: true,
         training_metrics: true,
       },
     });
+
+    if (!trainings) {
+      return null;
+    }
 
     const totalTrainingDuration = trainings.map((training) => {
       training.video_classes.forEach((vc) => ({

@@ -1,23 +1,24 @@
-import { ListTrainingsUseCase } from "@/infra/useCases/trainings/listTrainingsUseCase";
+import {ListTrainingsByCompanyUseCase} from '@/infra/useCases/trainings/listTrainingsByCompanyUseCase'
 import { secondsToFullTimeString } from "@/utils/convertTime";
 import {
   ConflictException,
   Controller,
   Get,
   HttpCode,
+  Param,
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/trainings/list")
 @UseGuards(AuthGuard("jwt-user"))
-export class ListTrainingsController {
-  constructor(private listTrainingsUseCase: ListTrainingsUseCase) {}
-  @Get()
+export class ListTrainingsByCompanyController {
+  constructor(private ListTrainingsByCompanyUseCase: ListTrainingsByCompanyUseCase) {}
+  @Get(":companyId")
   @HttpCode(200)
-  async handle() {
+  async handle(@Param("companyId") companyId: string) {
     try {
-      const trainings = await this.listTrainingsUseCase.execute();
+      const trainings = await this.ListTrainingsByCompanyUseCase.execute(companyId);
       const completeData = trainings.map((t) => ({
         ...t,
         video_classes: t.video_classes.map((vc) => ({
