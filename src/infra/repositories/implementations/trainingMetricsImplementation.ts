@@ -60,6 +60,9 @@ export class TrainingMetricsImplementation
       where: {
         id: user_id,
       },
+      include:{
+        trainings: true
+      }
     });
 
     if (!user) {

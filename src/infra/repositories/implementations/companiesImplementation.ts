@@ -39,13 +39,20 @@ export class CompaniesImplementation implements ICompaniesRepository {
       where: {
         id: companyId,
       },
+      include: {
+        users: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
 
     if (!company) {
       return null;
     }
 
-    return company;
+    return company as never;
   }
   async updateCompany(data: IUpdateCompanyDTO): Promise<ICompanyDTO> {
     const { id } = data;

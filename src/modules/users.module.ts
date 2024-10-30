@@ -10,10 +10,14 @@ import { GetUserByPhoneController } from "@/infra/controllers/users/getUserByPho
 import { ListUsersController } from "@/infra/controllers/users/listUsersController";
 import { UpdateUserController } from "@/infra/controllers/users/updateUserController";
 import { AvatarsImplementation } from "@/infra/repositories/implementations/avatarsImplementation";
+import { TrainingMetricsImplementation } from "@/infra/repositories/implementations/trainingMetricsImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
+import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
+import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
 import { TwilioService } from "@/infra/services/twilio";
+import { ListTrainingMetricsByUserUseCase } from "@/infra/useCases/trainingMetrics/listTrainingMetricsByUserUseCase";
 import { AuthenticateUserUseCase } from "@/infra/useCases/users/authenticateUserUseCase";
 import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
 import { DeleteUserUseCase } from "@/infra/useCases/users/deleteUserUseCase";
@@ -45,6 +49,10 @@ import { Module } from "@nestjs/common";
     PrismaService,
     SendGridEmailSenderService,
     TwilioService,
+    ManageFileService,
+    AzureBlobStorageService,
+    TrainingMetricsImplementation,
+    ListTrainingMetricsByUserUseCase,
     UsersImplementation,
     AvatarsImplementation,
     CreateUserUseCase,

@@ -249,4 +249,25 @@ export class ManageFileService {
       throw error;
     }
   }
+
+  async listContainerFiles(
+    AzureContainerName: string,
+    prefix?: string
+  ): Promise<string[]> {
+    const containerClient = this.azureBlobStorageProvider
+      .getBlobServiceClient()
+      .getContainerClient(AzureContainerName);
+
+    let fileNames: string[] = [];
+
+    // List all blobs in the container
+    for await (const blob of prefix
+      ? containerClient.listBlobsFlat({ prefix })
+      : containerClient.listBlobsFlat()) {
+      //@ts-ignore
+      const { _name } = containerClient.getBlobClient(blob.name);
+      fileNames.push(_name);
+    }
+    return fileNames;
+  }
 }

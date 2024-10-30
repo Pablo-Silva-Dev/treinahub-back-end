@@ -1,3 +1,4 @@
+import { IUserDTO } from '@/infra/dtos/UserDTO';
 export type TPlan = "gold" | "platinum" | "diamond";
 
 export interface ICompanyDTO {
@@ -9,6 +10,7 @@ export interface ICompanyDTO {
   phone: string;
   current_plan: TPlan;
   logo_url: string;
+  users?: IUserDTO[];
 }
 
 export interface ICreateCompanyDTO {
