@@ -94,9 +94,11 @@ model Certificate {
 }
 
 model FaqQuestion {
-  id       String @id @default(uuid())
-  question String
-  answer   String
+  id         String  @id @default(uuid())
+  question   String
+  answer     String
+  company_id String
+  company    Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model AppVersion {
@@ -135,6 +137,8 @@ model ContactSupport {
   name                String
   email               String
   hide_contact_number Boolean @default(false)
+  company_id          String
+  company             Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model Log {
@@ -142,6 +146,8 @@ model Log {
   user_id    String
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at DateTime @default(now())
+  company_id String
+  company    Company  @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model RecoveryCode {
@@ -217,16 +223,19 @@ model QuizResult {
 }
 
 model Company {
-  id            String     @id @default(uuid())
-  fantasy_name  String
-  cnpj          String     @unique()
-  social_reason String     @unique()
-  email         String
-  phone         String?
-  current_plan  Plan
-  logo_url      String?
-  users         User[]
-  trainings     Training[]
-  created_at    DateTime   @default(now())
-  updated_at    DateTime   @default(now())
+  id                String           @id @default(uuid())
+  fantasy_name      String
+  cnpj              String           @unique()
+  social_reason     String           @unique()
+  email             String
+  phone             String?
+  current_plan      Plan
+  logo_url          String?
+  users             User[]
+  trainings         Training[]
+  contacts_supports ContactSupport[]
+  faq_questions     FaqQuestion[]
+  logs              Log[]
+  created_at        DateTime         @default(now())
+  updated_at        DateTime         @default(now())
 }

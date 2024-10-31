@@ -16,7 +16,7 @@ export class ContactsSupportImplementation
   async createContactSupport(
     data: ICreateContactSupportDTO
   ): Promise<IContactSupportDTO> {
-    const { contact_number, email } = data;
+    const { contact_number, email, company_id } = data;
 
     const contactNumberAlreadyExists =
       await this.prisma.contactSupport.findFirst({
@@ -31,15 +31,27 @@ export class ContactsSupportImplementation
       },
     });
 
-    if (contactNumberAlreadyExists || emailAlreadyExists) {
+    const company = await this.prisma.company.findUnique({
+      where: {
+        id: company_id,
+      },
+    });
+
+    if (contactNumberAlreadyExists || emailAlreadyExists || !company) {
       return null;
     }
 
-    const newContactSupport = await this.prisma.contactSupport.create({ data });
+    const newContactSupport = await this.prisma.contactSupport.create({
+      data,
+    } as never);
     return newContactSupport;
   }
-  async listContactsSupport(): Promise<IContactSupportDTO[]> {
-    const contactsSupport = await this.prisma.contactSupport.findMany();
+  async listContactsSupport(companyId: string): Promise<IContactSupportDTO[]> {
+    const contactsSupport = await this.prisma.contactSupport.findMany({
+      where: {
+        company_id: companyId,
+      },
+    });
     return contactsSupport;
   }
   async getContactSupportByNumber(

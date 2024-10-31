@@ -8,7 +8,7 @@ export interface IContactSupportRepository {
   createContactSupport(
     data: ICreateContactSupportDTO
   ): Promise<IContactSupportDTO>;
-  listContactsSupport(): Promise<IContactSupportDTO[]>;
+  listContactsSupport(companyId: string): Promise<IContactSupportDTO[]>;
   getContactSupportByNumber(
     contact_number: string
   ): Promise<IContactSupportDTO | void>;

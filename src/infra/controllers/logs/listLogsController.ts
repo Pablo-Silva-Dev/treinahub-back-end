@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
@@ -12,11 +13,11 @@ import { AuthGuard } from "@nestjs/passport";
 @UseGuards(AuthGuard("jwt-admin"))
 export class ListLogsController {
   constructor(private listLogsUseCase: ListLogsUseCase) {}
-  @Get()
+  @Get(":companyId")
   @HttpCode(200)
-  async handle() {
+  async handle(@Param("companyId") companyId: string) {
     try {
-      const logs = await this.listLogsUseCase.execute();
+      const logs = await this.listLogsUseCase.execute(companyId);
       return logs;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);

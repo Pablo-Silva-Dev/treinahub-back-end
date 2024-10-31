@@ -23,11 +23,25 @@ export class FaqQuestionsImplementation implements IFaqQuestionsRepository {
     if (questionAlreadyExists) {
       return;
     }
-    const newFaqQuestion = await this.prisma.faqQuestion.create({ data });
+    const newFaqQuestion = await this.prisma.faqQuestion.create({ data } as never);
     return newFaqQuestion;
   }
-  async listFaqQuestions(): Promise<IFaqQuestionDTO[]> {
-    const faqQuestions = await this.prisma.faqQuestion.findMany();
+  async listFaqQuestions(companyId: string): Promise<IFaqQuestionDTO[]> {
+    const company = await this.prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+    });
+
+    if (!company) {
+      return null;
+    }
+
+    const faqQuestions = await this.prisma.faqQuestion.findMany({
+      where: {
+        id: companyId,
+      },
+    });
     return faqQuestions;
   }
 

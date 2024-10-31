@@ -3,6 +3,7 @@ import { DeleteContactsSupportController } from "@/infra/controllers/contactsSup
 import { GetContactSupportByIdController } from "@/infra/controllers/contactsSupports/getContactSupportByIdController";
 import { ListContactSupportsController } from "@/infra/controllers/contactsSupports/listContactSupportController";
 import { UpdateContactSupportController } from "@/infra/controllers/contactsSupports/updateContactSupportController";
+import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
 import { ContactsSupportImplementation } from "@/infra/repositories/implementations/contactsSupportImplementation";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateContactSupportUseCase } from "@/infra/useCases/contactsSupport/createContactSupportUseCase";
@@ -16,6 +17,7 @@ import { Module } from "@nestjs/common";
   providers: [
     PrismaService,
     ContactsSupportImplementation,
+    CompaniesImplementation,
     CreateContactSupportUseCase,
     ListContactsSupportUseCase,
     UpdateContactSupportUseCase,

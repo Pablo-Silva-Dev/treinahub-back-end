@@ -1,5 +1,6 @@
 import { CreateLogController } from "@/infra/controllers/logs/createLogController";
 import { ListLogsController } from "@/infra/controllers/logs/listLogsController";
+import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
 import { LogsImplementation } from "@/infra/repositories/implementations/logsImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
 import { PrismaService } from "@/infra/services/prisma";
@@ -11,6 +12,7 @@ import { Module } from "@nestjs/common";
   providers: [
     PrismaService,
     LogsImplementation,
+    CompaniesImplementation,
     UsersImplementation,
     CreateLogUseCase,
     ListLogsUseCase,

@@ -16,13 +16,23 @@ export class LogsImplementation implements ILogsRepository {
     if (!user) {
       return;
     }
-    const createdLog = await this.prisma.log.create({ data });
+    const createdLog = await this.prisma.log.create({ data } as never);
     return createdLog;
   }
-  async listLogs(): Promise<ILogDTO[]> {
+  async listLogs(companyId: string): Promise<ILogDTO[]> {
     const logs = await this.prisma.log.findMany({
       include: { user: true },
     });
+    const company = await this.prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+    });
+
+    if(!company){
+      return null
+    }
+
     return logs;
   }
 }

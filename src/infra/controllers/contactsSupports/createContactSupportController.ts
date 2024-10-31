@@ -17,6 +17,7 @@ const createContactSupportValidationSchema = z.object({
   contact_number: z.string().regex(phoneValidationRegex),
   name: z.string(),
   email: z.string(),
+  company_id: z.string(),
 });
 
 @Controller("/contacts-support/create")
