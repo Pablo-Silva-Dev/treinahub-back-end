@@ -94,11 +94,11 @@ model Certificate {
 }
 
 model FaqQuestion {
-  id         String  @id @default(uuid())
+  id         String   @id @default(uuid())
   question   String
   answer     String
   company_id String
-  company    Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company    Company? @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model AppVersion {
@@ -132,13 +132,13 @@ model WatchedClasses {
 }
 
 model ContactSupport {
-  id                  String  @id @default(uuid())
+  id                  String   @id @default(uuid())
   contact_number      String
   name                String
   email               String
-  hide_contact_number Boolean @default(false)
+  hide_contact_number Boolean  @default(false)
   company_id          String
-  company             Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company             Company? @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model Log {
@@ -147,7 +147,7 @@ model Log {
   user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at DateTime @default(now())
   company_id String
-  company    Company  @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company    Company? @relation(fields: [company_id], references: [id], onDelete: Cascade)
 }
 
 model RecoveryCode {

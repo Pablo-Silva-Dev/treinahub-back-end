@@ -1,6 +1,7 @@
 import {
   ICreateFaqQuestionDTO,
   IFaqQuestionDTO,
+  IFaqQuestionSeedDTO,
   IUpdateFaqQuestionDTO,
 } from "@/infra/dtos/FaqQuestionDTO";
 import { PrismaService } from "@/infra/services/prisma";
@@ -23,7 +24,9 @@ export class FaqQuestionsImplementation implements IFaqQuestionsRepository {
     if (questionAlreadyExists) {
       return;
     }
-    const newFaqQuestion = await this.prisma.faqQuestion.create({ data } as never);
+    const newFaqQuestion = await this.prisma.faqQuestion.create({
+      data,
+    } as never);
     return newFaqQuestion;
   }
   async listFaqQuestions(companyId: string): Promise<IFaqQuestionDTO[]> {
@@ -101,5 +104,21 @@ export class FaqQuestionsImplementation implements IFaqQuestionsRepository {
         id: faqQuestionId,
       },
     });
+  }
+
+  async plantFaqQuestionsSeeds(
+    seeds: IFaqQuestionSeedDTO[],
+    companyId: string
+  ) {
+    for (const seed of seeds) {
+      try {
+        const plantedSeed = await this.prisma.faqQuestion.create({
+          data: { ...seed, company_id: companyId },
+        });
+        console.log("Seeds planted: ", plantedSeed);
+      } catch (error) {
+        console.log("Error at planting seed: ", error);
+      }
+    }
   }
 }

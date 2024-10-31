@@ -6,6 +6,7 @@ import { UpdateCompanyController } from "@/infra/controllers/companies/updateCom
 import { UpdateCompanyLogoController } from "@/infra/controllers/companies/updateCompanyLogoController";
 import { UpdateCompanyPlanController } from "@/infra/controllers/companies/updateCompanyPlanController";
 import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
+import { FaqQuestionsImplementation } from "@/infra/repositories/implementations/faqQuestionsImplementation";
 import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
@@ -16,6 +17,7 @@ import { ListCompaniesUseCase } from "@/infra/useCases/companies/listCompaniesUs
 import { UpdateCompanyLogoUseCase } from "@/infra/useCases/companies/updateCompanyLogoUseCase";
 import { UpdateCompanyPlanUseCase } from "@/infra/useCases/companies/updateCompanyPlanUseCase";
 import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
+import { PlantFaqQuestionsUseCase } from "@/infra/useCases/faqQuestions/plantFaqQuestionsSeedsUseCase";
 import { Module } from "@nestjs/common";
 
 @Module({
@@ -31,6 +33,7 @@ import { Module } from "@nestjs/common";
   providers: [
     PrismaService,
     CompaniesImplementation,
+    FaqQuestionsImplementation,
     ManageFileService,
     AzureBlobStorageService,
     CreateCompanyUseCase,
@@ -40,6 +43,7 @@ import { Module } from "@nestjs/common";
     UpdateCompanyLogoUseCase,
     UpdateCompanyPlanUseCase,
     DeleteCompanyUseCase,
+    PlantFaqQuestionsUseCase,
   ],
 })
 export class CompaniesModules {}

@@ -1,4 +1,5 @@
 import { ICreateCompanyDTO } from "@/infra/dtos/CompanyDTO";
+import { faqQuestionsSeeds } from "@/infra/seeds/faqQuestionsSeeds";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
@@ -21,6 +22,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { TEnvSchema } from "env";
 import { Request } from "express";
 import { z } from "zod";
+import { PlantFaqQuestionsUseCase } from "./../../useCases/faqQuestions/plantFaqQuestionsSeedsUseCase";
 
 const validationSchema = z.object({
   fantasy_name: z.string(),
@@ -38,6 +40,7 @@ export class CreateCompanyController {
   constructor(
     private createCompanyUseCase: CreateCompanyUseCase,
     private updateCompanyUseCase: UpdateCompanyUseCase,
+    private plantFaqQuestionsUseCase: PlantFaqQuestionsUseCase,
     private manageFileService: ManageFileService,
     private configService: ConfigService<TEnvSchema, true>
   ) {}
@@ -87,6 +90,11 @@ export class CreateCompanyController {
         id: companyId,
         logo_url: uploadedFileUrl,
       });
+
+      await this.plantFaqQuestionsUseCase.execute(
+        faqQuestionsSeeds,
+        updatedCompany.id
+      );
 
       // Return the updated company
       return updatedCompany;

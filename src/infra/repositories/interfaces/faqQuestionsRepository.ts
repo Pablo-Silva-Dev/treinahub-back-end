@@ -1,6 +1,7 @@
 import {
   ICreateFaqQuestionDTO,
   IFaqQuestionDTO,
+  IFaqQuestionSeedDTO,
   IUpdateFaqQuestionDTO,
 } from "@/infra/dtos/FaqQuestionDTO";
 
@@ -11,4 +12,8 @@ export interface IFaqQuestionsRepository {
   getFaqQuestionById(id: string): Promise<IFaqQuestionDTO | void>;
   updateFaqQuestion(data: IUpdateFaqQuestionDTO): Promise<IFaqQuestionDTO>;
   deleteFaqQuestion(faqQuestionId: string): Promise<void>;
+  plantFaqQuestionsSeeds(
+    seeds: IFaqQuestionSeedDTO[],
+    companyId: string
+  ): Promise<void>;
 }
