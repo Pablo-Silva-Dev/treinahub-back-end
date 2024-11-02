@@ -53,8 +53,11 @@ export class UsersImplementation implements IUsersRepository {
 
     return newUser;
   }
-  async listUsers(): Promise<IUserDTO[] | []> {
+  async listUsers(companyId: string): Promise<IUserDTO[] | []> {
     const users = await this.prisma.user.findMany({
+      where: {
+        company_id: companyId,
+      },
       include: {
         certificates: true,
         training_metrics: true,

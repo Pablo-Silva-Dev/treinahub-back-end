@@ -45,6 +45,7 @@ export class CompaniesImplementation implements ICompaniesRepository {
             name: true,
           },
         },
+        trainings: true,
       },
     });
 

@@ -42,7 +42,7 @@ export class FaqQuestionsImplementation implements IFaqQuestionsRepository {
 
     const faqQuestions = await this.prisma.faqQuestion.findMany({
       where: {
-        id: companyId,
+        company_id: companyId,
       },
     });
     return faqQuestions;

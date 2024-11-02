@@ -11,7 +11,7 @@ import {
 
 export interface IUsersRepository {
   createUser(data: ICreateUserDTO): Promise<IUserDTO>;
-  listUsers(): Promise<IUserDTO[] | []>;
+  listUsers(companyId: string): Promise<IUserDTO[] | []>;
   getUserByEmail(email: string): Promise<IUserDTO | void>;
   getUserByCpf(cpf: string): Promise<IUserDTO | void>;
   getUserById(id: string): Promise<IUserDTO | void>;

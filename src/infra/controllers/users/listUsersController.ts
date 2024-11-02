@@ -4,6 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
@@ -12,17 +13,16 @@ import { AuthGuard } from "@nestjs/passport";
 @UseGuards(AuthGuard("jwt-admin"))
 export class ListUsersController {
   constructor(private listUsersUseCase: ListUsersUseCase) {}
-  @Get()
+  @Get(":companyId")
   @HttpCode(200)
-  async handle() {
+  async handle(@Param("companyId") companyId: string) {
     try {
-      const users = await this.listUsersUseCase.execute();
+      const users = await this.listUsersUseCase.execute(companyId);
       return users;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
       throw new ConflictException({
-        message:
-          "An error occurred.",
+        message: "An error occurred.",
         error: error.message,
       });
     }
