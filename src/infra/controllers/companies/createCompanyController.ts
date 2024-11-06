@@ -1,6 +1,7 @@
 import { ICreateCompanyDTO } from "@/infra/dtos/CompanyDTO";
 import { faqQuestionsSeeds } from "@/infra/seeds/faqQuestionsSeeds";
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
 import { formatSlug } from "@/utils/formatSlug";
@@ -42,6 +43,7 @@ export class CreateCompanyController {
     private updateCompanyUseCase: UpdateCompanyUseCase,
     private plantFaqQuestionsUseCase: PlantFaqQuestionsUseCase,
     private manageFileService: ManageFileService,
+    private pandaVideoService: PandaVideoService,
     private configService: ConfigService<TEnvSchema, true>
   ) {}
   @HttpCode(201)
@@ -61,7 +63,7 @@ export class CreateCompanyController {
     try {
       // Create the company and get the new company's ID
       const newCompany = await this.createCompanyUseCase.execute(req.body);
-      const { id: companyId } = newCompany;
+      const { id: companyId, fantasy_name } = newCompany;
 
       // Get the Azure blob storage container name
       const blobStorageContainer = await this.configService.get(
@@ -90,6 +92,10 @@ export class CreateCompanyController {
         id: companyId,
         logo_url: uploadedFileUrl,
       });
+
+      await this.pandaVideoService.createFolder(
+        `company-${formatSlug(fantasy_name)}`
+      );
 
       await this.plantFaqQuestionsUseCase.execute(
         faqQuestionsSeeds,

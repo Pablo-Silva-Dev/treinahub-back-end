@@ -9,6 +9,7 @@ import { CompaniesImplementation } from "@/infra/repositories/implementations/co
 import { FaqQuestionsImplementation } from "@/infra/repositories/implementations/faqQuestionsImplementation";
 import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { DeleteCompanyUseCase } from "@/infra/useCases/companies/deleteCompanyUseCase";
@@ -35,6 +36,7 @@ import { Module } from "@nestjs/common";
     CompaniesImplementation,
     FaqQuestionsImplementation,
     ManageFileService,
+    PandaVideoService,
     AzureBlobStorageService,
     CreateCompanyUseCase,
     ListCompaniesUseCase,

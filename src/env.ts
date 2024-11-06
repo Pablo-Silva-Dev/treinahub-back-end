@@ -22,6 +22,7 @@ export const envSchema = z.object({
   BITMOVIN_API_KEY: z.string(),
   CERTIFICATE_PATH: z.string(),
   CERTIFICATE_KEY_PATH: z.string(),
+  PANDA_VIDEO_API_KEY: z.string(),
 });
 
 export type TEnvSchema = z.infer<typeof envSchema>;
