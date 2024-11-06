@@ -1,6 +1,5 @@
 import { VideoClassesImplementation } from "@/infra/repositories/implementations/videoClassesImplementation";
-import { BitmovinVideoEncodingService } from "@/infra/services/bitmovinVideoEncodingService";
-import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
 import { checkVideoAudio } from "@/utils/checkVideoAudio";
 import { formatSlugFileName } from "@/utils/formatSlug";
@@ -16,10 +15,8 @@ import {
   UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
 import { FileFieldsInterceptor } from "@nestjs/platform-express";
-import { TEnvSchema } from "env";
 import { Request } from "express";
 import * as multer from "multer";
 import { z } from "zod";
@@ -41,9 +38,7 @@ export class CreateVideoClassController {
   constructor(
     private createVideoClassUseCase: CreateVideoClassUseCase,
     private videoClassesImplementation: VideoClassesImplementation,
-    private manageFileService: ManageFileService,
-    private configService: ConfigService<TEnvSchema, true>,
-    private bitmovinVideoEncodingService: BitmovinVideoEncodingService
+    private pandaVideoService: PandaVideoService
   ) {}
   @Post()
   @HttpCode(201)
@@ -87,11 +82,7 @@ export class CreateVideoClassController {
 
       const videoFile = video_file[0];
 
-      const videoFileExtension = videoFile.originalname.split(".")[1];
-
       const formattedName = formatSlugFileName(name);
-
-      const videoFileName = formattedName + "." + videoFileExtension;
 
       const MAX_VIDEO_DURATION_IN_SECONDS = 15 * 60; // 15 minutes
 
@@ -111,32 +102,22 @@ export class CreateVideoClassController {
         throw new NotAcceptableException("Video must have an audio.");
       }
 
-      const blobStorageVideoContainerName = this.configService.get(
-        "AZURE_BLOB_STORAGE_VIDEO_CLASSES_CONTAINER_NAME"
+      const { folders } = await this.pandaVideoService.listFolders();
+
+      const trainingFolder = folders.find((folder) =>
+        folder.name.includes(training_id)
       );
 
-      const uploadedVideo = await this.manageFileService.uploadFile(
+      await this.pandaVideoService.uploadVideo(
         videoFile.buffer,
-        videoFileName,
-        blobStorageVideoContainerName
+        name,
+        trainingFolder.id
       );
-
-      const videoInputName =
-        formatSlugFileName(formattedName) + "." + videoFileExtension;
-      const videoInputPath = formattedName + "." + videoFileExtension;
-
-      const hlsEncoding =
-        await this.bitmovinVideoEncodingService.encodeHLSVideo(
-          videoInputName,
-          videoInputPath
-        );
 
       const createdVideoClass = await this.createVideoClassUseCase.execute({
         ...req.body,
         duration: videoClassDurationInSeconds,
-        video_url: uploadedVideo,
-        hls_encoding_url: null,
-        hls_encoding_id: hlsEncoding.id,
+        video_url: "",
       });
 
       return createdVideoClass;
@@ -149,7 +130,7 @@ export class CreateVideoClassController {
 
       throw new ConflictException({
         message:
-          "An error occurred. Check all request body fields for possible mismatching. Check if the video you are trying to upload is working correctly, and if it has audio.",
+          "An error occurred. Check all request body fields for possible mismatching. Check if the video you are trying to upload is working correctly, if the video are being uploaded to the correct company/training folder, and if it has audio.",
         error: error.message,
       });
     }

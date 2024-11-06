@@ -71,8 +71,6 @@ model VideoClass {
   training_id      String
   training         Training         @relation(fields: [training_id], references: [id], onDelete: Cascade)
   watched_classes  WatchedClasses[]
-  hls_encoding_id  String
-  hls_encoding_url String?
   reference_number Int              @default(autoincrement())
 }
 
