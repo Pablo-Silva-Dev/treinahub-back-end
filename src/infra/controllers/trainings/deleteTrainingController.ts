@@ -1,4 +1,5 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { DeleteTrainingUseCase } from "@/infra/useCases/trainings/deleteTrainingUseCase";
 import { extractFileNameFromUrl } from "@/utils/formatString";
 import {
@@ -21,7 +22,8 @@ export class DeleteTrainingController {
     private deleteTrainingUseCase: DeleteTrainingUseCase,
     private getTrainingByIdUseCase: GetTrainingByIdUseCase,
     private manageFileService: ManageFileService,
-    private configService: ConfigService<TEnvSchema, true>
+    private configService: ConfigService<TEnvSchema, true>,
+    private pandaVideoService: PandaVideoService
   ) {}
   @Delete(":trainingId")
   @HttpCode(200)
@@ -43,6 +45,16 @@ export class DeleteTrainingController {
         containerName,
         company_id
       );
+
+      const { folders } = await this.pandaVideoService.listFolders();
+
+      const trainingFolder = folders.find((folder) =>
+        folder.name.includes(training.id)
+      );
+
+      if (trainingFolder) {
+        await this.pandaVideoService.deleteFolder(trainingFolder.id);
+      }
 
       await this.deleteTrainingUseCase.execute(trainingId);
     } catch (error) {
