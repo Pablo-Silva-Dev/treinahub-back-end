@@ -34,7 +34,10 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
       return null;
     }
     const newVideoClass = await this.prisma.videoClass.create({
-      data,
+      data: {
+        ...data,
+        status: "CONVERTING",
+      },
     });
     return newVideoClass;
   }
@@ -86,9 +89,9 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
       where: {
         id: videoClassId,
       },
-      include:{
-        training: true
-      }
+      include: {
+        training: true,
+      },
     });
 
     if (!videoClass) {

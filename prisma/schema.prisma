@@ -19,6 +19,12 @@ enum Plan {
   diamond
 }
 
+enum PandaVideoStatus {
+  CONVERTED
+  CONVERTING
+  FAILED
+}
+
 model User {
   id               String            @id @default(uuid())
   name             String
@@ -49,7 +55,7 @@ model User {
 
 model Training {
   id               String            @id @default(uuid())
-  name             String            @unique
+  name             String
   description      String
   duration         Int               @default(0)
   cover_url        String?
@@ -72,6 +78,7 @@ model VideoClass {
   training         Training         @relation(fields: [training_id], references: [id], onDelete: Cascade)
   watched_classes  WatchedClasses[]
   reference_number Int              @default(autoincrement())
+  status           PandaVideoStatus
 }
 
 model Avatar {

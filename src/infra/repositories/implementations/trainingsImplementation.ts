@@ -82,7 +82,7 @@ export class TrainingsImplementation implements ITrainingsRepository {
   }
 
   async getTrainingByName(name: string): Promise<ITrainingDTO | void> {
-    const training = await this.prisma.training.findUnique({
+    const training = await this.prisma.training.findFirst({
       where: { name },
       include: {
         video_classes: true,

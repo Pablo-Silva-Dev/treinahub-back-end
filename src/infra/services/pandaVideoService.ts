@@ -130,4 +130,23 @@ export class PandaVideoService {
       console.log("Error at trying to list PandaVideo folders: ", error);
     }
   }
+  async listVideos(folderId?: string) {
+    try {
+      const headers = {
+        accept: "application/json",
+        Authorization: this.pandaVideoApiKey,
+      };
+
+      const url = "https://api-v2.pandavideo.com.br/videos";
+      const params = folderId ? { folder_id: folderId } : {};
+
+      const { data } = await axios.get(url, {
+        headers,
+        params,
+      });
+      return data;
+    } catch (error) {
+      console.log("Error at trying to list PandaVideo folders: ", error);
+    }
+  }
 }

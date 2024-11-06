@@ -9,6 +9,7 @@ export interface IVideoClassDTO {
   training_id: string;
   training?: ITrainingDTO;
   formatted_duration?: string;
+  status?: "CONVERTED" | "CONVERTING" | "FAILED";
 }
 
 export interface ICreateVideoClassDTO {
@@ -17,6 +18,7 @@ export interface ICreateVideoClassDTO {
   duration: number;
   video_url: string;
   training_id: string;
+  status?: "CONVERTED" | "CONVERTING" | "FAILED";
 }
 
 export interface IUpdateVideoClassDTO {
