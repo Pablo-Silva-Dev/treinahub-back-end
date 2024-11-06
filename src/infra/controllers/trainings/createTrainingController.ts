@@ -1,5 +1,7 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { CreateTrainingUseCase } from "@/infra/useCases/trainings/createTrainingUseCase";
+import { formatSlug } from "@/utils/formatSlug";
 import {
   ConflictException,
   Controller,
@@ -30,7 +32,8 @@ export class CreateTrainingController {
   constructor(
     private createTrainingUseCase: CreateTrainingUseCase,
     private configService: ConfigService<TEnvSchema, true>,
-    private manageFileService: ManageFileService
+    private manageFileService: ManageFileService,
+    private pandaVideoService: PandaVideoService
   ) {}
 
   @Post()
@@ -46,9 +49,11 @@ export class CreateTrainingController {
     }
 
     try {
+      const { name, company_id } = req.body;
+
       const fileExtension = file.originalname.split(".")[1];
 
-      const fileName = req.body.name + "-cover." + fileExtension;
+      const fileName = name + "-cover." + fileExtension;
 
       const blobStorageContainerName = this.configService.get(
         "AZURE_BLOB_STORAGE_TRAININGS_COVERS_CONTAINER_NAME"
@@ -56,7 +61,7 @@ export class CreateTrainingController {
 
       const containerFolderName = await this.manageFileService.createFolder(
         blobStorageContainerName,
-        req.body.company_id
+        company_id
       );
 
       const uploadedFile = await this.manageFileService.uploadFile(
@@ -65,11 +70,21 @@ export class CreateTrainingController {
         blobStorageContainerName
       );
 
+      const { folders } = await this.pandaVideoService.listFolders();
+
+      const companyFolder = folders.find((fold) =>
+        fold.name.includes(company_id)
+      );
+
       const createdTraining = await this.createTrainingUseCase.execute({
         ...req.body,
         cover_url: uploadedFile,
       });
 
+      await this.pandaVideoService.createFolder(
+        `${formatSlug(name)}-${createdTraining.id}`,
+        companyFolder.id
+      );
       return createdTraining;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);

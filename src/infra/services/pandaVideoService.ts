@@ -10,18 +10,25 @@ export class PandaVideoService {
   constructor(private configService: ConfigService<TEnvSchema, true>) {
     this.pandaVideoApiKey = this.configService.get("PANDA_VIDEO_API_KEY");
   }
-  async createFolder(folderName: string) {
+  async createFolder(folderName: string, parentFolderId?: string) {
     try {
       const headers = {
         accept: "application/json",
         Authorization: this.pandaVideoApiKey,
       };
 
+      const body = parentFolderId
+        ? {
+            name: folderName,
+            parent_folder_id: parentFolderId,
+          }
+        : {
+            name: folderName,
+          };
+
       const { data } = await axios.post(
         "https://api-v2.pandavideo.com.br/folders",
-        {
-          name: folderName,
-        },
+        body,
         {
           headers,
         }

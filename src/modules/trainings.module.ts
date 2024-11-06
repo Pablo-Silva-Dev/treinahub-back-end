@@ -7,6 +7,7 @@ import { CompaniesImplementation } from "@/infra/repositories/implementations/co
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
 import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { PrismaService } from "@/infra/services/prisma";
 import { CreateTrainingUseCase } from "@/infra/useCases/trainings/createTrainingUseCase";
 import { DeleteTrainingUseCase } from "@/infra/useCases/trainings/deleteTrainingUseCase";
@@ -29,6 +30,7 @@ import { Module } from "@nestjs/common";
     CompaniesImplementation,
     ManageFileService,
     AzureBlobStorageService,
+    PandaVideoService,
     CreateTrainingUseCase,
     ListTrainingsByCompanyUseCase,
     GetTrainingByIdUseCase,
