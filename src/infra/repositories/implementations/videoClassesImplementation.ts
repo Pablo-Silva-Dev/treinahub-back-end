@@ -86,6 +86,9 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
       where: {
         id: videoClassId,
       },
+      include:{
+        training: true
+      }
     });
 
     if (!videoClass) {
