@@ -1,4 +1,5 @@
 import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { GetCompanyByIdUseCase } from "@/infra/useCases/companies/getCompanyByIdUseCase";
 import { formatSlug } from "@/utils/formatSlug";
 import {
@@ -21,7 +22,8 @@ export class DeleteCompanyController {
     private getCompanyByIdUseCase: GetCompanyByIdUseCase,
     private deleteCompanyUseCase: DeleteCompanyUseCase,
     private configService: ConfigService<TEnvSchema, true>,
-    private manageFileService: ManageFileService
+    private manageFileService: ManageFileService,
+    private pandaVideoService: PandaVideoService
   ) {}
   @Delete(":companyId")
   @HttpCode(204)
@@ -63,6 +65,14 @@ export class DeleteCompanyController {
         companiesLogosContainerName,
         companyId
       );
+
+      const { folders } = await this.pandaVideoService.listFolders();
+
+      const companyFolder = folders.find((folder) =>
+        folder.name.includes(companyId)
+      );
+
+      await this.pandaVideoService.deleteFolder(companyFolder.id);
 
       await this.deleteCompanyUseCase.execute(companyId);
     } catch (error) {

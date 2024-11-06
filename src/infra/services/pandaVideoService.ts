@@ -17,7 +17,7 @@ export class PandaVideoService {
         Authorization: this.pandaVideoApiKey,
       };
 
-      await axios.post(
+      const { data } = await axios.post(
         "https://api-v2.pandavideo.com.br/folders",
         {
           name: folderName,
@@ -26,6 +26,51 @@ export class PandaVideoService {
           headers,
         }
       );
+      return data;
+    } catch (error) {
+      console.log(
+        "Error at trying to create a new folder on PandaVideo: ",
+        error
+      );
+    }
+  }
+  async listFolders() {
+    try {
+      const headers = {
+        accept: "application/json",
+        Authorization: this.pandaVideoApiKey,
+      };
+
+      const { data } = await axios.get(
+        "https://api-v2.pandavideo.com.br/folders",
+
+        {
+          headers,
+        }
+      );
+      return data;
+    } catch (error) {
+      console.log(
+        "Error at trying to create a new folder on PandaVideo: ",
+        error
+      );
+    }
+  }
+  async deleteFolder(folderId: string) {
+    try {
+      const headers = {
+        accept: "application/json",
+        Authorization: this.pandaVideoApiKey,
+      };
+
+      const { data } = await axios.delete(
+        `https://api-v2.pandavideo.com.br/folders/${folderId}`,
+
+        {
+          headers,
+        }
+      );
+      return data;
     } catch (error) {
       console.log(
         "Error at trying to create a new folder on PandaVideo: ",

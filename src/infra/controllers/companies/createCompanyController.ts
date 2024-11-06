@@ -94,7 +94,7 @@ export class CreateCompanyController {
       });
 
       await this.pandaVideoService.createFolder(
-        `company-${formatSlug(fantasy_name)}`
+        `company-${formatSlug(fantasy_name)}-${companyId}`
       );
 
       await this.plantFaqQuestionsUseCase.execute(
