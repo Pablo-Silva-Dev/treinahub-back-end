@@ -149,4 +149,25 @@ export class PandaVideoService {
       console.log("Error at trying to list PandaVideo folders: ", error);
     }
   }
+  async deleteVideo(videoIds: string[]) {
+    try {
+      const headers = {
+        accept: "application/json",
+        Authorization: this.pandaVideoApiKey,
+      };
+
+      const body = videoIds.map((videoId) => ({ video_id: videoId }));
+
+      const { data } = await axios.delete(
+        "https://api-v2.pandavideo.com.br/videos",
+        {
+          headers,
+          data: body,
+        }
+      );
+      return data;
+    } catch (error) {
+      console.log("Error at trying to delete video on Panda service: ", error);
+    }
+  }
 }

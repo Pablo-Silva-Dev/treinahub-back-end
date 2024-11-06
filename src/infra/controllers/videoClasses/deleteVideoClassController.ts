@@ -1,7 +1,5 @@
-import { ManageFileService } from "@/infra/services/manageFileService";
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { DeleteVideoClassUseCase } from "@/infra/useCases/videoClasses/deleteVideoClassUseCase";
-import { formatSlugFileName } from "@/utils/formatSlug";
-import { extractFolderNameFromUrl } from "@/utils/formatString";
 import {
   ConflictException,
   Controller,
@@ -10,9 +8,7 @@ import {
   Param,
   UseGuards,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { AuthGuard } from "@nestjs/passport";
-import { TEnvSchema } from "env";
 import { GetVideoClassByIdUseCase } from "./../../useCases/videoClasses/getVideoClassByIdUseCase";
 
 @Controller("video-classes/delete")
@@ -21,8 +17,7 @@ export class DeleteVideoClassController {
   constructor(
     private deleteVideoClassUseCase: DeleteVideoClassUseCase,
     private getVideoClassByIdUseCase: GetVideoClassByIdUseCase,
-    private manageFileService: ManageFileService,
-    private configService: ConfigService<TEnvSchema, true>
+    private pandaVideoService: PandaVideoService
   ) {}
   @Delete(":videoClassId")
   @HttpCode(200)
@@ -34,20 +29,20 @@ export class DeleteVideoClassController {
       const videoClass =
         await this.getVideoClassByIdUseCase.execute(videoClassId);
 
-      const { video_url } = videoClass;
+      const { name } = videoClass;
 
-      const bitmovinEncodingsContainerName = await this.configService.get(
-        "AZURE_BLOB_STORAGE_BITMOVIN_OUTPUTS_CONTAINER_NAME"
+      const { videos } = await this.pandaVideoService.listVideos();
+
+      const pandaVideo = videos.find(
+        (video) => video.title.includes(name) || video.title === name
       );
 
-      const folderName = extractFolderNameFromUrl(video_url);
+      if (pandaVideo) {
+        let videosToDelete = [];
+        videosToDelete.push(pandaVideo.id);
 
-      const formattedFolderName = formatSlugFileName(folderName);
-
-      await this.manageFileService.removeFolderAndContents(
-        bitmovinEncodingsContainerName,
-        formattedFolderName
-      );
+        await this.pandaVideoService.deleteVideo(videosToDelete);
+      }
 
       await this.deleteVideoClassUseCase.execute(videoClassId);
     } catch (error) {
