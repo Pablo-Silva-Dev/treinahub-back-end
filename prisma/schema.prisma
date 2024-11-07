@@ -79,6 +79,7 @@ model VideoClass {
   watched_classes  WatchedClasses[]
   reference_number Int              @default(autoincrement())
   status           PandaVideoStatus
+  thumbnail_url    String?
 }
 
 model Avatar {

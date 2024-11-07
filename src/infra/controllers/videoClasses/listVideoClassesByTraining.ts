@@ -45,6 +45,7 @@ export class ListVideoClassesByTrainingController {
         if (videoData) {
           videoClass.video_url = videoData.video_player;
           videoClass.status = videoData.status;
+          videoClass.thumbnail_url = videoData.thumbnail
         }
         return videoClass;
       });

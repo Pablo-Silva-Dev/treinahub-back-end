@@ -38,6 +38,7 @@ export class GetVideoClassByIdController {
           ...videoClass,
           status: pandaVideo.status,
           video_url: pandaVideo.video_player,
+          thumbnail_url: pandaVideo.thumbnail
         };
         return updatedVideoClass;
       } else {
