@@ -8,6 +8,15 @@ export interface ICompanyDTO {
   social_reason: string;
   email: string;
   phone: string;
+  cep: string;
+  city: string;
+  district: string;
+  number_of_employees: string;
+  company_sector: string;
+  residence_complement: string;
+  residence_number: string;
+  street: string;
+  uf: string;
   current_plan: TPlan;
   logo_url: string;
   users?: IUserDTO[];
@@ -21,6 +30,15 @@ export interface ICreateCompanyDTO {
   current_plan: TPlan;
   logo_url: string;
   phone?: string;
+  cep: string;
+  city: string;
+  district: string;
+  number_of_employees: string;
+  company_sector: string;
+  residence_complement: string;
+  residence_number: string;
+  street: string;
+  uf: string;
 }
 
 export interface IUpdateCompanyDTO {

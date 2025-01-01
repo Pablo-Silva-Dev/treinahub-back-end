@@ -14,11 +14,9 @@ import {
   Post,
   Req,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { AuthGuard } from "@nestjs/passport";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { TEnvSchema } from "env";
 import { Request } from "express";
@@ -32,10 +30,18 @@ const validationSchema = z.object({
   email: z.string(),
   current_plan: z.enum(["gold", "platinum", "diamond"]),
   phone: z.string().regex(phoneValidationRegex).optional(),
+  cep: z.string(),
+  city: z.string(),
+  district: z.string(),
+  number_of_employees: z.string(),
+  company_sector: z.string(),
+  residence_complement: z.string(),
+  residence_number: z.string(),
+  street: z.string(),
+  uf: z.string(),
 });
 
 @Controller("/companies/create")
-@UseGuards(AuthGuard("jwt-admin"))
 @UseInterceptors(FileInterceptor("img_file"))
 export class CreateCompanyController {
   constructor(
@@ -76,34 +82,32 @@ export class CreateCompanyController {
         companyId
       );
 
-      // Determine the file extension for the uploaded file
-      const fileExtension = file.originalname.split(".").pop();
-      const fileName = `${formatSlug(newCompany.fantasy_name)}-logo.${fileExtension}`;
-
-      // Upload the file to the new folder
-      const uploadedFileUrl = await this.manageFileService.uploadFile(
-        file.buffer,
-        `${containerFolderName}/${fileName}`,
-        blobStorageContainer
-      );
-
-      // Update the company with the uploaded file's URL
-      const updatedCompany = await this.updateCompanyUseCase.execute({
-        id: companyId,
-        logo_url: uploadedFileUrl,
-      });
-
       await this.pandaVideoService.createFolder(
         `company-${formatSlug(fantasy_name)}-${companyId}`
       );
 
-      await this.plantFaqQuestionsUseCase.execute(
-        faqQuestionsSeeds,
-        updatedCompany.id
-      );
+      await this.plantFaqQuestionsUseCase.execute(faqQuestionsSeeds, companyId);
+
+      if (file) {
+        // Determine the file extension for the uploaded file
+        const fileExtension = file.originalname.split(".").pop();
+        const fileName = `${formatSlug(newCompany.fantasy_name)}-logo.${fileExtension}`;
+        // Upload the file to the new folder
+        const uploadedFileUrl = await this.manageFileService.uploadFile(
+          file.buffer,
+          `${containerFolderName}/${fileName}`,
+          blobStorageContainer
+        );
+        // Update the company with the uploaded file's URL
+        const updatedCompany = await this.updateCompanyUseCase.execute({
+          id: companyId,
+          logo_url: uploadedFileUrl,
+        });
+        return updatedCompany;
+      }
 
       // Return the updated company
-      return updatedCompany;
+      return newCompany;
     } catch (error) {
       console.log(["INTERNAL_ERROR"], error.message);
       throw new ConflictException({
