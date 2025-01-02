@@ -29,7 +29,7 @@ export class GetVideoClassByIdController {
       const { videos } = await this.pandaVideoService.listVideos();
 
       const video = videos.find(
-        (video) => video.title.includes(name) || video.title === name
+        (video) => video.title === name
       );
 
       if (video) {
