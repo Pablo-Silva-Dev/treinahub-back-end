@@ -2,7 +2,6 @@ import { VideoClassesImplementation } from "@/infra/repositories/implementations
 import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { CreateVideoClassUseCase } from "@/infra/useCases/videoClasses/createVideoClassUseCase";
 import { checkVideoAudio } from "@/utils/checkVideoAudio";
-import { formatSlugFileName } from "@/utils/formatSlug";
 import { getVideoDuration } from "@/utils/getVideoDuration";
 import {
   ConflictException,
@@ -82,9 +81,8 @@ export class CreateVideoClassController {
 
       const videoFile = video_file[0];
 
-      const formattedName = formatSlugFileName(name);
-
       const MAX_VIDEO_DURATION_IN_SECONDS = 15 * 60; // 15 minutes
+      const MAX_VIDEO_FILE_SIZE = 150 * 1024 * 1024; // 150MB
 
       const videoClassDurationInSeconds = await getVideoDuration(
         videoFile.buffer
@@ -92,9 +90,16 @@ export class CreateVideoClassController {
 
       const videoHasAudio = await checkVideoAudio(videoFile.buffer);
 
+      const videoFileSize = videoFile.size;
+
       if (videoClassDurationInSeconds > MAX_VIDEO_DURATION_IN_SECONDS) {
         throw new NotAcceptableException(
           "Video duration can not be more than 15 minutes."
+        );
+      }
+      if (videoFileSize > MAX_VIDEO_FILE_SIZE) {
+        throw new NotAcceptableException(
+          "Video size can not be more than 150MB."
         );
       }
 
