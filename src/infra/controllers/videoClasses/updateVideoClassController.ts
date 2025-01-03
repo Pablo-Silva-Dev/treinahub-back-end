@@ -1,3 +1,4 @@
+import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { UpdateVideoClassUseCase } from "@/infra/useCases/videoClasses/updateVideoClassUseCase";
 import {
   BadRequestException,
@@ -22,7 +23,10 @@ const updateVideoClassSchema = z.object({
 @Controller("/video-classes/update")
 @UseGuards(AuthGuard("jwt-admin"))
 export class UpdateVideoClassController {
-  constructor(private updateVideoClassUseCase: UpdateVideoClassUseCase) {}
+  constructor(
+    private updateVideoClassUseCase: UpdateVideoClassUseCase,
+    private pandaVideoService: PandaVideoService
+  ) {}
 
   @Put()
   @HttpCode(203)
@@ -37,8 +41,16 @@ export class UpdateVideoClassController {
     }
 
     try {
+      const { name } = req.body;
+      const { videos } = await this.pandaVideoService.listVideos();
+
+      const video = videos.find((video) => video.title === name);
+      const pandaVideo = await this.pandaVideoService.getVideo(video.id);
       const updatedVideoClass = await this.updateVideoClassUseCase.execute({
         ...req.body,
+        status: pandaVideo.status,
+        video_url: pandaVideo.video_player,
+        thumbnail_url: pandaVideo.thumbnail,
       });
       return updatedVideoClass;
     } catch (error) {
