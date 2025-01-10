@@ -14,9 +14,9 @@ datasource db {
 }
 
 enum Plan {
+  bronze
+  silver
   gold
-  platinum
-  diamond
 }
 
 enum PandaVideoStatus {
@@ -229,28 +229,30 @@ model QuizResult {
 }
 
 model Company {
-  id                   String           @id @default(uuid())
-  fantasy_name         String
-  cnpj                 String           @unique()
-  social_reason        String           @unique()
-  email                String
-  phone                String?
-  cep                  String
-  city                 String
-  district             String
-  number_of_employees  String
-  company_sector       String
-  residence_complement String
-  residence_number     String
-  street               String
-  uf                   String
-  current_plan         Plan
-  logo_url             String?
-  users                User[]
-  trainings            Training[]
-  contacts_supports    ContactSupport[]
-  faq_questions        FaqQuestion[]
-  logs                 Log[]
-  created_at           DateTime         @default(now())
-  updated_at           DateTime         @default(now())
+  id                             String           @id @default(uuid())
+  fantasy_name                   String
+  cnpj                           String           @unique()
+  social_reason                  String           @unique()
+  email                          String
+  phone                          String?
+  cep                            String
+  city                           String
+  district                       String
+  number_of_employees            String
+  company_sector                 String
+  residence_complement           String
+  residence_number               String
+  street                         String
+  uf                             String
+  current_plan                   Plan
+  logo_url                       String?
+  users                          User[]
+  trainings                      Training[]
+  contacts_supports              ContactSupport[]
+  faq_questions                  FaqQuestion[]
+  logs                           Log[]
+  number_of_additional_employees Int              @default(0)
+  used_storage                   Int              @default(0)
+  created_at                     DateTime         @default(now())
+  updated_at                     DateTime         @default(now())
 }

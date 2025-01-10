@@ -7,14 +7,14 @@ import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUs
 import { formatSlug } from "@/utils/formatSlug";
 import { phoneValidationRegex } from "@/utils/regex";
 import {
-  BadRequestException,
-  ConflictException,
-  Controller,
-  HttpCode,
-  Post,
-  Req,
-  UploadedFile,
-  UseInterceptors,
+    BadRequestException,
+    ConflictException,
+    Controller,
+    HttpCode,
+    Post,
+    Req,
+    UploadedFile,
+    UseInterceptors,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -28,7 +28,7 @@ const validationSchema = z.object({
   cnpj: z.string(),
   social_reason: z.string(),
   email: z.string(),
-  current_plan: z.enum(["gold", "platinum", "diamond"]),
+  current_plan: z.enum(["bronze", "silver", "gold"]),
   phone: z.string().regex(phoneValidationRegex).optional(),
   cep: z.string(),
   city: z.string(),

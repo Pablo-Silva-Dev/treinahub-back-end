@@ -43,6 +43,7 @@ export class CompaniesImplementation implements ICompaniesRepository {
         users: {
           select: {
             name: true,
+            is_admin: true
           },
         },
         trainings: true,

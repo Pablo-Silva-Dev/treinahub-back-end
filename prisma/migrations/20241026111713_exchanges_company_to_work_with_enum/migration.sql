@@ -5,7 +5,7 @@
 
 */
 -- CreateEnum
-CREATE TYPE "Plan" AS ENUM ('gold', 'platinum', 'diamond');
+CREATE TYPE "Plan" AS ENUM ('bronze', 'silver', 'gold');
 
 -- AlterTable
 ALTER TABLE "Company" DROP COLUMN "current_plan",

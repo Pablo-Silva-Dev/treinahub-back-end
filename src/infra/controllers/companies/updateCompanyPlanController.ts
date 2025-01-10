@@ -1,12 +1,12 @@
 import { IUpdateCompanyPlanDTO } from "@/infra/dtos/CompanyDTO";
 import {
-  BadRequestException,
-  Body,
-  ConflictException,
-  Controller,
-  HttpCode,
-  Patch,
-  UseGuards,
+    BadRequestException,
+    Body,
+    ConflictException,
+    Controller,
+    HttpCode,
+    Patch,
+    UseGuards,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
@@ -14,7 +14,7 @@ import { UpdateCompanyPlanUseCase } from "../../useCases/companies/updateCompany
 
 const validationSchema = z.object({
   id: z.string(),
-  current_plan: z.enum(["gold", "platinum", "diamond"]),
+  current_plan: z.enum(["bronze", "silver", "gold"]),
 });
 
 @Controller("/companies/update-company-plan")
