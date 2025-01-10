@@ -60,3 +60,8 @@ export interface IUpdateCompanyLogoDTO {
   id: string;
   logo_url: string;
 }
+
+export interface IUpdateCompanyAdditionalUsers {
+  id: string;
+  number_of_additional_employees: number;
+}

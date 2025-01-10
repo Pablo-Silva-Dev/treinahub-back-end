@@ -14,4 +14,5 @@ export interface ICompaniesRepository {
   updateCompanyPlan(plan: IUpdateCompanyPlanDTO): Promise<ICompanyDTO>;
   updateCompanyLogo(logo_url: IUpdateCompanyLogoDTO): Promise<ICompanyDTO>;
   deleteCompany(companyId: string): Promise<void>;
+  updateCompanyAdditionalUsers(companyId: string): Promise<ICompanyDTO>;
 }

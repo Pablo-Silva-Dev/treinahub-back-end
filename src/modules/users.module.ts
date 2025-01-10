@@ -18,6 +18,7 @@ import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
 import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
 import { TwilioService } from "@/infra/services/twilio";
+import { UpdateCompanyAdditionalUsersUseCase } from "@/infra/useCases/companies/updateCompanyAdditionalUsersUseCase";
 import { ListTrainingMetricsByUserUseCase } from "@/infra/useCases/trainingMetrics/listTrainingMetricsByUserUseCase";
 import { AuthenticateUserUseCase } from "@/infra/useCases/users/authenticateUserUseCase";
 import { CreateUserUseCase } from "@/infra/useCases/users/createUserUseCase";
@@ -68,6 +69,7 @@ import { Module } from "@nestjs/common";
     GetRecoveryPasswordCodeBySMSUseCase,
     AuthenticateUserUseCase,
     GetUserByPhoneUseCase,
+    UpdateCompanyAdditionalUsersUseCase,
   ],
 })
 export class UsersModule {}

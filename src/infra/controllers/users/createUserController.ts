@@ -10,6 +10,7 @@ import {
   Post,
 } from "@nestjs/common";
 import { z } from "zod";
+import { UpdateCompanyAdditionalUsersUseCase } from "./../../useCases/companies/updateCompanyAdditionalUsersUseCase";
 
 const createUserBodySchema = z.object({
   name: z.string(),
@@ -22,7 +23,10 @@ const createUserBodySchema = z.object({
 
 @Controller("/users/create")
 export class CreateUserController {
-  constructor(private createUserUseCase: CreateUserUseCase) {}
+  constructor(
+    private createUserUseCase: CreateUserUseCase,
+    private updateCompanyAdditionalUsersUseCase: UpdateCompanyAdditionalUsersUseCase
+  ) {}
   @Post()
   @HttpCode(201)
   async handle(@Body() body: ICreateUserDTO) {
@@ -37,6 +41,13 @@ export class CreateUserController {
 
     try {
       const createdUser = await this.createUserUseCase.execute(body);
+
+      await this.updateCompanyAdditionalUsersUseCase.execute(
+        createdUser.company_id
+      );
+
+      //TODO-Pablo: Call stripe method to purchase new additional user based on plan
+
       return createdUser;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);

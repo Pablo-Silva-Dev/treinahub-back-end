@@ -7,11 +7,16 @@ import {
 } from "@/infra/dtos/CompanyDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { TEnvSchema } from "env";
 import { ICompaniesRepository } from "../interfaces/companiesRepository";
 
 @Injectable()
 export class CompaniesImplementation implements ICompaniesRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService<TEnvSchema>
+  ) {}
   async createCompany(data: ICreateCompanyDTO): Promise<ICompanyDTO> {
     const { cnpj } = data;
 
@@ -43,7 +48,7 @@ export class CompaniesImplementation implements ICompaniesRepository {
         users: {
           select: {
             name: true,
-            is_admin: true
+            is_admin: true,
           },
         },
         trainings: true,
@@ -134,5 +139,45 @@ export class CompaniesImplementation implements ICompaniesRepository {
     }
 
     await this.prisma.company.delete({ where: { id: companyId } });
+  }
+
+  async updateCompanyAdditionalUsers(companyId: string): Promise<ICompanyDTO> {
+    const company = await this.getCompany(companyId);
+    if (!company) {
+      return null;
+    }
+
+    const currentPlan = company.current_plan;
+    const employees = company.users.filter((user) => !user.is_admin).length;
+
+    const maxAllowedFreeUsersBronzePlan = this.configService.get(
+      "VITE_FREE_EMPLOYEES_LIMIT_BRONZE_PLAN"
+    );
+    const maxAllowedFreeUsersSilverPlan = this.configService.get(
+      "VITE_FREE_EMPLOYEES_LIMIT_SILVER_PLAN"
+    );
+    const maxAllowedFreeUsersGoldPlan = this.configService.get(
+      "VITE_FREE_EMPLOYEES_LIMIT_GOLD_PLAN"
+    );
+
+    if (
+      (currentPlan === "bronze" &&
+        employees >= maxAllowedFreeUsersBronzePlan) ||
+      (currentPlan === "silver" &&
+        employees >= maxAllowedFreeUsersSilverPlan) ||
+      (currentPlan === "gold" && employees >= maxAllowedFreeUsersGoldPlan)
+    ) {
+      const updatedCompany = await this.prisma.company.update({
+        where: {
+          id: companyId,
+        },
+        data: {
+          number_of_additional_employees:
+            company.number_of_additional_employees + 1,
+        },
+      });
+
+      return updatedCompany;
+    }
   }
 }
