@@ -32,7 +32,10 @@ export class ListVideoClassesController {
         if (videoData) {
           videoClass.video_url = videoData.video_player;
           videoClass.status = videoData.status;
-          videoClass.thumbnail_url = videoData.thumbnail
+          videoClass.thumbnail_url = videoData.thumbnail;
+          videoClass.storage_size = parseFloat(
+            Number(videoData.storage_size / (1024 * 1024 * 1024)).toFixed(3) //CONVERTS BYTE TO GB
+          ); //storage size in GB
         }
         return videoClass;
       });

@@ -11,6 +11,7 @@ export interface IVideoClassDTO {
   formatted_duration?: string;
   status?: "CONVERTED" | "CONVERTING" | "FAILED";
   thumbnail_url? : string;
+  storage_size: number;
 }
 
 export interface ICreateVideoClassDTO {

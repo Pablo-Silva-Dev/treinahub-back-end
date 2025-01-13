@@ -113,7 +113,7 @@ export class CreateVideoClassController {
         folder.name.includes(training_id)
       );
 
-      await this.pandaVideoService.uploadVideo(
+      const pandaVideo = await this.pandaVideoService.uploadVideo(
         videoFile.buffer,
         name,
         trainingFolder.id
@@ -125,7 +125,7 @@ export class CreateVideoClassController {
         video_url: "",
       });
 
-      return createdVideoClass;
+      return pandaVideo;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
 

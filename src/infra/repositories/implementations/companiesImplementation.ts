@@ -4,6 +4,7 @@ import {
   IUpdateCompanyDTO,
   IUpdateCompanyLogoDTO,
   IUpdateCompanyPlanDTO,
+  IUpdateCompanyUsedStorage,
 } from "@/infra/dtos/CompanyDTO";
 import { PrismaService } from "@/infra/services/prisma";
 import { Injectable } from "@nestjs/common";
@@ -179,5 +180,30 @@ export class CompaniesImplementation implements ICompaniesRepository {
 
       return updatedCompany;
     }
+  }
+
+  async updateCompanyUsedStorage(
+    data: IUpdateCompanyUsedStorage
+  ): Promise<ICompanyDTO> {
+    const company = await this.prisma.company.findUnique({
+      where: {
+        id: data.id,
+      },
+    });
+
+    if (!company) {
+      return null;
+    }
+
+    const updatedCompany = await this.prisma.company.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        used_storage: data.used_storage,
+      },
+    });
+
+    return updatedCompany;
   }
 }

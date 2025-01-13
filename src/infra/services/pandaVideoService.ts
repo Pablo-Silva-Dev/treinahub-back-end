@@ -1,3 +1,4 @@
+import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import axios from "axios";
@@ -8,7 +9,10 @@ import { v4 as uuidv4 } from "uuid";
 export class PandaVideoService {
   private pandaVideoApiKey: string;
 
-  constructor(private configService: ConfigService<TEnvSchema, true>) {
+  constructor(
+    private configService: ConfigService<TEnvSchema, true>,
+    private trainingsImplementation: TrainingsImplementation
+  ) {
     this.pandaVideoApiKey = this.configService.get("PANDA_VIDEO_API_KEY");
   }
 
@@ -168,6 +172,34 @@ export class PandaVideoService {
       return data;
     } catch (error) {
       console.log("Error at trying to delete video on Panda service: ", error);
+    }
+  }
+  async calculateCompanyConsumedStorage(companyId: string) {
+    try {
+      const trainings =
+        await this.trainingsImplementation.listTrainings(companyId);
+      const trainingIds = trainings.map((t) => t.id);
+      const { folders } = await this.listFolders();
+      let totalConsumedStorage = 0;
+
+      for (const folder of folders) {
+        for (const id of trainingIds) {
+          if (folder.name.includes(id)) {
+            const { videos } = await this.listVideos(folder.id);
+            if (videos && videos.length > 0) {
+              totalConsumedStorage += parseFloat(
+                Number(
+                  videos.reduce((acc, video) => acc + video.storage_size, 0) /
+                    (1024 * 1024 * 1024)
+                ).toFixed(2)
+              );
+            }
+          }
+        }
+      }
+      return totalConsumedStorage;
+    } catch (error) {
+      console.log(error);
     }
   }
 }
