@@ -82,6 +82,38 @@ export class VideoClassesImplementation implements IVideoClassesRepository {
 
     return videoClassWithDuration;
   }
+
+  async listVideoClassesByCompany(
+    companyId: string
+  ): Promise<IVideoClassDTO[]> {
+    const company = await this.prisma.company.findUnique({
+      where: {
+        id: companyId,
+      },
+    });
+
+    if (!company) {
+      return;
+    }
+    const videoClasses = await this.prisma.videoClass.findMany({
+      where: {
+        training: {
+          company_id: companyId,
+        },
+      },
+      include: {
+        training: true,
+      },
+    });
+
+    const videoClassWithDuration = videoClasses.map((vc) => ({
+      ...vc,
+      formatted_duration: secondsToFullTimeString(vc.duration),
+    }));
+
+    return videoClassWithDuration;
+  }
+
   async getVideoClassById(
     videoClassId: string
   ): Promise<IVideoClassDTO | void> {

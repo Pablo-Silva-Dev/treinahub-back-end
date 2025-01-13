@@ -50,7 +50,7 @@ export class PandaVideoService {
       );
     }
   }
-  async listFolders() {
+  async listFolders(parentFolderId?: string) {
     try {
       const headers = {
         accept: "application/json",
@@ -58,7 +58,9 @@ export class PandaVideoService {
       };
 
       const { data } = await axios.get(
-        "https://api-v2.pandavideo.com.br/folders",
+        parentFolderId
+          ? `https://api-v2.pandavideo.com.br/folders/${parentFolderId}`
+          : "https://api-v2.pandavideo.com.br/folders",
 
         {
           headers,
@@ -69,6 +71,7 @@ export class PandaVideoService {
       console.log("Error at trying to list PandaVideo folders: ", error);
     }
   }
+
   async deleteFolder(folderId: string) {
     try {
       const headers = {
@@ -198,6 +201,30 @@ export class PandaVideoService {
         }
       }
       return totalConsumedStorage;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async listAllVideosByCompany(companyId: string) {
+    try {
+      const trainings =
+        await this.trainingsImplementation.listTrainings(companyId);
+      const trainingIds = trainings.map((t) => t.id);
+      const { folders } = await this.listFolders();
+      let allCompanyVideos;
+
+      for (const folder of folders) {
+        for (const id of trainingIds) {
+          if (folder.name.includes(id)) {
+            const { videos } = await this.listVideos(folder.id);
+            if (videos && videos.length > 0) {
+              allCompanyVideos = videos;
+            }
+          }
+        }
+      }
+      return allCompanyVideos;
     } catch (error) {
       console.log(error);
     }
