@@ -15,9 +15,16 @@ import { UpdateCompanyUseCase } from "./../../useCases/companies/updateCompanyUs
 
 const validationSchema = z.object({
   id: z.string(),
-  fantasy_name: z.string(),
-  email: z.string(),
+  fantasy_name: z.string().optional(),
+  email: z.string().optional(),
   phone: z.string().regex(phoneValidationRegex).optional(),
+  cep: z.string().optional(),
+  city: z.string().optional(),
+  district: z.string().optional(),
+  residence_complement: z.string().optional(),
+  residence_number: z.string().optional(),
+  street: z.string().optional(),
+  uf: z.string().optional(),
 });
 
 @Controller("/companies/update-company")

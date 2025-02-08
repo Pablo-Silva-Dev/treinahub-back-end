@@ -49,6 +49,15 @@ export interface IUpdateCompanyDTO {
   email?: string;
   phone?: string;
   logo_url?: string;
+  cep?: string;
+  city?: string;
+  district?: string;
+  number_of_employees?: string;
+  company_sector?: string;
+  residence_complement?: string;
+  residence_number?: string;
+  street?: string;
+  uf?: string;
 }
 
 export interface IUpdateCompanyPlanDTO {
