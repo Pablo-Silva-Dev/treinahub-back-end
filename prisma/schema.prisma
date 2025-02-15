@@ -245,7 +245,7 @@ model Company {
   residence_number               String
   street                         String
   uf                             String
-  current_plan                   Plan
+  current_plan                   Plan?
   logo_url                       String?
   users                          User[]
   trainings                      Training[]

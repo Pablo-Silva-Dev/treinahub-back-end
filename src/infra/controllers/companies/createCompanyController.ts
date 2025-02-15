@@ -28,7 +28,6 @@ const validationSchema = z.object({
   cnpj: z.string(),
   social_reason: z.string(),
   email: z.string(),
-  current_plan: z.enum(["bronze", "silver", "gold"]),
   phone: z.string().regex(phoneValidationRegex).optional(),
   cep: z.string(),
   city: z.string(),
