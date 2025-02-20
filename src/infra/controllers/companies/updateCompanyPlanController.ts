@@ -1,27 +1,25 @@
 import { IUpdateCompanyPlanDTO } from "@/infra/dtos/CompanyDTO";
 import {
-    BadRequestException,
-    Body,
-    ConflictException,
-    Controller,
-    HttpCode,
-    Patch,
-    UseGuards,
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Put,
 } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { z } from "zod";
 import { UpdateCompanyPlanUseCase } from "../../useCases/companies/updateCompanyPlanUseCase";
 
 const validationSchema = z.object({
   id: z.string(),
   current_plan: z.enum(["bronze", "silver", "gold"]),
+  subscription_id: z.string(),
 });
 
 @Controller("/companies/update-company-plan")
-@UseGuards(AuthGuard("jwt-admin"))
 export class UpdateCompanyPlanController {
   constructor(private updateCompanyPlanUseCase: UpdateCompanyPlanUseCase) {}
-  @Patch()
+  @Put()
   @HttpCode(203)
   async handle(@Body() body: IUpdateCompanyPlanDTO) {
     const isBodyValidated = validationSchema.safeParse(body);

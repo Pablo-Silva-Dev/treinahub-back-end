@@ -12,7 +12,6 @@ import {
 import { AuthGuard } from "@nestjs/passport";
 
 @Controller("/companies/get-by-id")
-@UseGuards(AuthGuard("jwt-admin"))
 export class GetCompanyByIdController {
   constructor(
     private getCompanyByIdUseCase: GetCompanyByIdUseCase,

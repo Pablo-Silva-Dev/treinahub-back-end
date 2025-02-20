@@ -62,6 +62,7 @@ export interface IUpdateCompanyDTO {
 export interface IUpdateCompanyPlanDTO {
   id: string;
   current_plan: TPlan;
+  subscription_id: string;
 }
 
 export interface IUpdateCompanyLogoDTO {
