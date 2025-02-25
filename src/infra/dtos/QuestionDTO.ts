@@ -13,3 +13,10 @@ export interface IUpdateQuizQuestionDTO {
   id: string;
   content?: string;
 }
+
+export interface IExplainQuestionDTO {
+  questionId?: string;
+  question: string;
+  selectedOptionContent: string;
+  correctOptionContent: string;
+}
