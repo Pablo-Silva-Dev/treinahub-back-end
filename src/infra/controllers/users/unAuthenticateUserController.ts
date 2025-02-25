@@ -1,12 +1,11 @@
-import { IAuthenticateUserDTO } from "@/infra/dtos/UserDTO";
-import { AuthenticateUserUseCase } from "@/infra/useCases/users/authenticateUserUseCase";
+import { IUnAuthenticateUserDTO } from "@/infra/dtos/UserDTO";
+import { UnAuthenticateUserUseCase } from "@/infra/useCases/users/unAuthenticateUserUseCase";
 import {
   BadRequestException,
   Body,
   ConflictException,
   Controller,
   HttpCode,
-  NotAcceptableException,
   NotFoundException,
   Post,
 } from "@nestjs/common";
@@ -14,15 +13,14 @@ import { z } from "zod";
 
 const authenticateUserBodySchema = z.object({
   email: z.string().email(),
-  password: z.string(),
 });
 
-@Controller("/users/auth")
-export class AuthenticateUserController {
-  constructor(private authenticateUserUseCase: AuthenticateUserUseCase) {}
+@Controller("/users/logout")
+export class UnAuthenticateUserController {
+  constructor(private unAuthenticateUserUseCase: UnAuthenticateUserUseCase) {}
   @Post()
   @HttpCode(200)
-  async handle(@Body() body: IAuthenticateUserDTO) {
+  async handle(@Body() body: IUnAuthenticateUserDTO) {
     const isBodyValidated = authenticateUserBodySchema.safeParse(body);
 
     if (!isBodyValidated.success) {
@@ -33,21 +31,14 @@ export class AuthenticateUserController {
     }
 
     try {
-      const token = await this.authenticateUserUseCase.execute(body);
-      return token;
+      const message = await this.unAuthenticateUserUseCase.execute(body);
+      return message;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
 
       if (error.status === 404) {
         throw new NotFoundException({
-          message: "User not found or credentials does not match",
-          error: error.message,
-        });
-      }
-
-      if (error.status === 406) {
-        throw new NotAcceptableException({
-          message: "User already authenticated",
+          message: "User not found",
           error: error.message,
         });
       }

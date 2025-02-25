@@ -23,6 +23,7 @@ export interface IUserDTO {
   watched_classes?: IWatchedClassesDTO[];
   training_metrics?: ITrainingMetricsDTO[];
   company_id: string;
+  is_authenticated?: boolean;
 }
 
 export interface ICreateUserDTO {
@@ -61,3 +62,8 @@ export interface IAuthenticateUserDTO {
   email: string;
   password: string;
 }
+
+export interface IUnAuthenticateUserDTO {
+  email: string;
+}
+

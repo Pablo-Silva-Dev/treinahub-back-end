@@ -51,6 +51,7 @@ model User {
   avatars          Avatar[]
   company_id       String
   company          Company           @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  is_authenticated Boolean           @default(false)
 }
 
 model Training {

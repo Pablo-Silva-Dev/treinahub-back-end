@@ -5,6 +5,7 @@ import {
   ICreateUserDTO,
   IGetRecoveryPasswordCodeByEmailDTO,
   IGetRecoveryPasswordCodeBySMSDTO,
+  IUnAuthenticateUserDTO,
   IUpdateUserDTO,
   IUserDTO,
 } from "@/infra/dtos/UserDTO";
@@ -240,6 +241,19 @@ export class UsersImplementation implements IUsersRepository {
       return null;
     }
 
+    if (user.is_authenticated) {
+      return null;
+    }
+
+    await this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        is_authenticated: true,
+      },
+    });
+
     const token = this.jwt.sign(
       { sub: user.id, isAdmin: user.is_admin },
       { expiresIn: "30d" }
@@ -252,5 +266,15 @@ export class UsersImplementation implements IUsersRepository {
       name: user.name,
       companyId: company_id,
     };
+  }
+  async unAuthenticateUser(data: IUnAuthenticateUserDTO) {
+    await this.prisma.user.update({
+      where: {
+        email: data.email,
+      },
+      data: {
+        is_authenticated: false,
+      },
+    });
   }
 }

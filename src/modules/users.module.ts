@@ -8,6 +8,7 @@ import { GetUserByEmailController } from "@/infra/controllers/users/getUserByEma
 import { GetUserByIdController } from "@/infra/controllers/users/getUserByIdController";
 import { GetUserByPhoneController } from "@/infra/controllers/users/getUserByPhoneController";
 import { ListUsersController } from "@/infra/controllers/users/listUsersController";
+import { UnAuthenticateUserController } from "@/infra/controllers/users/unAuthenticateUserController";
 import { UpdateUserController } from "@/infra/controllers/users/updateUserController";
 import { AvatarsImplementation } from "@/infra/repositories/implementations/avatarsImplementation";
 import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
@@ -30,6 +31,7 @@ import { GetUserByIdUseCase } from "@/infra/useCases/users/getUserByIdUseCase";
 import { GetUserByEmailUseCase } from "@/infra/useCases/users/getUserByIEmailUseCase";
 import { GetUserByPhoneUseCase } from "@/infra/useCases/users/getUserByPhoneUseCase";
 import { ListUsersUseCase } from "@/infra/useCases/users/listUsersUseCase";
+import { UnAuthenticateUserUseCase } from "@/infra/useCases/users/unAuthenticateUserUseCase";
 import { UpdateUserUseCase } from "@/infra/useCases/users/updateUserUseCase";
 import { Module } from "@nestjs/common";
 
@@ -46,6 +48,7 @@ import { Module } from "@nestjs/common";
     GetRecoveryPasswordCodeBySMSController,
     AuthenticateUserController,
     GetUserByPhoneController,
+    UnAuthenticateUserController,
   ],
   providers: [
     PrismaService,
@@ -70,6 +73,7 @@ import { Module } from "@nestjs/common";
     AuthenticateUserUseCase,
     GetUserByPhoneUseCase,
     UpdateCompanyAdditionalUsersUseCase,
+    UnAuthenticateUserUseCase,
   ],
 })
 export class UsersModule {}

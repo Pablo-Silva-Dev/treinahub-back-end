@@ -1,6 +1,10 @@
 import { IAuthenticateUserDTO } from "@/infra/dtos/UserDTO";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from "@nestjs/common";
 
 @Injectable()
 export class AuthenticateUserUseCase {
@@ -11,9 +15,14 @@ export class AuthenticateUserUseCase {
     if (!user) {
       throw new NotFoundException("User not found");
     }
+
+    if (user.is_authenticated) {
+      throw new NotAcceptableException("User already authenticated");
+    }
+
     const token = await this.usersImplementation.authenticateUser(data);
     if (!token) {
-      throw new NotFoundException("Credentials not match");
+      throw new NotFoundException("User not found or credentials not match");
     }
     return token;
   }
