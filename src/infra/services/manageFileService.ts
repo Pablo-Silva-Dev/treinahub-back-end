@@ -3,7 +3,7 @@ import { createCanvas, loadImage, registerFont } from "canvas";
 import * as fs from "fs";
 import * as path from "path";
 
-import { secondsToFullTimeStringV2 } from "@/utils/convertTime";
+import { secondsToHours } from "@/utils/convertTime";
 import { formatDateNow } from "@/utils/formatDate";
 import { formatSlugFolderName } from "@/utils/formatSlug";
 import { formatUserCertificateName } from "@/utils/formatUserCertificateName";
@@ -59,11 +59,11 @@ export class ManageFileService {
       //renders logo
       const logoPath = path.join(
         __dirname,
-        "../../../src/assets/images/logo-certificate.png"
+        "../../../src/assets/images/logo-text.png"
       );
 
       await loadImage(logoPath).then((image) => {
-        ctx.drawImage(image, 80, 80, 96, 96);
+        ctx.drawImage(image, 80, 80, 260, 64);
       });
 
       //render certificate seal
@@ -93,7 +93,7 @@ export class ManageFileService {
       ctx.fillText(formatUserCertificateName(user.name), 200, 360);
       //
       //draws conclusion text
-      const conclusionTextPt1 = `concluiu na data de ${formatDateNow()} com duração total de ${secondsToFullTimeStringV2(training.duration)} `;
+      const conclusionTextPt1 = `concluiu na data de ${formatDateNow()} com duração total de ${secondsToHours(training.duration)} `;
       const conclusionTextPt2 = `o treinamento de "${training.name}".`;
       ctx.font = "28px Verdana";
       ctx.fillStyle = "#FFFFFF";

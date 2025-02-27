@@ -28,4 +28,14 @@ const secondsToFullTimeStringV2 = (durationInSeconds: number): string => {
   }
 };
 
-export { secondsToFullTimeString, secondsToFullTimeStringV2 };
+const secondsToHours = (durationInSeconds: number): string => {
+  let hours = Math.fround(durationInSeconds / 3600);
+  if (hours <= 0.1) {
+    hours = 0.1;
+  }
+  let formattedHours =
+    hours === 1 ? hours.toPrecision(1) : hours.toPrecision(2);
+  return `${hours === 1 ? `${formattedHours} hora` : `${formattedHours} horas`}`;
+};
+
+export { secondsToFullTimeString, secondsToFullTimeStringV2, secondsToHours };
