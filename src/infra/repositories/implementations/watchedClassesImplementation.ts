@@ -103,6 +103,7 @@ export class WatchedClassesImplementation implements IWatchedClassesRepository {
       where: {
         user_id,
         training_id,
+        completely_watched: true
       },
       include: { videoclass: true },
     });

@@ -1,5 +1,6 @@
 import {
   ICreateQuizAttemptDTO,
+  IListQuizAttemptsByUserAndQuizDTO,
   IQuizAttemptDTO,
 } from "@/infra/dtos/QuizAttemptDTO";
 import { PrismaService } from "@/infra/services/prisma";
@@ -77,5 +78,34 @@ export class QuizAttemptsImplementation implements IQuizAttemptRepository {
         id: quizAttemptId,
       },
     });
+  }
+  async listQuizAttemptsByUserAndQuiz(data: IListQuizAttemptsByUserAndQuizDTO) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: data.user_id,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    const quiz = await this.prisma.quiz.findUnique({
+      where: {
+        id: data.quiz_id,
+      },
+    });
+
+    if (!quiz) {
+      return null;
+    }
+
+    const quizAttempts = await this.prisma.quizAttempt.findMany({
+      where: {
+        quiz_id: data.quiz_id,
+        user_id: data.user_id,
+      },
+    });
+    return quizAttempts;
   }
 }
