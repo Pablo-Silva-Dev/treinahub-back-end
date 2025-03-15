@@ -12,6 +12,7 @@ import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageServic
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { PrismaService } from "@/infra/services/prisma";
+import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { DeleteCompanyUseCase } from "@/infra/useCases/companies/deleteCompanyUseCase";
 import { GetCompanyByIdUseCase } from "@/infra/useCases/companies/getCompanyByIdUseCase";
@@ -52,6 +53,7 @@ import { Module } from "@nestjs/common";
     PlantFaqQuestionsUseCase,
     ListTrainingsByCompanyUseCase,
     UpdateCompanyUsedStorageUseCase,
+    SendGridEmailSenderService,
   ],
 })
 export class CompaniesModules {}

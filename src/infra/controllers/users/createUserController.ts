@@ -6,7 +6,9 @@ import {
   Body,
   ConflictException,
   Controller,
+  ForbiddenException,
   HttpCode,
+  NotFoundException,
   Post,
 } from "@nestjs/common";
 import { z } from "zod";
@@ -51,6 +53,18 @@ export class CreateUserController {
       return createdUser;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
+      if (error.message === "Company not found") {
+        throw new NotFoundException({
+          message: "Company not found",
+          error: error.message,
+        });
+      }
+      if (error.message === "Company has no plan associated") {
+        throw new ForbiddenException({
+          message: "Company has no plan associated",
+          error: error.message,
+        });
+      }
       throw new ConflictException({
         message:
           "An error occurred. Check all request body fields for possible mismatching.",

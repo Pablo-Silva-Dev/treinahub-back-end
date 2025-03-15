@@ -1,13 +1,32 @@
 import { ICreateUserDTO } from "@/infra/dtos/UserDTO";
+import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+  ConflictException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { hash } from "bcryptjs";
 
 @Injectable()
 export class CreateUserUseCase {
-  constructor(private usersImplementation: UsersImplementation) {}
+  constructor(
+    private usersImplementation: UsersImplementation,
+    private companiesImplementation: CompaniesImplementation
+  ) {}
   async execute(data: ICreateUserDTO) {
-    const { cpf, email, phone, password, birth_date } = data;
+    const { cpf, email, phone, password, birth_date, company_id } = data;
+
+    const company = await this.companiesImplementation.getCompany(company_id);
+
+    if (!company) {
+      throw new NotFoundException("Company not found");
+    }
+
+    if (company.current_plan === null) {
+      throw new ForbiddenException("Company has no plan associated");
+    }
 
     const PASSWORD_ENCRYPTION_SALT_LEVEL = 6;
 

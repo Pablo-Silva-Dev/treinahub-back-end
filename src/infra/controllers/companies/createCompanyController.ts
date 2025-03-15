@@ -2,19 +2,20 @@ import { ICreateCompanyDTO } from "@/infra/dtos/CompanyDTO";
 import { faqQuestionsSeeds } from "@/infra/seeds/faqQuestionsSeeds";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PandaVideoService } from "@/infra/services/pandaVideoService";
+import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
 import { formatSlug } from "@/utils/formatSlug";
 import { phoneValidationRegex } from "@/utils/regex";
 import {
-    BadRequestException,
-    ConflictException,
-    Controller,
-    HttpCode,
-    Post,
-    Req,
-    UploadedFile,
-    UseInterceptors,
+  BadRequestException,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+  Req,
+  UploadedFile,
+  UseInterceptors,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { FileInterceptor } from "@nestjs/platform-express";
@@ -49,7 +50,8 @@ export class CreateCompanyController {
     private plantFaqQuestionsUseCase: PlantFaqQuestionsUseCase,
     private manageFileService: ManageFileService,
     private pandaVideoService: PandaVideoService,
-    private configService: ConfigService<TEnvSchema, true>
+    private configService: ConfigService<TEnvSchema, true>,
+    private SendGridEmailSenderService: SendGridEmailSenderService
   ) {}
   @HttpCode(201)
   @Post()
@@ -104,6 +106,11 @@ export class CreateCompanyController {
         });
         return updatedCompany;
       }
+
+      await this.SendGridEmailSenderService.sendCompanyIdEmail({
+        to: newCompany.email,
+        companyIdCode: companyId,
+      });
 
       // Return the updated company
       return newCompany;
