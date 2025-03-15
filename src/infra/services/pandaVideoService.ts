@@ -208,20 +208,17 @@ export class PandaVideoService {
 
   async listAllVideosByCompany(companyId: string) {
     try {
-      const trainings =
-        await this.trainingsImplementation.listTrainings(companyId);
-      const trainingIds = trainings.map((t) => t.id);
       const { folders } = await this.listFolders();
       let allCompanyVideos;
 
-      for (const folder of folders) {
-        for (const id of trainingIds) {
-          if (folder.name.includes(id)) {
-            const { videos } = await this.listVideos(folder.id);
-            if (videos && videos.length > 0) {
-              allCompanyVideos = videos;
-            }
-          }
+      const companyFolder = folders.filter((f) =>
+        f.name.includes(companyId)
+      )[0];
+
+      if (companyFolder) {
+        const { videos } = await this.listVideos(companyFolder[0]);
+        if (videos && videos.length > 0) {
+          allCompanyVideos = videos;
         }
       }
       return allCompanyVideos;
