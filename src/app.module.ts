@@ -1,6 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { envSchema } from "./env";
+import { AuthControlGateway } from "./infra/gateways/authcontrol.gateway";
 import { AuthModule } from "./modules/auth.module";
 import { AvatarsModule } from "./modules/avatars.module";
 import { CertificatesModule } from "./modules/certificates.module";
@@ -47,5 +48,6 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
     QuizResultsModule,
     CompaniesModules,
   ],
+  providers: [AuthControlGateway],
 })
 export class AppModule {}

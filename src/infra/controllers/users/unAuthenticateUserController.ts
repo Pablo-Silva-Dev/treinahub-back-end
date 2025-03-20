@@ -1,4 +1,5 @@
 import { IUnAuthenticateUserDTO } from "@/infra/dtos/UserDTO";
+import { AuthControlGateway } from "@/infra/gateways/authcontrol.gateway";
 import { UnAuthenticateUserUseCase } from "@/infra/useCases/users/unAuthenticateUserUseCase";
 import {
   BadRequestException,
@@ -17,7 +18,10 @@ const authenticateUserBodySchema = z.object({
 
 @Controller("/users/logout")
 export class UnAuthenticateUserController {
-  constructor(private unAuthenticateUserUseCase: UnAuthenticateUserUseCase) {}
+  constructor(
+    private unAuthenticateUserUseCase: UnAuthenticateUserUseCase,
+    private authControlGateway: AuthControlGateway
+  ) {}
   @Post()
   @HttpCode(200)
   async handle(@Body() body: IUnAuthenticateUserDTO) {
@@ -32,6 +36,13 @@ export class UnAuthenticateUserController {
 
     try {
       const message = await this.unAuthenticateUserUseCase.execute(body);
+
+      const { email } = body;
+
+      this.authControlGateway.handleEvent(
+        "user-disconnected",
+        `email:${email}`
+      );
       return message;
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);

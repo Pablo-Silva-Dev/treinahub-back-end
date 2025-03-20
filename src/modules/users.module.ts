@@ -10,6 +10,7 @@ import { GetUserByPhoneController } from "@/infra/controllers/users/getUserByPho
 import { ListUsersController } from "@/infra/controllers/users/listUsersController";
 import { UnAuthenticateUserController } from "@/infra/controllers/users/unAuthenticateUserController";
 import { UpdateUserController } from "@/infra/controllers/users/updateUserController";
+import { AuthControlGateway } from "@/infra/gateways/authcontrol.gateway";
 import { AvatarsImplementation } from "@/infra/repositories/implementations/avatarsImplementation";
 import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
 import { TrainingMetricsImplementation } from "@/infra/repositories/implementations/trainingMetricsImplementation";
@@ -74,6 +75,7 @@ import { Module } from "@nestjs/common";
     GetUserByPhoneUseCase,
     UpdateCompanyAdditionalUsersUseCase,
     UnAuthenticateUserUseCase,
+    AuthControlGateway,
   ],
 })
 export class UsersModule {}

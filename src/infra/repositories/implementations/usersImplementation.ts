@@ -268,6 +268,16 @@ export class UsersImplementation implements IUsersRepository {
     };
   }
   async unAuthenticateUser(data: IUnAuthenticateUserDTO) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (!user) {
+      return null;
+    }
+
     await this.prisma.user.update({
       where: {
         email: data.email,
