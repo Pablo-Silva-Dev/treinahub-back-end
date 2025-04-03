@@ -12,7 +12,14 @@ import { UpdateCompanyPlanUseCase } from "../../useCases/companies/updateCompany
 
 const validationSchema = z.object({
   id: z.string(),
-  current_plan: z.enum(["bronze", "silver", "gold"]),
+  current_plan: z.enum([
+    "bronze_mensal",
+    "silver_mensal",
+    "gold_mensal",
+    "bronze_anual",
+    "silver_anual",
+    "gold_anual",
+  ]),
   subscription_id: z.string(),
 });
 

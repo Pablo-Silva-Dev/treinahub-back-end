@@ -162,11 +162,11 @@ export class CompaniesImplementation implements ICompaniesRepository {
     );
 
     if (
-      (currentPlan === "bronze" &&
+      (currentPlan.includes("bronze") &&
         employees >= maxAllowedFreeUsersBronzePlan) ||
-      (currentPlan === "silver" &&
+      (currentPlan.includes("silver") &&
         employees >= maxAllowedFreeUsersSilverPlan) ||
-      (currentPlan === "gold" && employees >= maxAllowedFreeUsersGoldPlan)
+      (currentPlan.includes("gold") && employees >= maxAllowedFreeUsersGoldPlan)
     ) {
       const updatedCompany = await this.prisma.company.update({
         where: {

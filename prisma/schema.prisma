@@ -14,9 +14,12 @@ datasource db {
 }
 
 enum Plan {
-  bronze
-  silver
-  gold
+  bronze_mensal
+  silver_mensal
+  gold_mensal
+  bronze_anual
+  silver_anual
+  gold_anual
 }
 
 enum PandaVideoStatus {
