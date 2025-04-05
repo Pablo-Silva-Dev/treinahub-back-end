@@ -241,7 +241,7 @@ export class UsersImplementation implements IUsersRepository {
       return null;
     }
 
-    if (user.is_authenticated) {
+    if (!user.is_admin && user.is_authenticated) {
       return null;
     }
 

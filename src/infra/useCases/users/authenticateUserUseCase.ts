@@ -16,7 +16,7 @@ export class AuthenticateUserUseCase {
       throw new NotFoundException("User not found");
     }
 
-    if (user.is_authenticated) {
+    if (!user.is_admin && user.is_authenticated) {
       throw new NotAcceptableException("User already authenticated");
     }
 
