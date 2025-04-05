@@ -82,7 +82,7 @@ export class CreateVideoClassController {
       const videoFile = video_file[0];
 
       const MAX_VIDEO_DURATION_IN_SECONDS = 15 * 60; // 15 minutes
-      const MAX_VIDEO_FILE_SIZE = 150 * 1024 * 1024; // 150MB
+      const MAX_VIDEO_FILE_SIZE = 250 * 1024 * 1024; // 250MB
 
       const videoClassDurationInSeconds = await getVideoDuration(
         videoFile.buffer
