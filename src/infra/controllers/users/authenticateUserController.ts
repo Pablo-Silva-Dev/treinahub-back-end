@@ -38,8 +38,8 @@ export class AuthenticateUserController {
     } catch (error) {
       console.log("[INTERNAL ERROR]", error.message);
 
-      if (error.status === 404) {
-        throw new NotFoundException({
+      if (error.status === 409) {
+        throw new ConflictException({
           message: "User not found or credentials does not match",
           error: error.message,
         });
