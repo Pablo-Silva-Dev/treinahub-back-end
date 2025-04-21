@@ -5,6 +5,7 @@ import { ListCompaniesController } from "@/infra/controllers/companies/listCompa
 import { UpdateCompanyController } from "@/infra/controllers/companies/updateCompanyController";
 import { UpdateCompanyLogoController } from "@/infra/controllers/companies/updateCompanyLogoController";
 import { UpdateCompanyPlanController } from "@/infra/controllers/companies/updateCompanyPlanController";
+import { RateLimitMiddleware } from "@/infra/middlewares/rateLimit.middleware";
 import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
 import { FaqQuestionsImplementation } from "@/infra/repositories/implementations/faqQuestionsImplementation";
 import { TrainingsImplementation } from "@/infra/repositories/implementations/trainingsImplementation";
@@ -23,7 +24,9 @@ import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUs
 import { UpdateCompanyUsedStorageUseCase } from "@/infra/useCases/companies/updateCompanyUsedStorageUseCase";
 import { PlantFaqQuestionsUseCase } from "@/infra/useCases/faqQuestions/plantFaqQuestionsSeedsUseCase";
 import { ListTrainingsByCompanyUseCase } from "@/infra/useCases/trainings/listTrainingsByCompanyUseCase";
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+
+const limitedRoutes = ["/companies/create", "companies/list"];
 
 @Module({
   controllers: [
@@ -56,4 +59,10 @@ import { Module } from "@nestjs/common";
     SendGridEmailSenderService,
   ],
 })
-export class CompaniesModules {}
+export class CompaniesModules implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RateLimitMiddleware)
+      .forRoutes(...limitedRoutes.map((route) => route));
+  }
+}
