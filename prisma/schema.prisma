@@ -55,6 +55,7 @@ model User {
   company_id       String
   company          Company           @relation(fields: [company_id], references: [id], onDelete: Cascade)
   is_authenticated Boolean           @default(false)
+  @@index(fields: [company_id])
 }
 
 model Training {
@@ -70,6 +71,7 @@ model Training {
   quizes           Quiz[]
   company_id       String
   company          Company           @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  @@index(fields: [company_id])
 }
 
 model VideoClass {
@@ -85,6 +87,7 @@ model VideoClass {
   status           PandaVideoStatus
   thumbnail_url    String?
   storage_size     Float?
+  @@index(fields: [training_id])
 }
 
 model Avatar {
@@ -92,6 +95,7 @@ model Avatar {
   user_id String
   user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
   url     String
+  @@index(fields: [user_id])
 }
 
 model Certificate {
@@ -102,6 +106,7 @@ model Certificate {
   created_at  DateTime  @default(now())
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   training    Training? @relation(fields: [training_id], references: [id], onDelete: SetNull)
+  @@index(fields: [user_id, training_id])
 }
 
 model FaqQuestion {
@@ -110,6 +115,7 @@ model FaqQuestion {
   answer     String
   company_id String
   company    Company? @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  @@index(fields: [company_id])
 }
 
 model AppVersion {
@@ -128,6 +134,7 @@ model TrainingMetrics {
   total_training_classes           Int
   total_watched_classes            Int
   total_watched_classes_percentage Int
+  @@index(fields: [user_id, training_id])
 }
 
 model WatchedClasses {
@@ -140,6 +147,8 @@ model WatchedClasses {
   videoclass         VideoClass @relation(fields: [videoclass_id], references: [id], onDelete: Cascade)
   execution_time     Int        @default(0)
   completely_watched Boolean
+  @@index(fields: [user_id, training_id])
+  @@index(fields: [user_id, videoclass_id])
 }
 
 model ContactSupport {
@@ -150,6 +159,7 @@ model ContactSupport {
   hide_contact_number Boolean  @default(false)
   company_id          String
   company             Company? @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  @@index(fields: [company_id])
 }
 
 model Log {
@@ -168,6 +178,7 @@ model RecoveryCode {
   user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   created_at      DateTime @default(now())
   expiration_date DateTime
+  @@index(fields: [user_id])
 }
 
 model Quiz {
@@ -177,6 +188,7 @@ model Quiz {
   questions     Question[]
   quiz_attempts QuizAttempt[]
   quiz_results  QuizResult[]
+  @@index(fields: [training_id])
 }
 
 model Question {
@@ -186,6 +198,7 @@ model Question {
   content        String
   options        Option[]
   quiz_responses QuizResponse[]
+  @@index(fields: [quiz_id])
 }
 
 model Option {
@@ -195,6 +208,7 @@ model Option {
   content        String
   quiz_responses QuizResponse[]
   is_correct     Boolean
+  @@index(fields: [question_id])
 }
 
 model QuizAttempt {
@@ -207,6 +221,7 @@ model QuizAttempt {
   finishedAt     DateTime?
   quiz_responses QuizResponse[]
   quiz_result    QuizResult?
+  @@index(fields: [quiz_id, user_id])
 }
 
 model QuizResponse {
@@ -218,6 +233,7 @@ model QuizResponse {
   selected_option_id String?
   selected_option    Option?     @relation(fields: [selected_option_id], references: [id], onDelete: SetNull)
   is_correct         Boolean     @default(false)
+  @@index(fields: [quiz_attempt_id, question_id])
 }
 
 model QuizResult {
@@ -231,6 +247,8 @@ model QuizResult {
   total_quiz_questions               Int
   total_correct_questions            Int
   total_correct_questions_percentage Int
+  @@index(fields: [quiz_id, user_id])
+  @@index(fields: [quiz_attempt_id, user_id])
 }
 
 model Company {
