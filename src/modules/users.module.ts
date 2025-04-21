@@ -11,6 +11,7 @@ import { ListUsersController } from "@/infra/controllers/users/listUsersControll
 import { UnAuthenticateUserController } from "@/infra/controllers/users/unAuthenticateUserController";
 import { UpdateUserController } from "@/infra/controllers/users/updateUserController";
 import { AuthControlGateway } from "@/infra/gateways/authcontrol.gateway";
+import { RateLimitMiddleware } from "@/infra/middlewares/rateLimit.middleware";
 import { AvatarsImplementation } from "@/infra/repositories/implementations/avatarsImplementation";
 import { CompaniesImplementation } from "@/infra/repositories/implementations/companiesImplementation";
 import { TrainingMetricsImplementation } from "@/infra/repositories/implementations/trainingMetricsImplementation";
@@ -34,7 +35,15 @@ import { GetUserByPhoneUseCase } from "@/infra/useCases/users/getUserByPhoneUseC
 import { ListUsersUseCase } from "@/infra/useCases/users/listUsersUseCase";
 import { UnAuthenticateUserUseCase } from "@/infra/useCases/users/unAuthenticateUserUseCase";
 import { UpdateUserUseCase } from "@/infra/useCases/users/updateUserUseCase";
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+
+const limitedRoutes = [
+  "users/get-recovery-password-code-by-email",
+  "users/get-recovery-password-code-by-phone",
+  "users/logout",
+  "users/auth",
+  "users/update",
+];
 
 @Module({
   controllers: [
@@ -78,4 +87,12 @@ import { Module } from "@nestjs/common";
     AuthControlGateway,
   ],
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RateLimitMiddleware)
+      .forRoutes(
+        ...limitedRoutes.map((route) => route)
+      );
+  }
+}
