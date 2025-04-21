@@ -25,6 +25,7 @@ export const envSchema = z.object({
   VITE_FREE_EMPLOYEES_LIMIT_GOLD_PLAN: z.coerce.number(),
   PANDA_VIDEO_API_KEY: z.string(),
   OPENAI_API_KEY: z.string(),
+  ALLOWED_ORIGINS: z.string(),
 });
 
 export type TEnvSchema = z.infer<typeof envSchema>;

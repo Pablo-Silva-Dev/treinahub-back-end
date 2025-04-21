@@ -8,12 +8,15 @@ import { ResponseSuccessInterceptor } from "./infra/interceptors/responseSuccess
 async function bootstrap() {
   const configService = new ConfigService<TEnvSchema, true>();
 
+
+  const allowedOrigins = configService.get("ALLOWED_ORIGINS").split(",")
+
   const app = await NestFactory.create(AppModule);
   const port = configService.get("PORT", { infer: true });
   app.useGlobalInterceptors(new ResponseSuccessInterceptor());
   app.useGlobalFilters(new ResponseErrorInterceptor());
   app.enableCors({
-    origin: "*",
+    origin: allowedOrigins,
     methods: "*",
   });
   await app.listen(port);

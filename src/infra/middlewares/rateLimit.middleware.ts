@@ -4,7 +4,7 @@ import rateLimit from "express-rate-limit";
 
 const limiter = rateLimit({
   windowMs: 1000 * 60, //1 minute
-  max: 5,
+  max: 10,
 });
 
 @Injectable()
