@@ -25,6 +25,7 @@ import { WatchedClassesModule } from "./modules/watchedClasses.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.NODE_END === 'production' ? '.env.production' : '.env.development',
       validate: (env) => envSchema.parse(env),
       isGlobal: true,
     }),
