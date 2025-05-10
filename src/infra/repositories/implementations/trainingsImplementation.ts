@@ -27,6 +27,7 @@ export class TrainingsImplementation implements ITrainingsRepository {
       include: {
         video_classes: true,
         training_metrics: true,
+        quizes: true,
       },
     });
 
