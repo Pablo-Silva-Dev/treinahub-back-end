@@ -8,12 +8,16 @@ import { v4 as uuidv4 } from "uuid";
 @Injectable()
 export class PandaVideoService {
   private pandaVideoApiKey: string;
+  private pandaVideoApiEnvironment: string;
 
   constructor(
     private configService: ConfigService<TEnvSchema, true>,
     private trainingsImplementation: TrainingsImplementation
   ) {
     this.pandaVideoApiKey = this.configService.get("PANDA_VIDEO_API_KEY");
+    this.pandaVideoApiEnvironment = this.configService.get(
+      "PANDA_VIDEO_API_ENVIRONMENT"
+    );
   }
 
   private parseStringToBase64 = (string: string) =>
@@ -28,11 +32,11 @@ export class PandaVideoService {
 
       const body = parentFolderId
         ? {
-            name: folderName,
+            name: `${this.pandaVideoApiEnvironment}-${folderName}`,
             parent_folder_id: parentFolderId,
           }
         : {
-            name: folderName,
+            name: `${this.pandaVideoApiEnvironment}-${folderName}`,
           };
 
       const { data } = await axios.post(

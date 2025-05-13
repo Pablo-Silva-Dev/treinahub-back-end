@@ -24,6 +24,7 @@ export const envSchema = z.object({
   VITE_FREE_EMPLOYEES_LIMIT_SILVER_PLAN: z.coerce.number(),
   VITE_FREE_EMPLOYEES_LIMIT_GOLD_PLAN: z.coerce.number(),
   PANDA_VIDEO_API_KEY: z.string(),
+  PANDA_VIDEO_API_ENVIRONMENT: z.string(),
   OPENAI_API_KEY: z.string(),
   ADMIN_DASHBOARD_URL: z.string(),
   USER_DASHBOARD_URL: z.string(),
