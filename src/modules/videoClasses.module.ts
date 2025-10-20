@@ -1,6 +1,6 @@
 import { CreateVideoClassController } from "@/infra/controllers/videoClasses/createVideoClassController";
 import { DeleteVideoClassController } from "@/infra/controllers/videoClasses/deleteVideoClassController";
-import { GetVideoClassByIdController } from "@/infra/controllers/videoClasses/GetVideoClassByIdControlller";
+import { GetVideoClassByIdController } from "@/infra/controllers/videoClasses/getVideoClassByIdControlller";
 import { ListVideoClassesByCompanyController } from "@/infra/controllers/videoClasses/listVideoClassesByCompanyController";
 import { ListVideoClassesByTrainingController } from "@/infra/controllers/videoClasses/listVideoClassesByTraining";
 import { ListVideoClassesController } from "@/infra/controllers/videoClasses/listVideoClassesControlller";
