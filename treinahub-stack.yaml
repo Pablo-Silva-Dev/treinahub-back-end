@@ -1,0 +1,56 @@
+version: "3.8"
+
+networks:
+  portainernet:          # shared overlay used by Traefik
+    external: true
+  internal:              # private overlay for API <-> Postgres
+    driver: overlay
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pscodepc10092016}
+      POSTGRES_DB: ${POSTGRES_DB:-treina_hub_prod}
+    volumes:
+      - /var/lib/treinahub/postgres:/var/lib/postgresql/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+    networks:
+      - internal
+
+  api:
+    image: treinahub-api:latest
+    environment:
+      NODE_ENV: "production"
+      PORT: "3334"                               # your app must listen on 0.0.0.0:3334
+      DATABASE_URL: ${DATABASE_URL}              # e.g. postgresql://admin:pscodepc10092016@postgres:5432/treina_hub_prod?schema=public
+
+      # --- required app vars (from your validator) ---
+      VITE_STORAGE_LIMIT_GOLD_PLAN: ${VITE_STORAGE_LIMIT_GOLD_PLAN}
+      VITE_FREE_EMPLOYEES_LIMIT_BRONZE_PLAN: ${VITE_FREE_EMPLOYEES_LIMIT_BRONZE_PLAN}
+      VITE_FREE_EMPLOYEES_LIMIT_SILVER_PLAN: ${VITE_FREE_EMPLOYEES_LIMIT_SILVER_PLAN}
+      VITE_FREE_EMPLOYEES_LIMIT_GOLD_PLAN: ${VITE_FREE_EMPLOYEES_LIMIT_GOLD_PLAN}
+      PANDA_VIDEO_API_KEY: ${PANDA_VIDEO_API_KEY}
+      PANDA_VIDEO_API_ENVIRONMENT: ${PANDA_VIDEO_API_ENVIRONMENT}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ADMIN_DASHBOARD_URL: ${ADMIN_DASHBOARD_URL}
+      USER_DASHBOARD_URL: ${USER_DASHBOARD_URL}
+      LANDING_PAGE_URL: ${LANDING_PAGE_URL}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=portainernet
+        - traefik.http.routers.treinahub.rule=Host(`api.treinahub.com.br`)
+        - traefik.http.routers.treinahub.entrypoints=websecure
+        - traefik.http.routers.treinahub.tls.certresolver=letsencryptresolver
+        - traefik.http.services.treinahub.loadbalancer.server.port=3334
+    networks:
+      - portainernet
+      - internal
+
