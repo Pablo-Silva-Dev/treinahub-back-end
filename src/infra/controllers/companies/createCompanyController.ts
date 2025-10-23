@@ -51,7 +51,7 @@ export class CreateCompanyController {
     private manageFileService: ManageFileService,
     private pandaVideoService: PandaVideoService,
     private configService: ConfigService<TEnvSchema, true>,
-    private SendGridEmailSenderService: SendGridEmailSenderService
+    // private SendGridEmailSenderService: SendGridEmailSenderService
   ) {}
   @HttpCode(201)
   @Post()
@@ -107,10 +107,10 @@ export class CreateCompanyController {
         return updatedCompany;
       }
 
-      await this.SendGridEmailSenderService.sendCompanyIdEmail({
-        to: newCompany.email,
-        companyIdCode: companyId,
-      });
+      // await this.SendGridEmailSenderService.sendCompanyIdEmail({
+      //   to: newCompany.email,
+      //   companyIdCode: companyId,
+      // });
 
       // Return the updated company
       return newCompany;
