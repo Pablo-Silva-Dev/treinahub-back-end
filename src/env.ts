@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const envSchema = z.object({
-  DATABASE_URL: z.string().url(),
+  DATABASE_URL: z.string(),
   PORT: z.coerce.number().optional().default(3334),
   RESEND_EMAIL_SENDER_API_KEY: z.string(),
   RESEND_EMAIL_SENDER_ADDRESS: z.string(),
