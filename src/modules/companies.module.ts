@@ -13,7 +13,7 @@ import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageServic
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PandaVideoService } from "@/infra/services/pandaVideoService";
 import { PrismaService } from "@/infra/services/prisma";
-import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
+import { ResendEmailSenderService } from "@/infra/services/resendEmailService";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { DeleteCompanyUseCase } from "@/infra/useCases/companies/deleteCompanyUseCase";
 import { GetCompanyByIdUseCase } from "@/infra/useCases/companies/getCompanyByIdUseCase";
@@ -56,7 +56,7 @@ const limitedRoutes = ["/companies/create", "companies/list"];
     PlantFaqQuestionsUseCase,
     ListTrainingsByCompanyUseCase,
     UpdateCompanyUsedStorageUseCase,
-    SendGridEmailSenderService,
+    ResendEmailSenderService,
   ],
 })
 export class CompaniesModules implements NestModule {

@@ -1,6 +1,6 @@
 import { IGetRecoveryPasswordCodeByEmailDTO } from "@/infra/dtos/UserDTO";
 import { UsersImplementation } from "@/infra/repositories/implementations/usersImplementation";
-import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
+import { ResendEmailSenderService } from "@/infra/services/resendEmailService";
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TEnvSchema } from "env";
@@ -9,7 +9,7 @@ import { TEnvSchema } from "env";
 export class GetRecoveryPasswordCodeByEmailUseCase {
   constructor(
     private usersImplementation: UsersImplementation,
-    private sendGridService: SendGridEmailSenderService,
+    private sendGridService: ResendEmailSenderService,
     private configService: ConfigService<TEnvSchema, true>
   ) {}
   async execute(data: IGetRecoveryPasswordCodeByEmailDTO) {
@@ -29,7 +29,7 @@ export class GetRecoveryPasswordCodeByEmailUseCase {
     }
 
     await this.sendGridService.sendRecoveryPasswordEmail({
-      from: this.configService.get("SEND_GRID_EMAIL_SENDER_ADDRESS"),
+      from: this.configService.get("RESEND_EMAIL_SENDER_ADDRESS"),
       to: email,
       recoveryCode: code,
     });

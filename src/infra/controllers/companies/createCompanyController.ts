@@ -2,7 +2,6 @@ import { ICreateCompanyDTO } from "@/infra/dtos/CompanyDTO";
 import { faqQuestionsSeeds } from "@/infra/seeds/faqQuestionsSeeds";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PandaVideoService } from "@/infra/services/pandaVideoService";
-import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
 import { CreateCompanyUseCase } from "@/infra/useCases/companies/createCompanyUseCase";
 import { UpdateCompanyUseCase } from "@/infra/useCases/companies/updateCompanyUseCase";
 import { formatSlug } from "@/utils/formatSlug";
@@ -22,6 +21,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { TEnvSchema } from "env";
 import { Request } from "express";
 import { z } from "zod";
+import { ResendEmailSenderService } from "../../services/resendEmailService";
 import { PlantFaqQuestionsUseCase } from "./../../useCases/faqQuestions/plantFaqQuestionsSeedsUseCase";
 
 const validationSchema = z.object({
@@ -51,7 +51,7 @@ export class CreateCompanyController {
     private manageFileService: ManageFileService,
     private pandaVideoService: PandaVideoService,
     private configService: ConfigService<TEnvSchema, true>,
-    // private SendGridEmailSenderService: SendGridEmailSenderService
+    private ResendEmailSenderService: ResendEmailSenderService
   ) {}
   @HttpCode(201)
   @Post()
@@ -107,10 +107,10 @@ export class CreateCompanyController {
         return updatedCompany;
       }
 
-      // await this.SendGridEmailSenderService.sendCompanyIdEmail({
-      //   to: newCompany.email,
-      //   companyIdCode: companyId,
-      // });
+      await this.ResendEmailSenderService.sendCompanyIdEmail({
+        to: newCompany.email,
+        companyIdCode: companyId,
+      });
 
       // Return the updated company
       return newCompany;

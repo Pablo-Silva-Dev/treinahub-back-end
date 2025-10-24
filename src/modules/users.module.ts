@@ -19,7 +19,7 @@ import { UsersImplementation } from "@/infra/repositories/implementations/usersI
 import { AzureBlobStorageService } from "@/infra/services/azureBlobStorageService";
 import { ManageFileService } from "@/infra/services/manageFileService";
 import { PrismaService } from "@/infra/services/prisma";
-import { SendGridEmailSenderService } from "@/infra/services/sendGrid";
+import { ResendEmailSenderService } from "@/infra/services/resendEmailService";
 import { TwilioService } from "@/infra/services/twilio";
 import { UpdateCompanyAdditionalUsersUseCase } from "@/infra/useCases/companies/updateCompanyAdditionalUsersUseCase";
 import { ListTrainingMetricsByUserUseCase } from "@/infra/useCases/trainingMetrics/listTrainingMetricsByUserUseCase";
@@ -62,7 +62,7 @@ const limitedRoutes = [
   ],
   providers: [
     PrismaService,
-    SendGridEmailSenderService,
+    ResendEmailSenderService,
     TwilioService,
     ManageFileService,
     AzureBlobStorageService,
