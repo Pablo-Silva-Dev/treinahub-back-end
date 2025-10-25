@@ -25,9 +25,9 @@ WORKDIR /app
 ENV NODE_ENV=production \
     PORT=3334
 
-# Prisma engines need OpenSSL at runtime
+# Runtime deps: OpenSSL for Prisma + ffmpeg (includes ffprobe)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssl ca-certificates \
+    openssl ca-certificates ffmpeg \
  && rm -rf /var/lib/apt/lists/*
 
 # Install only production deps
@@ -48,8 +48,4 @@ COPY --from=build /app/node_modules/.bin/prisma /usr/local/bin/prisma
 
 EXPOSE 3334
 
-# Optional: simple healthcheck (adjust endpoint if needed)
-# HEALTHCHECK --interval=30s --timeout=5s --start-period=20s CMD node -e "require('http').get('http://127.0.0.1:' + (process.env.PORT||3334), r => process.exit(r.statusCode>=200&&r.statusCode<500?0:1)).on('error',()=>process.exit(1))"
-
 CMD ["node", "dist/main"]
-
