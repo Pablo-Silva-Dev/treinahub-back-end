@@ -7,12 +7,9 @@ import { ResponseSuccessInterceptor } from "./infra/interceptors/responseSuccess
 import { NestExpressApplication } from "@nestjs/platform-express";
 
 const ffmpeg = require('fluent-ffmpeg');
-const { path: ffmpegPath } = require('@ffmpeg-installer/ffmpeg');
-const { path: ffprobePath } = require('@ffprobe-installer/ffprobe');
 
-ffmpeg.setFfmpegPath(ffmpegPath);
-ffmpeg.setFfprobePath(ffprobePath);
-
+ffmpeg.setFfmpegPath('/usr/bin/ffmpeg');
+ffmpeg.setFfprobePath('/usr/bin/ffprobe');
 
 async function bootstrap() {
   
