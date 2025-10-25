@@ -6,6 +6,14 @@ import { ResponseErrorInterceptor } from "./infra/interceptors/responseError.int
 import { ResponseSuccessInterceptor } from "./infra/interceptors/responseSuccess.interceptor";
 import { NestExpressApplication } from "@nestjs/platform-express";
 
+const ffmpeg = require('fluent-ffmpeg');
+const { path: ffmpegPath } = require('@ffmpeg-installer/ffmpeg');
+const { path: ffprobePath } = require('@ffprobe-installer/ffprobe');
+
+ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfprobePath(ffprobePath);
+
+
 async function bootstrap() {
   
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
